@@ -1,0 +1,3 @@
+backend/md_blog_content/*
+backend/__pycache__
+backend/.venv
