@@ -14,9 +14,11 @@ def hello():
     yield "Hello World!"
 
 
+# https://bottlepy.org/docs/dev/api.html#bottle.BaseResponse.set_cookie
 @app.post('/admin/auth')
 def auth():
     pass
+
 
 
 if __name__ == "__main__":
