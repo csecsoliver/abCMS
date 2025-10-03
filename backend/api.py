@@ -8,6 +8,9 @@ def run():
 def hello():
     yield "Hello World!"
 
+@app.post('/admin/auth')
+def auth():
+    pass
 
 if __name__ == "__main__":
     
