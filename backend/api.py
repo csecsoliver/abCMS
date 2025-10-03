@@ -1,5 +1,5 @@
 import blog
-from bottle import app, route, post, request, response
+from bottle import app, route, post, request, response, Bottle
 from gevent import monkey
 monkey.patch_all()
 app = Bottle()

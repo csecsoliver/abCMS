@@ -1,0 +1,18 @@
+[project]
+name = "abcms-node"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Csécs Olivér Elemér",email = "0oliogamer0@gmail.com"}
+]
+requires-python = ">=3.12"
+dependencies = [
+    "gevent (>=25.9.1,<26.0.0)",
+    "docker (>=7.1.0,<8.0.0)"
+]
+[tool.poetry]
+package-mode = false
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
