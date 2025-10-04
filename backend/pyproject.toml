@@ -5,13 +5,20 @@ description = ""
 authors = [
     {name = "Csécs Olivér Elemér",email = "0oliogamer0@gmail.com"}
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.15"
 dependencies = [
     "gevent (>=25.9.1,<26.0.0)",
-    "docker (>=7.1.0,<8.0.0)"
+    "docker (>=7.1.0,<8.0.0)",
+    "bottle-cors-plugin (>=0.1.9,<0.2.0)",
+    "argon2-cffi (>=25.1.0,<26.0.0)",
+    "pex (>=2.59.2,<3.0.0)",
+    "markdown (>=3.9,<4.0)",
 ]
 [tool.poetry]
-package-mode = false
+package-mode = true
+packages = [
+    {include = "*.py"},
+]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
