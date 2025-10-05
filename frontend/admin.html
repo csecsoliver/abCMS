@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./htmx.min.js"></script>
+    <script src="./htmx-ext-response-targets.js"></script>
+    <script src="./htmx-ext-sse.js"></script>
+    <script src="./htmx-ext-ws.js"></script>
+    <link rel="stylesheet" href="./styles.css">
+
+</head>
+<body>
+    <header>
+        <h1>abCMS</h1>
+        <nav>
+            <a href="./index.html">Home</a>
+            <a href="./admin.html"><b>Admin console</b></a>
+        </nav>
+    </header>
+    <!--  hx-get="/posts" hx-trigger="load" hx-target="this" hx-swap="innerHTML" -->
+    <div id="auth" hx-get="/auth" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+        <form action="/getin" method="post" id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <form action="/getup" method="post" id="signup-form">
+            <label for="new-username">New Username:</label>
+            <input type="text" id="new-username" name="username" required>
+            <label for="new-password">New Password:</label>
+            <input type="password" id="new-password" name="password" required>
+            <label for="secret">Signup secret:</label>
+            <input type="password" id="secret" name="secret" required>
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+    <main>
+        
+
+
+        
+    </main>
+</body>
+</html>

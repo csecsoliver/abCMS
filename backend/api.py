@@ -1,6 +1,6 @@
 from gevent import monkey
 monkey.patch_all()
-from bottle import app, route, post, request, response, Bottle, static_file
+from bottle import app, route, post, request, response, Bottle, static_file, redirect
 from bottle_cors_plugin import cors_plugin
 
 from fileinterface import myopen
@@ -32,6 +32,18 @@ def run():
 @app.get('/<filepath>')
 def server_static(filepath):
     return static_file(filepath, root=str(FRONTEND_DIR))
+@app.get('/')
+def index():
+    redirect('/index.html')
+    
+@app.get('/auth')
+def auth_page():
+    if auth.checkcookie(request) is not None:
+        return "Signed in"
+    return static_file('auth.html', root=str(BASE_DIR))
+
+
+
 
 # https://bottlepy.org/docs/dev/api.html#bottle.BaseResponse.set_cookie
 @app.post('/getin')
@@ -70,7 +82,7 @@ def get_posts():
         title = post_dict['title']
         author = post_dict['author']
         
-        with open(get_html_path('postcard.html'), 'r') as f:
+        with myopen(get_html_path('postcard.html'), 'r') as f:
             postcard_template = f.read()
             
         postcard_html = postcard_template.format(title=title, author=author, content=content_html)

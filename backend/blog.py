@@ -27,11 +27,13 @@ def get(id: str, format: str='md') -> dict:
         return {'content': markdown.markdown(content_md), 'title': title, 'author': author}
     else:
         return {'content': content_md, 'title': title, 'author': author}
-    
+    yx
     
 def listids(reverse: bool=False):
     ids = []
     folder = Path('md_blog_content')
+    if not folder.exists():
+        return ids
     files = folder.iterdir()
     for file in files:
         if file.suffix == '.md' and file.stem.isnumeric():

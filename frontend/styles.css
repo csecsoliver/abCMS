@@ -1,9 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap');
+html, body{
+    font-family: 'Noto Sans Mono', monospace;
+    background-color: #e9ecef;
+    margin: 0;
+    padding: 0;
+}
+main {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem;
+}
 header{
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
     background-color: #f8f9fa;
+}
+header h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+nav {
+    display: flex;
+    gap: 1rem;
 }
 .postcard {
     border: 1px solid #ddd;
@@ -12,4 +32,16 @@ header{
     margin: 1rem 2rem;
     background-color: #fff;
     width: 20rem;
+}
+button {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    width: fit-content;
+    height: 2rem;
+    padding: 0 1rem;
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+#signin-button {
+    display: none;
 }

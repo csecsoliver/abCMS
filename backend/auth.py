@@ -13,16 +13,25 @@ def checkpass(username, password, response: Response) -> bool:
         response.set_cookie("user", username)
         token = uuid.uuid4().hex
         tokens[token] = username
-        response.set_cookie("token", token, secret=getsecret()["cs"], httponly=True, samesite='Strict')
+        response.set_cookie("token", token, secret=getsecret("cs"), httponly=True, samesite='Strict')
         return True
     except argon2.exceptions.VerifyMismatchError:
         response.status = 401
         return False
     
-    
+def checkcookie(request) -> Union[str, None]:
+    username = request.get_cookie("user")
+    token = request.get_cookie("token", secret=getsecret("cs"))
+    if username is None or token is None:
+        return None
+    if token not in tokens:
+        return None
+    if tokens[token] != username:
+        return None
+    return username
 
 def createuser(username, password, secret, response: Response) -> bool:
-    if secret != getsecret()["ss"]:
+    if secret != getsecret("ss"):
         return False
     if open(f"users/{username}", "r"):
         return False
@@ -32,7 +41,7 @@ def createuser(username, password, secret, response: Response) -> bool:
     response.set_cookie("user", username)
     token = uuid.uuid4().hex
     tokens[token] = username
-    response.set_cookie("token", token, secret=getsecret()["cs"], httponly=True, samesite='Strict')
+    response.set_cookie("token", token, secret=getsecret("cs"), httponly=True, samesite='Strict')
     return True
 
 def getsecret(opt: Literal["ss", "cs"]) -> str:
