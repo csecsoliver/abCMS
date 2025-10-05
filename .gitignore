@@ -1,3 +1,6 @@
 backend/md_blog_content/*
 backend/__pycache__
 backend/.venv
+backend/users/*
+backend/.env
+backend/deployments/*

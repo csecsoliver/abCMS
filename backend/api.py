@@ -1,6 +1,6 @@
 from gevent import monkey
 monkey.patch_all()
-from bottle import app, route, post, request, response, Bottle, static_file, redirect
+from bottle import request, response, Bottle, static_file, redirect
 from bottle_cors_plugin import cors_plugin
 
 from fileinterface import myopen
@@ -48,19 +48,19 @@ def auth_page():
 # https://bottlepy.org/docs/dev/api.html#bottle.BaseResponse.set_cookie
 @app.post('/getin')
 def getin():
-    username = request.forms.username
+    username = request.forms.username.split('@')[0]  # take part before @
     password = request.forms.password
     if auth.checkpass(username, password, response):
-        return "Signed in successfully"
+        return "Signed in successfully. Go back to <a href='/'>the admin console</a>."
     return "Failed to sign in"
 
 @app.post('/getup')
 def getup():
-    username = request.forms.username
+    username = request.forms.username.split('@')[0]  # take part before @
     password = request.forms.password
     secret = request.forms.secret
     if auth.createuser(username, password, secret, response):
-        return "User signed up and in successfully"
+        return "User signed up and in successfully. Go back to <a href='/'>the admin console</a>."
     return "Invalid token"
 
 @app.route('/user/<route:path>')
