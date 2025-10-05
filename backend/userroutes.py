@@ -1,6 +1,7 @@
 from io import TextIOWrapper
 import json
 from typing import Optional
+import blog
 from bottle import Request, Response
 from fileinterface import myopen
 def get_deployments(username, request, response, *args):
@@ -75,12 +76,25 @@ def create_deployment(username, request: Request, response: Response, *args):
     response.content_type = 'text/html'
     return html
 
+def create_post(username, request: Request, response: Response, *args):
+    title = request.forms.title
+    content = request.forms.content
+    postid = blog.create(title, username, content)
+    response.status = 201
+    return f"Post created with ID {postid}"
 
-
-
+def delete_post(username, request: Request, response: Response, *args):
+    postid = args[0]
+    success = blog.delete(postid, username)
+    if success:
+        return f"Post {postid} deleted."
+    else:
+        response.status = 403
+        return "You do not have permission to delete this post."
 
 routes = {
     "deployments": get_deployments,
     "deployment": deployment,
     "createdeployment": create_deployment,
+    "createpost": create_post,
 }

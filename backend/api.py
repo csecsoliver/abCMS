@@ -51,7 +51,7 @@ def getin():
     username = request.forms.username.split('@')[0]  # take part before @
     password = request.forms.password
     if auth.checkpass(username, password, response):
-        return "Signed in successfully. Go back to <a href='/'>the admin console</a>."
+        return "Signed in successfully. Go back to <a href='/admin.html'>the admin console</a>."
     return "Failed to sign in"
 
 @app.post('/getup')
@@ -60,7 +60,7 @@ def getup():
     password = request.forms.password
     secret = request.forms.secret
     if auth.createuser(username, password, secret, response):
-        return "User signed up and in successfully. Go back to <a href='/'>the admin console</a>."
+        return "User signed up and in successfully. Go back to <a href='/admin.html'>the admin console</a>."
     return "Invalid token"
 
 @app.route('/user/<route:path>')

@@ -22,6 +22,7 @@ packages = [
 ]
 include = [
     "*.html",
+    "*.tpl",
     "../frontend/*.html",
     "../frontend/*.css",
     "../frontend/*.js"
