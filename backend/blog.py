@@ -13,14 +13,20 @@ def post(title: str, content):
     return newid
     
     
-def get(id: str, format: str='md'):
+def get(id: str, format: str='md') -> dict:
     if id.isnumeric() == False:
         return 'Invalid ID'
-    content = myopen('md_blog_content/'+id+'.md', 'r').read()
+    fileob = myopen('md_blog_content/'+id+'.md', 'r')
+    content = fileob.read()
+    fileob.close()
+    title: str = content.split('\n')[0].replace('#', '').strip()
+    author: str = content.split('\n')[2].strip()
+    content_md: str = '\n'.join(content.split('\n')[4:])
+    
     if format == 'html':
-        return markdown.markdown(content)
+        return {'content': markdown.markdown(content_md), 'title': title, 'author': author}
     else:
-        return content
+        return {'content': content_md, 'title': title, 'author': author}
     
     
 def listids(reverse: bool=False):

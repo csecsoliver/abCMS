@@ -7,11 +7,13 @@ Deployment json structure
     "author": str # username of creator
     "git": str # Repository url
     "bash": str # stuff to run in the repo url after cloning or a restart
+    "port": the internal port the service mainly runs on. (must be unique) This will be the one proxied through caddy to port 443
+    "subdomain": this will preceed the wildcard given to the server. (must also be unique)
 }
 
 
 
 md_blog_content/currentid.txt # This is a file containing a single number to indicate the current latest post's id
-md_blog_content/<id>.md # This is the post, it should contain a first line (Title), two newline charactera, third line containing the username of the author, two newlines again, and the content in freely formatted markdown.
+md_blog_content/<id>.md # This is the post, it should contain a first line (Title), two newline characters, third line containing the username of the author, two newlines again, and the content in freely formatted markdown.
 
 

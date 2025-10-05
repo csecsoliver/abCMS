@@ -8,9 +8,21 @@
     <script src="./htmx-ext-response-targets.js"></script>
     <script src="./htmx-ext-sse.js"></script>
     <script src="./htmx-ext-ws.js"></script>
+    <link rel="stylesheet" href="./styles.css">
 
 </head>
 <body>
-    <button hx-boost=""></button>
+    <header>
+        <h1>abCMS</h1>
+        <nav>
+            <a href="./index.html">Home</a>
+            <a href="./admin.html">Admin console</a>
+        </nav>
+    </header>
+    <main hx-get="/posts" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+        Loading...
+
+        
+    </main>
 </body>
 </html>

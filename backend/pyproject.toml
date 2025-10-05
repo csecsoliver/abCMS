@@ -19,6 +19,12 @@ package-mode = true
 packages = [
     {include = "*.py"},
 ]
+include = [
+    "*.html",
+    "../frontend/*.html",
+    "../frontend/*.css",
+    "../frontend/*.js"
+]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
