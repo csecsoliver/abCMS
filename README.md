@@ -1,6 +1,6 @@
 # abCMS
 The abc management system. It will be an all in one system specifcally made to manage my homelab and related services.  
-Right now it is however a bit off the tracks, it has become a blog platform encouraging frequent, but short posts, rewarding them with coins!!  
+Right now however it is a bit off the tracks, it has become a blog platform encouraging frequent, but short posts, rewarding them with coins!!  
 # My experience  
 This is my first time working with htmx, but not my first time in the bottle.js ecosystem. I am not proficient in either of them right now, but I am getting used to their quirks.  
 The htmx seems to be most like the php philosophy, which is not exactly what bottle is made for. I have only used very basic templates, using the python builtin .format() method, but the template() function in bottle seems intriguing.  
