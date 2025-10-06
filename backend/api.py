@@ -9,14 +9,16 @@ import auth
 import userroutes as ur # these are all the routes needing authorization
 import auth
 import os
+import sys
 from pathlib import Path
 
 app = Bottle()
 
-# Determine base directory for resources
-# When running from PEX, __file__ will be in the extracted temp directory
+# Determine base directory for resources  
+# For PEX: files are extracted to a temp directory, use __file__ parent
 BASE_DIR = Path(__file__).parent
-FRONTEND_DIR = BASE_DIR / 'frontend' if (BASE_DIR / 'frontend').exists() else BASE_DIR.parent / 'frontend'
+# Frontend is sibling to Python files in PEX
+FRONTEND_DIR = BASE_DIR / 'frontend'
 
 # Helper function to find HTML files in backend directory
 def get_html_path(filename):
@@ -61,7 +63,7 @@ def getup():
     secret = request.forms.secret
     if auth.createuser(username, password, secret, response):
         return "User signed up and in successfully. Go back to <a href='/admin.html'>the dashboard</a>."
-    return "Invalid token"
+    return "Invalid token or user exists, I won't tell which."
 
 @app.route('/user/<route:path>', method=['GET', 'POST'])
 def user(route):
@@ -92,7 +94,6 @@ def get_posts():
 
 @app.get('/<filepath>')
 def server_static(filepath):
-    print(f"Static file request: {filepath}")
     return static_file(filepath, root=str(FRONTEND_DIR))
 
 app.install(cors_plugin('*'))

@@ -46,7 +46,7 @@ def createuser(username, password, secret, response: Response) -> bool:
     if secret != getsecret("ss"):
         return False
     try:
-        with myopen(f"users/{username}", "r") as f:
+        with open(f"users/{username}", "r") as f:
             pass
         return False
     except FileNotFoundError:
@@ -86,8 +86,8 @@ def update_coins(username: str, amount: int) -> bool:
         return False
 
 def getsecret(opt: Literal["ss", "cs"]) -> str:
-    signupsecret = "secrete"
-    cookiesecret = "asdfkjsdd"
+    signupsecret = "securesignup"
+    cookiesecret = "asdfkjsddhgfdzjkjsdf"
     with open(".env", "r") as f:
         for line in f:
             if line.startswith("SIGNUP_SECRET="):
