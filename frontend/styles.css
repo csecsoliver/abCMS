@@ -10,6 +10,9 @@ main {
     flex-wrap: wrap;
     padding: 1rem;
 }
+#auth {
+    padding: 1rem;
+}
 header{
     display: flex;
     justify-content: space-between;
@@ -33,7 +36,7 @@ nav {
     background-color: #fff;
     width: 20rem;
 }
-button {
+button, input, textarea {
     border: 1px solid #ddd;
     border-radius: 3px;
     width: fit-content;

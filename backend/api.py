@@ -29,18 +29,18 @@ def run():
     app.run(host='0.0.0.0', port=25556)
 
 
-@app.get('/<filepath>')
-def server_static(filepath):
-    return static_file(filepath, root=str(FRONTEND_DIR))
+
 @app.get('/')
 def index():
     redirect('/index.html')
     
-@app.get('/auth')
+@app.post('/auth_page')
 def auth_page():
-    if auth.checkcookie(request) is not None:
-        return "Signed in"
-    return static_file('auth.html', root=str(BASE_DIR))
+    cookie = auth.checkcookie(request)
+    print("Cookie check:", cookie)
+    if cookie is None:
+        return static_file('auth.html', root=str(BASE_DIR))
+    return "Signed in"
 
 
 
@@ -48,26 +48,25 @@ def auth_page():
 # https://bottlepy.org/docs/dev/api.html#bottle.BaseResponse.set_cookie
 @app.post('/getin')
 def getin():
-    username = request.forms.username.split('@')[0]  # take part before @
+    username = request.forms.username.split('@')[0]
     password = request.forms.password
     if auth.checkpass(username, password, response):
-        return "Signed in successfully. Go back to <a href='/admin.html'>the admin console</a>."
+        return "Signed in successfully. Go back to <a href='/admin.html'>the dashboard</a>."
     return "Failed to sign in"
 
 @app.post('/getup')
 def getup():
-    username = request.forms.username.split('@')[0]  # take part before @
+    username = request.forms.username.split('@')[0]
     password = request.forms.password
     secret = request.forms.secret
     if auth.createuser(username, password, secret, response):
-        return "User signed up and in successfully. Go back to <a href='/admin.html'>the admin console</a>."
+        return "User signed up and in successfully. Go back to <a href='/admin.html'>the dashboard</a>."
     return "Invalid token"
 
-@app.route('/user/<route:path>')
+@app.route('/user/<route:path>', method=['GET', 'POST'])
 def user(route):
     username = auth.checkcookie(request)
     if username is None:
-        response.status = 401
         return "Not logged in or session expired."
     return ur.routes[route.split('/')[0]](username, request, response, *route.split('/')[1:])
 
@@ -90,6 +89,12 @@ def get_posts():
         
     return posts_html if posts_html else "<p>No posts available.</p>"
 
+
+@app.get('/<filepath>')
+def server_static(filepath):
+    print(f"Static file request: {filepath}")
+    return static_file(filepath, root=str(FRONTEND_DIR))
+
 app.install(cors_plugin('*'))
 if __name__ == "__main__":
-    app.run(host='localhost', port=8080, debug=True, reloader=True)
+    app.run(host='localhost', port=8080, debug=True)

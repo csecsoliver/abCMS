@@ -4,18 +4,24 @@ import datetime
 from bottle import Response
 from typing import *
 from fileinterface import myopen
+import json
 
 ph = argon2.PasswordHasher()
 
 def checkpass(username, password, response: Response) -> bool:
-    with myopen(f"users/{username}", "r") as f:
-        hashed = f.read()
+    try:
+        with myopen(f"users/{username}", "r") as f:
+            user_data = json.load(f)
+        hashed = user_data["password"]
+    except (FileNotFoundError, KeyError):
+        response.status = 401
+        return False
     try:
         ph.verify(hashed, password)
         token = jwt.encode(
             {
                 'username': username,
-                'exp': datetime.datetime.now() + datetime.timedelta(days=7)  # Token expires in 7 days
+                'exp': datetime.datetime.now() + datetime.timedelta(days=7)
             },
             getsecret("cs"),
             algorithm='HS256'
@@ -40,24 +46,44 @@ def createuser(username, password, secret, response: Response) -> bool:
     if secret != getsecret("ss"):
         return False
     try:
-        with open(f"users/{username}", "r") as f:
+        with myopen(f"users/{username}", "r") as f:
             pass
         return False
     except FileNotFoundError:
         pass
     hashed = ph.hash(password)
+    user_data = {"password": hashed, "coins": 0}
     with myopen(f"users/{username}", "w") as f:
-        f.write(hashed)
+        json.dump(user_data, f)
     token = jwt.encode(
         {
             'username': username,
-            'exp': datetime.datetime.now() + datetime.timedelta(days=7)  # Token expires in 7 days
+            'exp': datetime.datetime.now() + datetime.timedelta(days=7)
         },
         getsecret("cs"),
         algorithm='HS256'
     )
     response.set_cookie("token", token, httponly=True, samesite='Strict', max_age=7*24*60*60)
     return True
+
+def get_coins(username: str) -> int:
+    try:
+        with myopen(f"users/{username}", "r") as f:
+            user_data = json.load(f)
+        return user_data.get("coins", 0)
+    except (FileNotFoundError, KeyError):
+        return 0
+
+def update_coins(username: str, amount: int) -> bool:
+    try:
+        with myopen(f"users/{username}", "r") as f:
+            user_data = json.load(f)
+        user_data["coins"] = user_data.get("coins", 0) + amount
+        with myopen(f"users/{username}", "w") as f:
+            json.dump(user_data, f)
+        return True
+    except (FileNotFoundError, KeyError):
+        return False
 
 def getsecret(opt: Literal["ss", "cs"]) -> str:
     signupsecret = "secrete"

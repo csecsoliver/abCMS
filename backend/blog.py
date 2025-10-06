@@ -60,4 +60,3 @@ def delete(id: str, username: str) -> bool:
     Path(f'md_blog_content/{id}.md').unlink(missing_ok=True)
     return True
 
-def 

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>abCMS Dashboard</title>
     <script src="./htmx.min.js"></script>
     <script src="./htmx-ext-response-targets.js"></script>
     <script src="./htmx-ext-sse.js"></script>
@@ -11,23 +12,42 @@
     <link rel="stylesheet" href="./styles.css">
 
 </head>
+
 <body>
     <header>
         <h1>abCMS</h1>
         <nav>
             <a href="./index.html">Home</a>
-            <a href="./admin.html"><b>Admin console</b></a>
+            <a href="./admin.html"><b>Dashboard</b></a>
         </nav>
     </header>
     <!--  hx-get="/posts" hx-trigger="load" hx-target="this" hx-swap="innerHTML" -->
-    <div id="auth" hx-get="/auth" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+    <div id="auth" hx-post="/auth_page" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
         Loading auth status...
     </div>
-    <main>
-        <form action="/user/" method="post"></form>
+    <main style="display: block;">
+        <div id="coin-display" hx-get="/user/coins" hx-target="#coin-display" hx-swap="innerHTML" hx-trigger="load">
+        </div>
+        <div>
+            <h2>Create New Post</h2>
+            <form action="/user/createpost" method="post" hx-target="#post-creation-status" hx-swap="innerHTML"
+                hx-on::after-request="this.reset()">
+                <label for="title">Title</label><br>
+                <input type="text" id="title" name="title" required><br><br>
+                <label for="content">Content</label><br>
+                <textarea id="content" name="content" required></textarea><br><br>
+                <button type="submit">Create Post</button>
+            </form>
+            <div id="post-creation-status"></div>
+        </div>
+
+        <main hx-get="/posts" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+            Loading...
 
 
-        
-    </main>
+        </main>
+
+
 </body>
+
 </html>

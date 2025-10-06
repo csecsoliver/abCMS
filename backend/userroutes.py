@@ -4,6 +4,8 @@ from typing import Optional
 import blog
 from bottle import Request, Response
 from fileinterface import myopen
+import auth
+
 def get_deployments(username, request, response, *args):
     content = myopen(f'deployments/{username}/deployments.txt', 'r').read()
     html = '<h1>Deployments</h1><ul>'
@@ -79,9 +81,11 @@ def create_deployment(username, request: Request, response: Response, *args):
 def create_post(username, request: Request, response: Response, *args):
     title = request.forms.title
     content = request.forms.content
-    postid = blog.create(title, username, content)
+    postid = blog.post(title, username, content)
+    # Award coins for posting
+    auth.update_coins(username, 10)
     response.status = 201
-    return f"Post created with ID {postid}"
+    return f"Post created with ID {postid}. You earned 10 coins!"
 
 def delete_post(username, request: Request, response: Response, *args):
     postid = args[0]
@@ -92,9 +96,17 @@ def delete_post(username, request: Request, response: Response, *args):
         response.status = 403
         return "You do not have permission to delete this post."
 
+def get_coins(username, request: Request, response: Response, *args):
+    coins = auth.get_coins(username)
+    html = f'You have {coins} coins.'
+    response.content_type = 'text/html'
+    return html
+
 routes = {
     "deployments": get_deployments,
     "deployment": deployment,
     "createdeployment": create_deployment,
     "createpost": create_post,
+    "deletepost": delete_post,
+    "coins": get_coins,
 }
