@@ -85,7 +85,7 @@ def create_post(username, request: Request, response: Response, *args):
     # Award coins for posting
     auth.update_coins(username, 10)
     response.status = 201
-    return f"Post created with ID {postid}. You earned 10 coins!"
+    return f"Post created with ID {postid}. You earned 10 coins! <a href='/admin.html'>Go back</a>."
 
 def delete_post(username, request: Request, response: Response, *args):
     postid = args[0]
