@@ -4,3 +4,4 @@ backend/.venv
 backend/users/*
 backend/.env
 backend/deployments/*
+backend/pex_build

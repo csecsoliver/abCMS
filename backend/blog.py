@@ -1,3 +1,4 @@
+import auth
 import markdown
 import random
 from fileinterface import myopen
@@ -29,7 +30,7 @@ def get(id: str, format: str='md') -> dict:
     content_md: str = '\n'.join(content.split('\n')[4:])
     
     if format == 'html':
-        return {'content': markdown.markdown(content_md), 'title': title, 'author': author}
+        return {'content': markdown.markdown(content_md), 'title': title, 'author':  f"{author}, who has {auth.get_coins(author)} coins"}
     else:
         return {'content': content_md, 'title': title, 'author': author}
     

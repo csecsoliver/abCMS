@@ -88,7 +88,7 @@ def update_coins(username: str, amount: int) -> bool:
 def getsecret(opt: Literal["ss", "cs"]) -> str:
     signupsecret = "securesignup"
     cookiesecret = "asdfkjsddhgfdzjkjsdf"
-    with open(".env", "r") as f:
+    with myopen(".env", "r") as f:
         for line in f.readlines():
             if line.startswith("SIGNUP_SECRET="):
                 signupsecret = line[len("SIGNUP_SECRET="):].strip()
