@@ -2,8 +2,8 @@
 The abc management system. It will be an all in one system specifcally made to manage my homelab and related services.  
 Right now however it is a bit off the tracks, it has become a blog platform encouraging frequent, but short posts, rewarding them with coins!!  
 
-- You can sign up in the Dashboard with a signup secret, which is usually "securesignup" as specified in the code, but instance hosters can specify their own in a .env file.  
-- **This secret is basically a key to the instance, so hosters can close it down a bit.**  
+- You can sign up in the Dashboard with the instance's signup secret, **which is basically a key to the instance, so hosters can close it down a bit.**  
+- It is usually "securesignup" as specified in the code, but instance hosters can specify their own in a .env file.  
 - After signing up you can make posts, but posts cannot be edited or deleted to emphasize the quick, short posts nature of the site.  
 - You earn coins for every post, and you can brag with those if you want. B)
 
