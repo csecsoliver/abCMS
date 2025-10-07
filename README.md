@@ -1,6 +1,12 @@
 # abCMS
 The abc management system. It will be an all in one system specifcally made to manage my homelab and related services.  
 Right now however it is a bit off the tracks, it has become a blog platform encouraging frequent, but short posts, rewarding them with coins!!  
+
+- You can sign up in the Dashboard with a signup secret, which is usually "securesignup" as specified in the code, but instance hosters can specify their own in a .env file.  
+- After signing up you can make posts, but posts cannot be edited or deleted to emphasize the quick, short posts nature of the site.  
+- You earn coins for every post, and you can brag with those if you want. B)
+
+
 # My experience  
 This is my first time working with htmx, but not my first time in the bottle.js ecosystem. I am not proficient in either of them right now, but I am getting used to their quirks.  
 The htmx seems to be most like the php philosophy, which is not exactly what bottle is made for. I have only used very basic templates, using the python builtin .format() method, but the template() function in bottle seems intriguing.  
