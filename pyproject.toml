@@ -21,11 +21,9 @@ packages = [
     {include = "*.py"},
 ]
 include = [
-    "*.html",
-    "*.tpl",
-    "../frontend/*.html",
-    "../frontend/*.css",
-    "../frontend/*.js"
+    "resources/*.html",
+    "resources/*.css",
+    "resources/*.js"
 ]
 
 [build-system]
