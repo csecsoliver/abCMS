@@ -41,9 +41,12 @@ button, input, textarea {
     border-radius: 3px;
     width: fit-content;
     height: 2rem;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
     background-color: #f8f9fa;
     cursor: pointer;
+}
+textarea, input[type="text"], input[type="email"], input[type="password"] {
+    width: 10rem;
 }
 #signin-button {
     display: none;

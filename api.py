@@ -16,9 +16,9 @@ app = Bottle()
 
 # Determine base directory for resources  
 # For PEX: files are extracted to a temp directory, use __file__ parent
-BASE_DIR = Path(__file__).parent
+BASE_DIR = Path(__file__).parent / 'resources'
 # Frontend is sibling to Python files in PEX
-FRONTEND_DIR = BASE_DIR / 'frontend'
+FRONTEND_DIR = BASE_DIR
 
 # Helper function to find HTML files in backend directory
 def get_html_path(filename):
@@ -46,8 +46,6 @@ def auth_page():
 
 
 
-
-# https://bottlepy.org/docs/dev/api.html#bottle.BaseResponse.set_cookie
 @app.post('/getin')
 def getin():
     username = request.forms.username.split('@')[0]

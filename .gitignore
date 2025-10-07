@@ -1,7 +1,7 @@
-backend/md_blog_content/*
-backend/__pycache__
-backend/.venv
-backend/users/*
-backend/.env
-backend/deployments/*
-backend/pex_build
+md_blog_content
+__pycache__
+.venv
+users
+.env
+deployments
+pex_build
