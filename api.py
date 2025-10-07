@@ -1,6 +1,6 @@
 from gevent import monkey
 monkey.patch_all()
-from bottle import request, response, Bottle, static_file, redirect
+from bottle import request, response, Bottle, static_file, redirect, template
 from bottle_cors_plugin import cors_plugin
 
 from fileinterface import myopen
@@ -100,7 +100,7 @@ def get_post(postid):
         with myopen(get_html_path('post.html'), 'r') as f:
             post_template = f.read()
 
-        return post_template.format(title=title, author=author, content=content_html)
+        return template(post_template, title=title, author=author, content=content_html)
     return "<p>Post not found.</p>"
 
 @app.get('/<filepath>')
