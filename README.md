@@ -7,6 +7,11 @@ Right now however it is a bit off the tracks, it has become a blog platform enco
 - After signing up you can make posts, but posts cannot be edited or deleted to emphasize the quick, short posts nature of the site.  
 - You earn coins for every post, and you can brag with those if you want. B)
 
+Another use I found:
+# Do you miss the devlogs from SOM?
+Well abcms is here to fill that void! Simply make an account on https://abcms.olio.ovh (the url it redirects to changes sometimes, so bookmark this one) and start posting and scroling away.
+
+******
 
 # My experience  
 This is my first time working with htmx, but not my first time in the bottle.js ecosystem. I am not proficient in either of them right now, but I am getting used to their quirks.  
