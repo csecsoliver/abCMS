@@ -28,7 +28,7 @@ def get_html_path(filename):
 def run():
     auth.getsecret("cs")
     auth.getsecret("ss")
-    app.run(host='0.0.0.0', port=25556)
+    app.run(host='0.0.0.0', port=25557)
 
 
 
@@ -89,6 +89,19 @@ def get_posts():
         
     return posts_html if posts_html else "<p>No posts available.</p>"
 
+@app.get('/post/<postid>')
+def get_post(postid):
+    post_dict = blog.get(postid, format='html')
+    if post_dict:
+        content_html = post_dict['content']
+        title = post_dict['title']
+        author = post_dict['author']
+
+        with myopen(get_html_path('post.html'), 'r') as f:
+            post_template = f.read()
+
+        return post_template.format(title=title, author=author, content=content_html)
+    return "<p>Post not found.</p>"
 
 @app.get('/<filepath>')
 def server_static(filepath):
