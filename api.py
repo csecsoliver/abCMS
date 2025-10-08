@@ -84,7 +84,7 @@ def get_posts():
         with myopen(get_html_path('postcard.html'), 'r') as f:
             postcard_template = f.read()
             
-        postcard_html = postcard_template.format(title=title, author=author, content=content_html)
+        postcard_html = postcard_template.format(id=pid, title=title, author=author, content=content_html)
         posts_html += postcard_html
         
     return posts_html if posts_html else "<p>No posts available.</p>"
@@ -100,7 +100,7 @@ def get_post(postid):
         with myopen(get_html_path('post.html'), 'r') as f:
             post_template = f.read()
 
-        return template(post_template, title=title, author=author, content=content_html)
+        return post_template.format(title=title, title1=title, author=author, content=content_html)
     return "<p>Post not found.</p>"
 
 @app.get('/<filepath>')

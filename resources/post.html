@@ -3,11 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
+    <title>{title}</title>
+
+    <script src="../htmx.min.js"></script>
+    <script src="../htmx-ext-response-targets.js"></script>
+    <script src="../htmx-ext-sse.js"></script>
+    <script src="../htmx-ext-ws.js"></script>
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <h1>{{ title }}</h1>
-    <h2>By {{ author }}</h2>
-    <div>{{ content }}</div>
+    <div class="postpage">
+        <a href="#" hx-on:click="window.close()">Close post</a>
+        <h1>{title1}</h1>
+        <h2>By {author}</h2>
+        <div>{content}</div>
+    </div>
 </body>
 </html>
