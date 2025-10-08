@@ -1,3 +1,4 @@
+<h2>Login</h2>
 <form action="/getin" method="post" id="login-form">
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" required>
@@ -5,12 +6,13 @@
     <input type="password" id="password" name="password" required>
     <button type="submit">Login</button>
 </form>
+<h2>Register</h2>
 <form action="/getup" method="post" id="signup-form">
-    <label for="new-username">New Username:</label>
+    <label for="new-username">Username:</label>
     <input type="text" id="new-username" name="username" required>
-    <label for="new-password">New Password:</label>
+    <label for="new-password">Password:</label>
     <input type="password" id="new-password" name="password" required>
-    <label for="secret">Signup secret:</label>
+    <label for="secret">Signup secret (mandatory to sign up):</label>
     <input type="password" id="secret" name="secret" required>
     <button type="submit">Sign Up</button>
 </form>
