@@ -5,3 +5,4 @@ users
 .env
 deployments
 pex_build
+.github

@@ -1,3 +1,3 @@
 import os
-def deploy(port, name):
+def deploy():
     print("asd")

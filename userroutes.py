@@ -8,8 +8,7 @@ import auth
 
 def get_deployments(username, request, response, *args):
     content = myopen(f'deployments/{username}/deployments.txt', 'r').read()
-    html = '<h1>Deployments</h1><ul>'
-    
+    html = '<ul>'
     for deployment in content.splitlines():
         
         toadd = """
@@ -66,7 +65,9 @@ def create_deployment(username, request: Request, response: Response, *args):
     depdict["port"] = request.forms.port # input number
     depdict["subdomain"] = request.forms.subdomain
     depdict["name"] = request.forms.name
-
+    if Path(f'deployments/{username}/{depdict["name"]}.json').exists():
+        response.status = 400
+        return "Deployment with that name already exists."
     with myopen(f'deployments/{username}/{depdict["name"]}.json', 'w') as f:
         json.dump(depdict, f)
         with myopen(f'deployments/{username}/deployments.txt', 'a') as f:

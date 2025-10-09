@@ -10,6 +10,7 @@ main {
     flex-wrap: wrap;
     padding: 1rem;
 }
+
 #auth {
     padding: 1rem;
 }
@@ -54,3 +55,9 @@ textarea, input[type="text"], input[type="email"], input[type="password"] {
 .postpage{
     padding: 1rem;
 }
+#blog-section {
+    width: 50%;
+}
+#deployment-section {
+    width: 50%;
+}   

@@ -25,29 +25,49 @@
     <div id="auth" hx-post="/auth_page" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
         Loading auth status...
     </div>
-    <main style="display: block;">
-        <div id="coin-display" hx-get="/user/coins" hx-target="#coin-display" hx-swap="innerHTML" hx-trigger="load">
+    <div id="coin-display" hx-get="/user/coins" hx-target="#coin-display" hx-swap="innerHTML" hx-trigger="load, postlist from:body"></div>
+    <main>
+        <div id="blog-section">
+            
+            </div>
+            <div>
+                <h2>Create New Post</h2>
+                <form hx-post="/user/createpost" hx-target="#post-creation-status" hx-swap="innerHTML"
+                    hx-on::after-request="this.reset()">
+                    <label for="title">Title</label><br>
+                    <input type="text" id="title" name="title" required><br><br>
+                    <label for="content">Content</label><br>
+                    <textarea id="content" name="content" required></textarea><br><br>
+                    <button type="submit">Create Post</button>
+                </form>
+                <div id="post-creation-status"></div>
+            </div>
+            <h2>Recent posts</h2>
+
+            <div id="postlist" hx-get="/posts" hx-trigger="load, postlist from:body" hx-target="this"
+                hx-swap="innerHTML">
+                Loading...
+            </div>
         </div>
-        <div>
-            <h2>Create New Post</h2>
-            <form hx-post="/user/createpost" hx-target="#post-creation-status" hx-swap="innerHTML"
-                hx-on::after-request="this.reset()">
-                <label for="title">Title</label><br>
-                <input type="text" id="title" name="title" required><br><br>
-                <label for="content">Content</label><br>
-                <textarea id="content" name="content" required></textarea><br><br>
-                <button type="submit">Create Post</button>
-            </form>
-            <div id="post-creation-status"></div>
-        </div>
-        <h1>Recent posts</h1>
-
-
-        
-        <div id="postlist" hx-get="/posts" hx-trigger="load, postlist from:body" hx-target="this" hx-swap="innerHTML">
-            Loading...
-
-
+        <div id="deployment-section">
+            <div>
+                <h2>Create New Deployment</h2>
+                <form id="create-deployment-form" hx-post="/create_deployment" hx-target="#deployment-status"
+                    hx-swap="innerHTML" hx-on::after-request="this.reset()">
+                    <label for="name">Name:</label><br>
+                    <input type="text" id="name" name="name" required><br><br>
+                    <label for="port">Port:</label><br>
+                    <input type="number" id="port" name="port" required><br><br>
+                    
+                    <button type="submit">Create Deployment</button>
+                </form>
+                <div id="deployment-status"></div>
+            </div>
+            <h2>Deployments</h2>
+            <div id="deployments" hx-get="/user/deployments" hx-trigger="load, deployments from:body" hx-target="this"
+                hx-swap="innerHTML">
+                Loading...
+            </div>
         </div>
 
 
