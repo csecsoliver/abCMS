@@ -1,11 +1,12 @@
 from io import TextIOWrapper
 import json
+from pathlib import Path
 from typing import Optional
 import blog
 from bottle import Request, Response
 from fileinterface import myopen
 import auth
-
+import deploy
 def get_deployments(username, request, response, *args):
     content = myopen(f'deployments/{username}/deployments.txt', 'r').read()
     html = '<ul>'
@@ -61,7 +62,7 @@ def create_deployment(username, request: Request, response: Response, *args):
     depdict = {}
     depdict["author"] = username
     depdict["git"] = request.forms.git # input url
-    depdict["bash"] = request.forms.bash 
+    depdict["bash"] = request.forms.bash # textarea
     depdict["port"] = request.forms.port # input number
     depdict["subdomain"] = request.forms.subdomain
     depdict["name"] = request.forms.name
@@ -72,6 +73,7 @@ def create_deployment(username, request: Request, response: Response, *args):
         json.dump(depdict, f)
         with myopen(f'deployments/{username}/deployments.txt', 'a') as f:
             f.write(f'{depdict["name"]}\n')
+        deploy
             
     
     
