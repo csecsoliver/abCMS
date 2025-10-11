@@ -61,3 +61,6 @@ textarea, input[type="text"], input[type="email"], input[type="password"] {
 #deployment-section {
     width: 50%;
 }   
+#coin-display {
+    padding: 1rem;
+}

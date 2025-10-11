@@ -83,8 +83,9 @@ def create_deployment(username, request: Request, response: Response, *args):
 
 def create_post(username, request: Request, response: Response, *args):
     title = request.forms.title
+    color = request.forms.color
     content = request.forms.content
-    postid = blog.post(title, username, content)
+    postid = blog.post(title, username, content, color)
     # Award coins for posting
     auth.update_coins(username, 10)
     response.status = 201
@@ -106,6 +107,9 @@ def get_coins(username, request: Request, response: Response, *args):
     response.content_type = 'text/html'
     return html
 
+def get_dashboard(username, request: Request, response: Response, *args):
+    return myopen('resources/dashboard-sect.html', 'r').read().format(username=username)
+
 routes = {
     "deployments": get_deployments,
     "deployment": deployment,
@@ -113,4 +117,5 @@ routes = {
     "createpost": create_post,
     "deletepost": delete_post,
     "coins": get_coins,
+    "dashboard": get_dashboard
 }

@@ -3,7 +3,7 @@ import markdown
 import random
 from fileinterface import myopen
 from pathlib import Path
-def post(title: str, author: str, content: str, existing_id: str = None) -> str:
+def post(title: str, author: str, content: str, color:str,  existing_id: str = None) -> str:
     
     currentid = myopen('md_blog_content/currentid.txt', 'r').read()
     if currentid.isnumeric() == False:
@@ -11,7 +11,7 @@ def post(title: str, author: str, content: str, existing_id: str = None) -> str:
     newid = str(int(currentid)+1)
     if existing_id is not None:
         newid = existing_id
-    content = f"# {title}\n\n{author}\n\n{content}"
+    content = f"# {title}\n\n{author}\n\n{color}\n\n{content}"
     
     myopen(f'md_blog_content/{newid}.md', 'w').write(content)
     
@@ -27,12 +27,14 @@ def get(id: str, format: str='md') -> dict:
     fileob.close()
     title: str = content.split('\n')[0].replace('#', '').strip()
     author: str = content.split('\n')[2].strip()
-    content_md: str = '\n'.join(content.split('\n')[4:])
+    color: str = content.split('\n')[4].strip()
+    
+    content_md: str = '\n'.join(content.split('\n')[6:])
     
     if format == 'html':
-        return {'content': markdown.markdown(content_md), 'title': title, 'author':  f"{author}, who has {auth.get_coins(author)} coins"}
+        return {'content': markdown.markdown(content_md), 'title': title, 'author':  f"{author}, who has {auth.get_coins(author)} coins", 'color': color}
     else:
-        return {'content': content_md, 'title': title, 'author': author}
+        return {'content': content_md, 'title': title, 'author': author, 'color': color}
     
     
 def listids(reverse: bool=False, username: str=None) -> list[str]:
