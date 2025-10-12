@@ -67,23 +67,27 @@ def createuser(username, password, secret, response: Response) -> bool:
     return True
 
 def get_coins(username: str) -> int:
-    try:
-        with myopen(f"users/{username}", "r") as f:
-            user_data = json.load(f)
-        return user_data.get("coins", 0)
-    except (FileNotFoundError, KeyError):
-        return 0
+    with myopen(f"users/{username}", "r") as f:
+        user_data = json.load(f)
+    return user_data.get("coins", 0)
+
+def get_xp(username: str) -> int:
+    with myopen(f"users/{username}", "r") as f:
+        user_data = json.load(f)
+    return user_data.get("xp", 0)
 
 def update_coins(username: str, amount: int) -> bool:
-    try:
-        with myopen(f"users/{username}", "r") as f:
-            user_data = json.load(f)
-        user_data["coins"] = user_data.get("coins", 0) + amount
-        with myopen(f"users/{username}", "w") as f:
-            json.dump(user_data, f)
-        return True
-    except (FileNotFoundError, KeyError):
+    
+    with myopen(f"users/{username}", "r") as f:
+        user_data = json.load(f)
+    user_data["coins"] = user_data.get("coins", 0) + amount
+    if user_data["coins"] < 0:
         return False
+    if amount > 0:
+        user_data["xp"] = user_data.get("xp", 0) + amount
+    with myopen(f"users/{username}", "w") as f:
+        json.dump(user_data, f)
+    return True
 
 def getsecret(opt: Literal["ss", "cs"]) -> str:
     signupsecret = "securesignup"

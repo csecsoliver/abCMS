@@ -2,7 +2,7 @@
 
     <div>
         <h2>Create New Post</h2>
-        <form hx-post="/user/createpost" hx-target="#post-creation-status" hx-swap="innerHTML" hx-on::after-request="if (event.detail.xhr.status === 200) this.reset()">
+        <form hx-post="/user/createpost" hx-target="#post-creation-status" hx-swap="innerHTML" hx-on::after-request="if (event.detail.successful) this.reset()">
             <label for="title">Title</label><br>
             <input type="text" id="title" name="title" required><br>
             Posting as {username}<br><br>
@@ -21,7 +21,7 @@
     </div>
 </div>
 <div id="deployment-section" style="display: none;">
-    <div>
+    <!-- <div>
         <h2>Create New Deployment</h2>
         <form id="create-deployment-form" hx-post="/create_deployment" hx-target="#deployment-status"
             hx-swap="innerHTML" hx-on::after-request="this.reset()">
@@ -38,5 +38,5 @@
     <div id="deployments" hx-get="/user/deployments" hx-trigger="load, deployments from:body" hx-target="this"
         hx-swap="innerHTML">
         Loading...
-    </div>
+    </div> -->
 </div>

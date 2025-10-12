@@ -129,9 +129,9 @@ def get_dashboard(username, request: Request, response: Response, *args):
     return html
 
 routes = {
-    "deployments": get_deployments,
-    "deployment": deployment,
-    "createdeployment": create_deployment,
+    # "deployments": get_deployments,
+    # "deployment": deployment,
+    # "createdeployment": create_deployment,
     "createpost": create_post,
     "deletepost": delete_post,
     "coins": get_coins,
