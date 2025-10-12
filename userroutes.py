@@ -98,13 +98,13 @@ def create_post(username, request: Request, response: Response, *args):
             auth.update_coins(username, -50)
             response.status = 201
             response.add_header('HX-Trigger', "postlist")
-            return f"Post created with ID {postid}. You spent 50 coins!"
+            return f"Post created with ID {postid}. You spent 50 mana!"
         else:
             response.status = 400
-            return "Not enough coins to enchant the post."
+            return "Not enough mana to enchant the post."
     response.status = 201
     response.add_header('HX-Trigger', "postlist")
-    return f"Post created with ID {postid}. You earned 10 coins!"
+    return f"Post created with ID {postid}. You earned 10 mana!"
 
 
 def delete_post(username, request: Request, response: Response, *args):
@@ -118,7 +118,7 @@ def delete_post(username, request: Request, response: Response, *args):
 
 def get_coins(username, request: Request, response: Response, *args):
     coins = auth.get_coins(username)
-    html = f'You have {coins} coins.'
+    html = f'You have {coins} mana.'
     response.content_type = 'text/html'
     return html
 
