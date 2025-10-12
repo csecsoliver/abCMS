@@ -49,7 +49,7 @@ def get(id: str, format: str='md', truncate=False) -> dict:
         content_md = bleach.clean(content_md)
         content_md = markdown.markdown(content_md, extensions=['extra', 'nl2br', 'sane_lists', 'wikilinks'])
         content_md = bleach.linkify(content_md, skip_tags=['pre'])
-        return {'content': content_md, 'title': title, 'author':  f"{author}, MANA={auth.get_coins(author)}, XP={auth.get_xp(author)}", 'color': meta.get('color', '#ffffff')}
+        return {'content': content_md, 'title': title, 'author':  f"{author}<br>MANA={auth.get_coins(author)}, XP={auth.get_xp(author)}", 'color': meta.get('color', '#ffffff')}
     else:
         return {'content': content_md, 'title': title, 'author': author, 'color': meta.get('color', '#ffffff')}
     

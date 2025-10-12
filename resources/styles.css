@@ -39,7 +39,10 @@ nav {
 }
 .postcard * {
     word-break: break-word;
+    color: white;
+    mix-blend-mode: difference;
 }
+.postcard
 button, input {
     border: 1px solid #ddd;
     border-radius: 3px;

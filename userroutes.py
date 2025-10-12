@@ -128,6 +128,21 @@ def get_dashboard(username, request: Request, response: Response, *args):
     response.content_type = 'text/html'
     return html
 
+def get_settings(username, request: Request, response: Response, *args):
+    settings = auth.get_prefs(username)
+    with myopen(FRONTEND_DIR / 'settings.html', 'r') as f:
+        html = f.read().format(
+            social=settings['social']
+        )
+    response.content_type = 'text/html'
+    return html
+
+def save_settings(username, request: Request, response: Response, *args):
+    formdict = {}
+    formdict["social"] = request.forms.social
+    auth.save_prefs(username, formdict)
+    return 'Settings saved!'
+
 routes = {
     # "deployments": get_deployments,
     # "deployment": deployment,
@@ -135,5 +150,7 @@ routes = {
     "createpost": create_post,
     "deletepost": delete_post,
     "coins": get_coins,
-    "dashboard": get_dashboard
+    "dashboard": get_dashboard,
+    "getsettings": get_settings,
+    "settings": save_settings,
 }

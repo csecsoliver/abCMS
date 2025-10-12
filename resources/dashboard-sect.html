@@ -20,7 +20,7 @@
         Loading...
     </div>
 </div>
-<div id="deployment-section" style="display: none;">
+<div id="deployment-section" hx-trigger="load" hx-post="/user/getsettings" hx-swap="innerHTML" hx-target="this">
     <!-- <div>
         <h2>Create New Deployment</h2>
         <form id="create-deployment-form" hx-post="/create_deployment" hx-target="#deployment-status"

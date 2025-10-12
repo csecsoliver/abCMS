@@ -103,3 +103,15 @@ def getsecret(opt: Literal["ss", "cs"]) -> str:
     if cookiesecret == "asdfkjsddhgfdzjkjsdf":
         print("COOKIE_SECRET not found in .env, using insecure default.")
     return signupsecret if opt == "ss" else (cookiesecret if opt == "cs" else "")
+
+def get_prefs(username: str) -> dict:
+    with myopen(f"users/{username}", "r") as f:
+        user_data = json.load(f)
+    return user_data.get("prefs", {"social": ""})
+
+def save_prefs(username: str, prefs: dict) -> None:
+    with myopen(f"users/{username}", "r") as f:
+        user_data = json.load(f)
+    user_data["prefs"] = prefs
+    with myopen(f"users/{username}", "w") as f:
+        json.dump(user_data, f)
