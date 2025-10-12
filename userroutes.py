@@ -8,100 +8,104 @@ from fileinterface import myopen
 import auth
 import deploy
 
-
-# Determine base directory for resources  
-# For PEX: files are extracted to a temp directory, use __file__ parent
-BASE_DIR = Path(__file__).parent / 'resources'
-# Frontend is sibling to Python files in PEX
-FRONTEND_DIR = BASE_DIR
+FRONTEND_DIR = Path(__file__).parent / 'resources'
 
 
-
-def get_deployments(username, request, response, *args):
-    with myopen(f'deployments/{username}/deployments.txt', 'r') as f:
-        content = f.read()
-    html = '<ul>'
-    for deployment in content.splitlines():
+# def get_deployments(username, request, response, *args):
+#     with myopen(f'deployments/{username}/deployments.txt', 'r') as f:
+#         content = f.read()
+#     html = '<ul>'
+#     for deployment in content.splitlines():
         
-        toadd = """
-        <li>
-            {line} 
-            <button hx-get="/user/deployment/{line}" hx-target="#deployment-details" hx-replace="innerHTML">View details</button>
-        </li>"""
+#         toadd = """
+#         <li>
+#             {line} 
+#             <button hx-get="/user/deployment/{line}" hx-target="#deployment-details" hx-replace="innerHTML">View details</button>
+#         </li>"""
         
-        toadd = toadd.format(line=deployment)
-        html += toadd
+#         toadd = toadd.format(line=deployment)
+#         html += toadd
 
-    html += '</ul>'
-    response.content_type = 'text/html'
-    return html
+#     html += '</ul>'
+#     response.content_type = 'text/html'
+#     return html
 
 
-def deployment(username, request: Request, response: Response, *args):
-    match args[0]:
-        case "details":
-            return deployment_details(username, request, response, *args[1:])
-        case "create":
-            return create_deployment(username, request, response, *args[1:])
+# def deployment(username, request: Request, response: Response, *args):
+#     match args[0]:
+#         case "details":
+#             return deployment_details(username, request, response, *args[1:])
+#         case "create":
+#             return create_deployment(username, request, response, *args[1:])
+#         case _:
+#             response.status = 404
+#             return "Not Found"
+
+# def deployment_details(username: str, request: Request, response: Response, *args):
+    
+#     deployment_name: str = args[0]
+#     content: str = myopen(f'deployments/{username}/{deployment_name}.po', 'r').read()
+    
+#     if len(content) == 0:
+#         response.status = 404
+#         return "Not Found"
+    
+#     content: dict = json.loads(content)
+    
+#     html = f'<h1>Details for {deployment_name}</h1><ul>'
+    
+#     for key, value in content.items():
+#         html += f'<li><strong>{key}:</strong> {value}</li>'
         
-        case _:
-            response.status = 404
-            return "Not Found"
-
-def deployment_details(username: str, request: Request, response: Response, *args):
-    
-    deployment_name: str = args[0]
-    content: str = myopen(f'deployments/{username}/{deployment_name}.po', 'r').read()
-    
-    if len(content) == 0:
-        response.status = 404
-        return "Not Found"
-    
-    content: dict = json.loads(content)
-    
-    html = f'<h1>Details for {deployment_name}</h1><ul>'
-    
-    for key, value in content.items():
-        html += f'<li><strong>{key}:</strong> {value}</li>'
-        
-    html += '</ul>'
-    response.content_type = 'text/html'
-    return html
+#     html += '</ul>'
+#     response.content_type = 'text/html'
+#     return html
 
 
-def create_deployment(username, request: Request, response: Response, *args):
-    depdict = {}
-    depdict["author"] = username
-    depdict["git"] = request.forms.git # input url
-    depdict["bash"] = request.forms.bash # textarea
-    depdict["port"] = request.forms.port # input number
-    depdict["subdomain"] = request.forms.subdomain
-    depdict["name"] = request.forms.name
-    if Path(f'deployments/{username}/{depdict["name"]}.json').exists():
-        response.status = 400
-        return "Deployment with that name already exists."
-    with myopen(f'deployments/{username}/{depdict["name"]}.json', 'w') as f:
-        json.dump(depdict, f)
-        with myopen(f'deployments/{username}/deployments.txt', 'a') as f:
-            f.write(f'{depdict["name"]}\n')
-        deploy
+# def create_deployment(username, request: Request, response: Response, *args):
+#     depdict = {}
+#     depdict["author"] = username
+#     depdict["git"] = request.forms.git # input url
+#     depdict["bash"] = request.forms.bash # textarea
+#     depdict["port"] = request.forms.port # input number
+#     depdict["subdomain"] = request.forms.subdomain
+#     depdict["name"] = request.forms.name
+#     if Path(f'deployments/{username}/{depdict["name"]}.json').exists():
+#         response.status = 400
+#         return "Deployment with that name already exists."
+#     with myopen(f'deployments/{username}/{depdict["name"]}.json', 'w') as f:
+#         json.dump(depdict, f)
+#         with myopen(f'deployments/{username}/deployments.txt', 'a') as f:
+#             f.write(f'{depdict["name"]}\n')
+#         deploy
             
     
     
-    html = "Successfully created deployment!"
-    response.content_type = 'text/html'
-    return html
+#     html = "Successfully created deployment!"
+#     response.content_type = 'text/html'
+#     return html
 
 def create_post(username, request: Request, response: Response, *args):
     title = request.forms.title
     color = request.forms.color
     content = request.forms.content
+    
     postid = blog.post(title, username, content, color)
-    # Award coins for posting
-    auth.update_coins(username, 10)
+    if color == "#ffffff":
+        auth.update_coins(username, 10)
+    else:
+        if auth.get_coins(username) >= 50:
+            auth.update_coins(username, -50)
+            response.status = 201
+            response.add_header('HX-Trigger', "postlist")
+            return f"Post created with ID {postid}. You spent 50 coins!"
+        else:
+            response.status = 400
+            return "Not enough coins to enchant the post."
     response.status = 201
     response.add_header('HX-Trigger', "postlist")
     return f"Post created with ID {postid}. You earned 10 coins!"
+
 
 def delete_post(username, request: Request, response: Response, *args):
     postid = args[0]

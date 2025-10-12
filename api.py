@@ -3,7 +3,7 @@ monkey.patch_all()
 from bottle import request, response, Bottle, static_file, redirect, template
 from bottle_cors_plugin import cors_plugin
 
-from fileinterface import myopen
+from fileinterface import myopen, html
 import blog
 import auth
 import userroutes as ur # these are all the routes needing authorization
@@ -19,11 +19,6 @@ app = Bottle()
 BASE_DIR = Path(__file__).parent / 'resources'
 # Frontend is sibling to Python files in PEX
 FRONTEND_DIR = BASE_DIR
-
-# Helper function to find HTML files in backend directory
-def get_html_path(filename):
-    """Find HTML file in BASE_DIR, works for both dev and PEX environments"""
-    return BASE_DIR / filename
 
 def run():
     auth.getsecret("cs")
@@ -60,8 +55,8 @@ def getup():
     password = request.forms.password
     secret = request.forms.secret
     if auth.createuser(username, password, secret, response):
-        return "User signed up and in successfully. Go back to <a href='/admin.html'>the dashboard</a>."
-    return "Invalid token or user exists, I won't tell which."
+        return html("User signed up and in successfully. Go back to <a href='/admin.html'>the dashboard</a>.")
+    return html("Invalid token or user exists, I won't tell which.")
 
 @app.route('/user/<route:path>', method=['GET', 'POST'])
 def user(route):
@@ -81,8 +76,8 @@ def get_posts():
         title = post_dict['title']
         author = post_dict['author']
         color = post_dict['color']
-        
-        with myopen(get_html_path('postcard.html'), 'r') as f:
+
+        with myopen(BASE_DIR / 'postcard.html', 'r') as f:
             postcard_template = f.read()
 
         postcard_html = postcard_template.format(color=color, id=pid, title=title, author=author, content=content_html)
@@ -99,11 +94,11 @@ def get_post(postid):
         author = post_dict['author']
         color = post_dict['color']
 
-        with myopen(get_html_path('post.html'), 'r') as f:
+        with myopen(BASE_DIR / 'post.html', 'r') as f:
             post_template = f.read()
 
         return post_template.format(color=color, title=title, title1=title, author=author, content=content_html)
-    return "<p>Post not found.</p>"
+    return html("Post not found.")
 
 @app.get('/<filepath>')
 def server_static(filepath):

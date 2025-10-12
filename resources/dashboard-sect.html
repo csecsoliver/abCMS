@@ -2,12 +2,11 @@
 
     <div>
         <h2>Create New Post</h2>
-        <form hx-post="/user/createpost" hx-target="#post-creation-status" hx-swap="innerHTML"
-            hx-on::after-request="this.reset()">
+        <form hx-post="/user/createpost" hx-target="#post-creation-status" hx-swap="innerHTML" hx-on::after-request="if (event.detail.xhr.status === 200) this.reset()">
             <label for="title">Title</label><br>
             <input type="text" id="title" name="title" required><br>
             Posting as {username}<br><br>
-            <label for="color">Color</label><br>
+            <label for="color">To enchant the post, set a color (this will cost 50 coins):</label><br>
             <input type="color" id="color" name="color" value="#ffffff" required style="padding: 0.1rem; width: 5rem;"><br><br>
             <label for="content">Content (resize the field to fit your needs)</label><br>
             <textarea id="content" name="content" required rows="10" cols="50"></textarea><br><br>
