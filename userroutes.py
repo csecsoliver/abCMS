@@ -3,12 +3,23 @@ import json
 from pathlib import Path
 from typing import Optional
 import blog
-from bottle import Request, Response
+from bottle import Request, Response, static_file
 from fileinterface import myopen
 import auth
 import deploy
+
+
+# Determine base directory for resources  
+# For PEX: files are extracted to a temp directory, use __file__ parent
+BASE_DIR = Path(__file__).parent / 'resources'
+# Frontend is sibling to Python files in PEX
+FRONTEND_DIR = BASE_DIR
+
+
+
 def get_deployments(username, request, response, *args):
-    content = myopen(f'deployments/{username}/deployments.txt', 'r').read()
+    with myopen(f'deployments/{username}/deployments.txt', 'r') as f:
+        content = f.read()
     html = '<ul>'
     for deployment in content.splitlines():
         
@@ -108,7 +119,10 @@ def get_coins(username, request: Request, response: Response, *args):
     return html
 
 def get_dashboard(username, request: Request, response: Response, *args):
-    return myopen('resources/dashboard-sect.html', 'r').read().format(username=username)
+    with myopen(FRONTEND_DIR / 'dashboard-sect.html', 'r') as f:
+        html = f.read().format(username=username)
+    response.content_type = 'text/html'
+    return html
 
 routes = {
     "deployments": get_deployments,

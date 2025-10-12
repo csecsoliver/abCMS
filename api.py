@@ -76,7 +76,7 @@ def get_posts():
     postids = blog.listids(reverse=True)
     posts_html = ""
     for pid in postids:
-        post_dict = blog.get(pid, format='html')
+        post_dict = blog.get(pid, format='html', truncate=True)
         content_html = post_dict['content']
         title = post_dict['title']
         author = post_dict['author']
