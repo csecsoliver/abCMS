@@ -95,9 +95,10 @@ def getsecret(opt: Literal["ss", "cs"]) -> str:
     with myopen(".env", "r") as f:
         for line in f.readlines():
             if line.startswith("SIGNUP_SECRET="):
-                signupsecret = line[len("SIGNUP_SECRET="):].strip()
+                signupsecret = line.split("=", 1)[1].strip()
+                print(f"Found SIGNUP_SECRET in .env, using that.")
             elif line.startswith("COOKIE_SECRET="):
-                cookiesecret = line[len("COOKIE_SECRET="):].strip()
+                cookiesecret = line.split("=", 1)[1].strip()
     if signupsecret == "securesignup":
         print("SIGNUP_SECRET not found in .env, using insecure default.")
     if cookiesecret == "asdfkjsddhgfdzjkjsdf":

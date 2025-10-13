@@ -141,6 +141,7 @@ def save_settings(username, request: Request, response: Response, *args):
     formdict = {}
     formdict["social"] = request.forms.social
     auth.save_prefs(username, formdict)
+    response.add_header('HX-Trigger', "postlist")
     return 'Settings saved!'
 
 routes = {

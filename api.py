@@ -36,7 +36,14 @@ def auth_page():
     cookie = auth.checkcookie(request)
     print("Cookie check:", cookie)
     if cookie is None:
-        return static_file('auth.html', root=str(BASE_DIR))
+        if auth.getsecret("ss") != "":
+            with myopen(BASE_DIR / 'auth.html', 'r') as f:
+                return f.read().format(secret="""
+    <label for="secret">Signup secret (mandatory to sign up):</label>
+    <input type="password" id="secret" name="secret" required>""")
+        else:
+            with myopen(BASE_DIR / 'auth.html', 'r') as f:
+                return f.read().format(secret="")
     return "Signed in"
 
 
@@ -53,7 +60,7 @@ def getin():
 def getup():
     username = request.forms.username.split('@')[0]
     password = request.forms.password
-    secret = request.forms.secret
+    secret = request.forms.secret if auth.getsecret("ss") != "" else ""
     if auth.createuser(username, password, secret, response):
         return html("User signed up and in successfully. Go back to <a href='/admin.html'>the dashboard</a>.")
     return html("Invalid token or user exists, I won't tell which.")
@@ -79,8 +86,10 @@ def get_posts():
 
         with myopen(BASE_DIR / 'postcard.html', 'r') as f:
             postcard_template = f.read()
-
-        postcard_html = postcard_template.format(color=color, id=pid, title=title, author=author, content=content_html)
+        social = auth.get_prefs(author.split("<")[0]).get('social', '#')
+        if "://" not in social:
+            social = "http://"+social
+        postcard_html = postcard_template.format(color=color, id=pid, title=title, author=author, content=content_html, social=social)
         posts_html += postcard_html
         
     return posts_html if posts_html else "<p>No posts available.</p>"
