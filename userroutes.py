@@ -98,14 +98,17 @@ def create_post(username, request: Request, response: Response, *args):
             response.status = 201
             response.add_header('HX-Trigger', "postlist")
             postid = blog.post(title, username, content, color)
-            return f"Post created with ID {postid}. You spent 50 mana!"
+            response.body = f"Post created with ID {postid}. You spent 50 mana!"
+            return response
         else:
+            response.body = "Not enough mana to enchant the post."
             response.status = 400
-            return "Not enough mana to enchant the post."
+            return response
     response.status = 201
     response.add_header('HX-Trigger', "postlist")
     postid = blog.post(title, username, content, color)
-    return f"Post created with ID {postid}. You earned 10 mana!"
+    response.body = f"Post created with ID {postid}. You earned 10 mana!"
+    return response
 
 
 def delete_post(username, request: Request, response: Response, *args):
