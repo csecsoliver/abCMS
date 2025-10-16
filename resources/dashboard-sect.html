@@ -2,7 +2,7 @@
 
     <div>
         <h2>Create New Post</h2>
-        <form hx-post="/user/createpost" hx-target="#post-creation-status" hx-swap="innerHTML" hx-on::after-request="if (event.detail.successful) this.reset()">
+        <form hx-post="/user/createpost" hx-target="#post-creation-status" hx-swap="innerHTML" hx-on::after-request="if (event.detail.xhr.status == 201) this.reset()">
             <label for="title">Title</label><br>
             <input type="text" id="title" name="title" required><br>
             Posting as {username}<br><br>

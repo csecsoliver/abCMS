@@ -101,8 +101,8 @@ def create_post(username, request: Request, response: Response, *args):
             response.body = f"Post created with ID {postid}. You spent 50 mana!"
             return response
         else:
+            response.status = 299
             response.body = "Not enough mana to enchant the post."
-            response.status = 400
             return response
     response.status = 201
     response.add_header('HX-Trigger', "postlist")
