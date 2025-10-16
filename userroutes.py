@@ -90,7 +90,6 @@ def create_post(username, request: Request, response: Response, *args):
     color = request.forms.color
     content = request.forms.content
     
-    postid = blog.post(title, username, content, color)
     if color == "#ffffff":
         auth.update_coins(username, 10)
     else:
@@ -98,12 +97,14 @@ def create_post(username, request: Request, response: Response, *args):
             auth.update_coins(username, -50)
             response.status = 201
             response.add_header('HX-Trigger', "postlist")
+            postid = blog.post(title, username, content, color)
             return f"Post created with ID {postid}. You spent 50 mana!"
         else:
             response.status = 400
             return "Not enough mana to enchant the post."
     response.status = 201
     response.add_header('HX-Trigger', "postlist")
+    postid = blog.post(title, username, content, color)
     return f"Post created with ID {postid}. You earned 10 mana!"
 
 
