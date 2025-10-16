@@ -42,7 +42,7 @@ def get(id: str, format: str='md', truncate=False) -> dict:
     
     content_md: str = '\n'.join(content[4:])
     if truncate and len(content_md) > 200:
-        content_md = content_md[:200] + "...\n\n*Click to read more.*"
+        content_md = content_md[:200] + "...\n\n*Click the title to read more.*"
     
     if format == 'html':
         
