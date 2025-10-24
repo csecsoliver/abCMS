@@ -39,8 +39,8 @@ def auth_page():
         if auth.getsecret("ss") != "":
             with myopen(BASE_DIR / 'auth.html', 'r') as f:
                 return f.read().format(secret="""
-    <label for="secret">Signup secret (mandatory to sign up):</label>
-    <input type="password" id="secret" name="secret" required>""")
+    <label for="secret">Signup secret (mandatory to sign up):</label><br>
+    <input type="password" id="secret" name="secret" required><br><br>""")
         else:
             with myopen(BASE_DIR / 'auth.html', 'r') as f:
                 return f.read().format(secret="")
@@ -83,13 +83,15 @@ def get_posts():
         title = post_dict['title']
         author = post_dict['author']
         color = post_dict['color']
+        textcolor = blog.get_text_color(color)
 
         with myopen(BASE_DIR / 'postcard.html', 'r') as f:
             postcard_template = f.read()
         social = auth.get_prefs(author.split("<")[0]).get('social', '#')
         if "://" not in social:
             social = "http://"+social
-        postcard_html = postcard_template.format(color=color, id=pid, title=title, author=author, content=content_html, social=social)
+        
+        postcard_html = postcard_template.format(bgcolor=color, color=textcolor, id=pid, title=title, author=author, content=content_html, social=social)
         posts_html += postcard_html
         
     return posts_html if posts_html else "<p>No posts available.</p>"
@@ -102,11 +104,15 @@ def get_post(postid):
         title = post_dict['title']
         author = post_dict['author']
         color = post_dict['color']
+        textcolor = blog.get_text_color(color)
 
         with myopen(BASE_DIR / 'post.html', 'r') as f:
             post_template = f.read()
+        social = auth.get_prefs(author.split("<")[0]).get('social', '#')
+        if "://" not in social:
+            social = "http://"+social
 
-        return post_template.format(color=color, title=title, title1=title, author=author, content=content_html)
+        return post_template.format(bgcolor=color, color=textcolor, title=title, title1=title, author=author, content=content_html, social=social)
     return html("Post not found.")
 
 @app.get('/<filepath>')
@@ -116,3 +122,5 @@ def server_static(filepath):
 app.install(cors_plugin('*'))
 if __name__ == "__main__":
     app.run(host='localhost', port=8080, debug=True)
+
+

@@ -39,18 +39,24 @@ nav {
 }
 .postcard * {
     word-break: break-word;
-    color: white;
-    mix-blend-mode: difference;
+    /* color: white;
+    mix-blend-mode: difference; */
+    color: inherit;
+    
+    
 }
-.postcard
+
 button, input {
     border: 1px solid #ddd;
     border-radius: 3px;
     width: fit-content;
-    height: 2rem;
+    height: 1.1rem;
     padding: 0.5rem 1rem;
     background-color: #f8f9fa;
     cursor: pointer;
+}
+button{
+    height: 2rem;
 }
 textarea {
     border: 1px solid #ddd;
@@ -69,6 +75,10 @@ input[type="text"], input[type="email"], input[type="password"] {
 .postpage{
     padding: 1rem;
 }
+.postpage * {
+    word-break: break-word;
+    color: inherit;
+}
 #blog-section {
     width: 50%;
 }
@@ -76,5 +86,5 @@ input[type="text"], input[type="email"], input[type="password"] {
     width: 50%;
 }   
 #coin-display {
-    padding: 1rem;
+    padding: 0;
 }

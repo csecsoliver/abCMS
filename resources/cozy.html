@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>abCMS</title>
+    <title>abCMS.cozy</title>
     <script src="./htmx.min.js"></script>
     <script src="./htmx-ext-response-targets.js"></script>
     <script src="./htmx-ext-sse.js"></script>
     <script src="./htmx-ext-ws.js"></script>
     <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./cozy.css">
 
 </head>
 <body>
     <header>
-        <h1>abCMS.text</h1>
+        <h1>abCMS.cozy</h1>
         <nav>
-            <a href="./index.html"><b>Feed</b></a>
-            <a href="./admin.html">Post</a>
-            <a href="./cozy.html">Visit abCMS.cozy</a>
+            <a href="./cozy.html"><b>Feed</b></a>
+            <a href="./cozypost.html">Post</a>
+            <a href="./index.html">Visit abCMS.text</a>
         </nav>
     </header>
     <main hx-get="/posts" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
