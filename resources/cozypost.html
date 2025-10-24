@@ -27,9 +27,7 @@
     <div id="auth" hx-post="/auth_page" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
         Loading auth status...
     </div>
-    <div id="coin-display" hx-get="/user/coins" hx-target="#coin-display" hx-swap="innerHTML"
-        hx-trigger="load, postlist from:body"></div>
-    <main id="main-dashboard" hx-trigger="load" hx-post="/user/dashboard" hx-target="this" hx-swap="innerHTML">
+    <main id="main-dashboard" hx-trigger="load" hx-post="/user/cozy/dashboard" hx-target="this" hx-swap="innerHTML">
         Loading dashboard...
     </main>
 

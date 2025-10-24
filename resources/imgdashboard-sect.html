@@ -1,0 +1,33 @@
+<div id="blog-section">
+    <!-- <div id="coin-display" hx-get="/user/coins" hx-target="#coin-display" hx-swap="innerHTML"
+        hx-trigger="load, postlist from:body"></div> -->
+
+    <div id="create-cozypost">
+        <h2>Create New Post</h2>
+        <form hx-post="/user/cozy/create" hx-target="#post-creation-status" hx-swap="innerHTML"
+            hx-on::after-request="if (event.detail.xhr.status == 201) this.reset()">
+            <label for="title">Title</label><br>
+            <input type="text" id="title" name="title" required><br>
+            Posting as {username}<br><br>
+            <label for="color">To enchant the post, set a color (this will cost 50 mana):</label><br>
+            <input type="color" id="color" name="color" value="#ffffff" required
+                style="padding: 0.1rem; width: 5rem;"><br><br>
+            <label for="content">Content (resize the field to fit your needs)</label><br>
+            <textarea id="content" name="content" required rows="10" cols="50"></textarea><br><br>
+            <button type="submit">Create Post</button>
+        </form>
+        <div id="post-creation-status"></div>
+    </div>
+
+
+    <div id="confirm-cozyposts" hx-get="/cozy/toconfirm" hx-trigger="load, confirmed from:body" hx-target="this" hx-swap="innerHTML" >
+
+    </div>
+    <!-- <h2>Recent posts</h2>
+
+    <div id="postlist" hx-get="/posts" hx-trigger="load, postlist from:body" hx-target="this" hx-swap="innerHTML">
+        Loading...
+    </div> -->
+</div>
+<div id="deployment-section" hx-trigger="load" hx-post="/user/getsettings" hx-swap="innerHTML" hx-target="this">
+</div>
