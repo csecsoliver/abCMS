@@ -5,6 +5,8 @@ import random
 from fileinterface import myopen
 from pathlib import Path
 import bleach
+import webcolors
+import colorsys
 def post(title: str, author: str, content: str, color:str,  existing_id: str = None) -> str:
     with myopen('md_blog_content/currentid.txt', 'r') as f:
         currentid = f.read()
@@ -80,3 +82,9 @@ def delete(id: str, username: str) -> bool:
     Path(f'md_blog_content/{id}.md').unlink(missing_ok=True)
     return True
 
+def get_text_color(bg_color):
+
+    htmlcolor = webcolors.html5_parse_legacy_color(bg_color)
+    lightness = colorsys.rgb_to_hls(*htmlcolor)[1]  # HLS lightness (0-1)
+    print(lightness)
+    return '#000' if lightness > 130 else '#ccc'

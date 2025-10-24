@@ -10,23 +10,25 @@
     <script src="./htmx-ext-sse.js"></script>
     <script src="./htmx-ext-ws.js"></script>
     <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./cozy.css">
 
 </head>
 
 <body>
     <header>
-        <h1>abCMS.text</h1>
+        <h1>abCMS.cozy</h1>
         <nav>
-            <a href="./index.html">Feed</a>
-            <a href="./admin.html"><b>Post</b></a>
-            <a href="./cozy.html">Visit abCMS.cozy</a>
+            <a href="./cozy.html">Feed</a>
+            <a href="./cozypost.html"><b>Post</b></a>
+            <a href="./index.html">Visit abCMS.text</a>
         </nav>
     </header>
     <!--  hx-get="/posts" hx-trigger="load" hx-target="this" hx-swap="innerHTML" -->
     <div id="auth" hx-post="/auth_page" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
         Loading auth status...
     </div>
-    
+    <div id="coin-display" hx-get="/user/coins" hx-target="#coin-display" hx-swap="innerHTML"
+        hx-trigger="load, postlist from:body"></div>
     <main id="main-dashboard" hx-trigger="load" hx-post="/user/dashboard" hx-target="this" hx-swap="innerHTML">
         Loading dashboard...
     </main>
