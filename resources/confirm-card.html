@@ -1,3 +1,12 @@
-<div >
-    <img src="/cdn" alt="">
+<div class="confirmcard" id="card-{postid}">
+    <img src="/user/cozy/getimg/{postid}" alt="OOPS, something went wrong or file is missing.">
+    <form hx-post="/user/cozy/confirm/{postid}" hx-target="card-{postid}" hx-swap="innerHTML">
+        <label for="title-{postid}">Title</label>
+        <input type="text" name="title" id="title-{postid}">
+        <label for="option-{postid}-approve">Approve</label>
+        <input type="radio" name="option" id="option-{postid}-approve" value="approve">
+        <label for="option-{postid}-reject">Reject</label>
+        <input type="radio" name="option" id="option-{postid}-reject" value="reject" checked>
+        <button type="submit">Submit</button>
+    </form>
 </div>

@@ -14,10 +14,8 @@ from pathlib import Path
 
 app = Bottle()
 
-# Determine base directory for resources  
-# For PEX: files are extracted to a temp directory, use __file__ parent
 BASE_DIR = Path(__file__).parent / 'resources'
-# Frontend is sibling to Python files in PEX
+# Frontend is sibling to Python files inside the PEX
 FRONTEND_DIR = BASE_DIR
 
 def run():
@@ -51,6 +49,7 @@ def auth_page():
 @app.post('/getin')
 def getin():
     username = request.forms.username.split('@')[0]
+    username = ''.join(c for c in username if c.isalnum() or c in ('_', '-')).strip()
     password = request.forms.password
     if auth.checkpass(username, password, response):
         return "Signed in successfully. Go back to <a href='/admin.html'>the dashboard</a>."
@@ -59,11 +58,12 @@ def getin():
 @app.post('/getup')
 def getup():
     username = request.forms.username.split('@')[0]
+    username = ''.join(c for c in username if c.isalnum() or c in ('_', '-')).strip()
     password = request.forms.password
     secret = request.forms.secret if auth.getsecret("ss") != "" else ""
     if auth.createuser(username, password, secret, response):
         return html("User signed up and in successfully. Go back to <a href='/admin.html'>the dashboard</a>.")
-    return html("Invalid token or user exists, I won't tell which.")
+    return html("Invalid token (if applicable) or user exists, I won't tell which.")
 
 @app.route('/user/<route:path>', method=['GET', 'POST'])
 def user(route):
