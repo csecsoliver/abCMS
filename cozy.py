@@ -94,13 +94,15 @@ def confirm(username, request: Request, response: Response, *args):
         if i["id"] == postid:
             image_path = Path(i["path"])
             final_path = Path("cozy") / username / "images" / postid
-            if request.forms.get("approve") == "reject":
+            if request.forms.get("option") == "reject":
                 os.remove(image_path)
                 pending_list.remove(i)
                 response.body = "Image rejected and removed."
                 response.status = 200
                 return response
-            elif request.forms.get("approve") == "approve":
+            elif request.forms.get("option") == "approve":
+                myopen(final_path, "wb").close()
+                os.remove(final_path)
                 os.rename(image_path, final_path)
             else:
                 response.status = 400

@@ -1,6 +1,6 @@
 <div class="confirmcard card" id="card-{postid}">
     <img src="/user/cozy/getimg/{postid}" alt="OOPS, something went wrong or file is missing.">
-    <form hx-post="/user/cozy/confirm/{postid}" hx-target="#card-{postid}" hx-swap="innerHTML">
+    <form hx-post="/user/cozy/confirm/{postid}" hx-target="this" hx-swap="innerHTML">
         <label for="title-{postid}">Title</label>
         <input type="text" name="title" id="title-{postid}">
         <label for="option-{postid}-approve">Approve</label>
