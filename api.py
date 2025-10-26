@@ -118,7 +118,7 @@ def get_post(postid):
 
 @app.post('/cozy/postimg')
 def cozy_postimg():
-    if request.params.get("token") != auth.get_prefs(request.params.get("user")).get("cozy_token", ""):
+    if request.params.get("token") != auth.get_prefs(request.params.get("user"))["cozy_token"]:
         response.status = 401
         return response
     upload: FileUpload = request.files.get("image")

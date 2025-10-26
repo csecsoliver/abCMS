@@ -62,7 +62,7 @@ def get_settings(username, request: Request, response: Response, *args):
     settings = auth.get_prefs(username)
     with myopen(FRONTEND_DIR / 'settings.html', 'r') as f:
         html = f.read().format(
-            social=settings['social']
+            social=settings.get('social', ''),
         )
     response.content_type = 'text/html'
     return html

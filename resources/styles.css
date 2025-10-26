@@ -29,6 +29,14 @@ nav {
     display: flex;
     gap: 1rem;
 }
+.card{
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 2rem;
+    background-color: #fff;
+    width: 20rem;
+}
 .postcard {
     border: 1px solid #ddd;
     border-radius: 8px;

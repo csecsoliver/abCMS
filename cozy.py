@@ -83,9 +83,68 @@ def dashboard(username, request: Request, response: Response, *args):
         dashboard_template = f.read()
     response.body = dashboard_template.format(username=username)
     return response
+
+def confirm(username, request: Request, response: Response, *args):
+    postid = args[0]
+    pending_path = Path("cozy") / username / "pending.json"
+    pending = getjson(pending_path)
+    pending_list = pending.get("pending", [])
+    for i in pending_list:
+        if i["id"] == postid:
+            image_path = Path(i["path"])
+            final_path = Path("cozy") / username / "images" / postid
+            if request.forms.get("approve") == "reject":
+                os.remove(image_path)
+                pending_list.remove(i)
+                response.body = "Image rejected and removed."
+                response.status = 200
+                return response
+            elif request.forms.get("approve") == "approve":
+                os.rename(image_path, final_path)
+            else:
+                response.status = 400
+                response.body = "Bad Request: Missing or invalid approval action"
+                return response
+            pending_list.remove(i)
+            break
+    pending["pending"] = pending_list
+    setjson(pending_path, pending)
+    
+    posts = getjson(Path("cozy") / "posts.json")
+    if "posts" not in posts:
+        posts["posts"] = []
+    title = request.forms.get("title", "")
+    posts["posts"].append({
+        "id": postid,
+        "title": title,
+        "path": str(final_path)
+    })
+    setjson(Path("cozy") / "posts.json", posts)
+    
+    response.body = "Image confirmed and moved to posts."
+    return response
+
+def getsettings(username, request: Request, response: Response, *args):
+    settings = auth.get_prefs(username)
+    with myopen(FRONTEND_DIR / 'settingscozy.html', 'r') as f:
+        html = f.read().format(
+            cozy_token=settings.get('cozy_token', '')
+        )
+    response.content_type = 'text/html'
+    return html
+def savesettings(username, request: Request, response: Response, *args):
+    settings = auth.get_prefs(username)
+    settings["cozy_token"] = request.forms.cozy_token
+    auth.save_prefs(username, settings)
+    response.add_header('HX-Trigger', "postlist")
+    return 'Settings saved!'
+
 routes = {
     "postimg": postimg, # manual form submission endpoint
     "getimg": getimg, # needs another route section to point to an image
     "getpending": getpending, # html for pending images
-    "dashboard": dashboard
+    "confirm": confirm,
+    "dashboard": dashboard,
+    "getsettings": getsettings, # html for settings
+    "savesettings": savesettings
 }
