@@ -106,8 +106,11 @@ def getsecret(opt: Literal["ss", "cs"]) -> str:
     return signupsecret if opt == "ss" else (cookiesecret if opt == "cs" else "")
 
 def get_prefs(username: str) -> dict:
-    with myopen(f"users/{username}", "r") as f:
-        user_data = json.load(f)
+    try:
+        with myopen(f"users/{username}", "r") as f:
+            user_data = json.load(f)
+    except:
+        return {}
     return user_data.get("prefs", {"social": ""})
 
 def save_prefs(username: str, prefs: dict) -> None:

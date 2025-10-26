@@ -55,6 +55,7 @@ def postimg(username, request: Request, response: Response, *args):
     })
     setjson(Path("cozy") / "posts.json", cozy_data)
     # Save the uploaded file
+    myopen(save_path, "wb").close()
     upload.save(str(save_path), overwrite=True)
     response.status = 201
     response.body = "Image uploaded successfully."
@@ -71,12 +72,13 @@ def getpending(username, request: Request, response: Response, *args):
     return response
 
 def getimg(username, request: Request, response: Response, *args):
-    save_path = Path("cozy") / username / "images" / args[0]
+    save_path = Path("cozy") / username / "pending" / args[0]
     if not save_path.exists():
         response.status = 404
         response.body = "Image not found."
         return response
-    return static_file(save_path, root=os.getcwd())
+    return static_file(str(save_path), root=os.getcwd())
+
 def dashboard(username, request: Request, response: Response, *args):
     with myopen(BASE_DIR / 'imgdashboard-sect.html', 'r') as f:
         dashboard_template = f.read()

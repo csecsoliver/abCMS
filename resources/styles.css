@@ -37,6 +37,11 @@ nav {
     background-color: #fff;
     width: 20rem;
 }
+.card img{
+    width: 20rem;
+    
+    
+}
 .postcard {
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -111,4 +116,7 @@ input[type="text"], input[type="email"], input[type="password"] {
 }   
 #coin-display {
     padding: 0;
+}
+label, input[type="radio"] {
+    vertical-align: middle;
 }

@@ -57,3 +57,6 @@ body, html {
         opacity: 0.8;
     }
 }
+.confirmcard form *{
+    margin: 0.5rem;
+}

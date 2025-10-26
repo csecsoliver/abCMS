@@ -118,6 +118,8 @@ def get_post(postid):
 
 @app.post('/cozy/postimg')
 def cozy_postimg():
+    print("Cozy postimg request from", request.params.get("user"))
+    print("Token:", request.params.get("token"))
     if request.params.get("token") != auth.get_prefs(request.params.get("user"))["cozy_token"]:
         response.status = 401
         return response
@@ -133,6 +135,7 @@ def cozy_postimg():
         response.status = 400
         response.body = "Unsupported file type"
         return response
+    myopen(save_path, "wb").close()
     upload.save(str(save_path), overwrite=True)
     pending = getjson(Path("cozy") / request.params.get("user") / "pending.json")
     if "pending" not in pending:
