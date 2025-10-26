@@ -148,6 +148,35 @@ def cozy_postimg():
     response.body = "Image uploaded successfully."
     return response
 
+@app.get('/cozy/posts')
+def cozy_getposts():
+    cozy_data = getjson(Path("cozy") / "posts.json")
+    posts = cozy_data.get("posts", [])
+    posts_html = ""
+    for post in posts:
+        with myopen(BASE_DIR / "imgcard.html", 'r') as f:
+            card_template = f.read()
+        filename = post["id"]
+        author = post["path"].split('/')[1]
+        title = f'<h2><a href="/cozy/img/{filename}" target="_blank">{post["title"]}</a></h2>' if post["title"] else ""
+        card_html = card_template.format(filename=filename, title=title, author=author)
+        posts_html += card_html
+    return posts_html if posts_html else "<p>No images available.</p>"
+
+@app.get('/cozy/img/<filename>')
+def cozy_getimg(filename):
+    posts = getjson(Path("cozy") / "posts.json").get("posts", [])
+    for i in posts:
+        if i["id"] == filename:
+            filepath = i["path"]
+            break
+    else:
+        filepath = "notfound"
+    if Path(filepath).exists():
+        return static_file(filepath, root=os.getcwd())
+    response.status = 404
+    return "Image not found."
+
 @app.get('/<filepath>')
 def server_static(filepath):
     return static_file(filepath, root=str(FRONTEND_DIR))
