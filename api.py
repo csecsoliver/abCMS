@@ -1,9 +1,10 @@
+import uuid
 from gevent import monkey
 monkey.patch_all()
-from bottle import request, response, Bottle, static_file, redirect, template
+from bottle import request, response, Bottle, static_file, redirect, template, FileUpload, HTTPResponse
 from bottle_cors_plugin import cors_plugin
 
-from fileinterface import myopen, html
+from fileinterface import getjson, myopen, html, setjson
 import blog
 import auth
 import userroutes as ur # these are all the routes needing authorization
@@ -115,9 +116,42 @@ def get_post(postid):
         return post_template.format(bgcolor=color, color=textcolor, title=title, title1=title, author=author, content=content_html, social=social)
     return html("Post not found.")
 
+@app.post('/cozy/postimg')
+def cozy_postimg():
+    if request.params.get("token") != auth.get_prefs(request.params.get("user")).get("cozy_token", ""):
+        response.status = 401
+        return response
+    upload: FileUpload = request.files.get("image")
+    if not upload:
+        response.status = 400
+        response.body = "Bad Request: Missing image file"
+        return response
+    postid = (uuid.uuid4().hex + "_" + upload.filename)
+    save_path = Path("cozy") / request.params.get("user") / "pending" / postid
+    ext = os.path.splitext(upload.filename)[1]
+    if ext.lower() not in [".jpg", ".jpeg", ".png", ".gif", ".webp"]:
+        response.status = 400
+        response.body = "Unsupported file type"
+        return response
+    with myopen(save_path, 'wb') as f:
+        f.write(upload.file.read())
+    upload.file.close()
+    pending = getjson(Path("cozy") / request.params.get("user") / "pending.json")
+    if "pending" not in pending:
+        pending["pending"] = []
+    pending["pending"].append({
+        "id": postid,
+        "path": str(save_path)
+    })
+    setjson(Path("cozy") / request.params.get("user") / "pending.json", pending)
+    response.status = 201
+    response.body = "Image uploaded successfully."
+    return response
+
 @app.get('/<filepath>')
 def server_static(filepath):
     return static_file(filepath, root=str(FRONTEND_DIR))
+    
 
 app.install(cors_plugin('*'))
 if __name__ == "__main__":
