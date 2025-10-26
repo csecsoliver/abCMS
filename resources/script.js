@@ -1,6 +1,6 @@
 let leaves = new Array();
 async function falling_leaves() {
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 50; i++) {
         leaves.push(new Leaf())
 
     }
@@ -44,7 +44,7 @@ class Leaf {
         if (this.x > window.innerWidth || this.x < 0 || this.y > window.innerHeight || this.y < 0 ){
             leaves.push(new Leaf())
             this.disabled = true
-            this.life = 60*10
+            this.life = 60*40
         }
     }
 }

@@ -22,7 +22,7 @@ FRONTEND_DIR = BASE_DIR
 def run():
     auth.getsecret("cs")
     auth.getsecret("ss")
-    app.run(host='0.0.0.0', port=25557)
+    app.run(host='0.0.0.0', port=25558)
 
 
 
@@ -133,9 +133,7 @@ def cozy_postimg():
         response.status = 400
         response.body = "Unsupported file type"
         return response
-    with myopen(save_path, 'wb') as f:
-        f.write(upload.file.read())
-    upload.file.close()
+    upload.save(str(save_path), overwrite=True)
     pending = getjson(Path("cozy") / request.params.get("user") / "pending.json")
     if "pending" not in pending:
         pending["pending"] = []
