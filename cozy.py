@@ -54,9 +54,8 @@ def postimg(username, request: Request, response: Response, *args):
         "path": str(save_path)
     })
     setjson(Path("cozy") / "posts.json", cozy_data)
-    with myopen(save_path, 'wb') as f:
-        f.write(upload.file.read())
-    upload.file.close()
+    # Save the uploaded file
+    upload.save(str(save_path), overwrite=True)
     response.status = 201
     response.body = "Image uploaded successfully."
     return response

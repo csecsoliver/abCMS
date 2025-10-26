@@ -29,7 +29,9 @@ def post(title: str, author: str, content: str, color:str,  existing_id: str = N
 def get(id: str, format: str='md', truncate=False) -> dict:
     if id.isnumeric() == False:
         return 'Invalid ID'
-    fileob = myopen('md_blog_content/'+id+'.md', 'r')
+    
+    with myopen('md_blog_content/'+id+'.md', 'r') as fileob:
+        content = fileob.readlines()
 
     with myopen(f'md_blog_content/{id}.json', 'r') as f:
         try:
@@ -37,8 +39,6 @@ def get(id: str, format: str='md', truncate=False) -> dict:
         except:
             meta = {}
 
-    content = fileob.readlines()
-    fileob.close()
     title: str = content[0].replace('# ', '').strip()
     author: str = content[2].strip()
     
