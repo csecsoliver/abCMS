@@ -53,7 +53,7 @@ def getin():
     username = ''.join(c for c in username if c.isalnum() or c in ('_', '-')).strip()
     password = request.forms.password
     if auth.checkpass(username, password, response):
-        return "Signed in successfully. Go back to <a href='/admin.html'>the dashboard</a>."
+        return "Signed in successfully."
     return "Failed to sign in"
 
 @app.post('/getup')
@@ -63,7 +63,7 @@ def getup():
     password = request.forms.password
     secret = request.forms.secret if auth.getsecret("ss") != "" else ""
     if auth.createuser(username, password, secret, response):
-        return html("User signed up and in successfully. Go back to <a href='/admin.html'>the dashboard</a>.")
+        return html("User signed up and in successfully.")
     return html("Invalid token (if applicable) or user exists, I won't tell which.")
 
 @app.route('/user/<route:path>', method=['GET', 'POST'])

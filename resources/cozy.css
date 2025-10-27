@@ -60,3 +60,19 @@ body, html {
 .confirmcard form *{
     margin: 0.5rem;
 }
+
+@media screen and (max-width: 600px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    body {
+        margin: 0;
+    }
+    main {
+        padding: 0.3rem;
+    }
+    .card, .postcard, .imgcard {
+        margin: 2rem 0;
+    }
+}
