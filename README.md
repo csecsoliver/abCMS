@@ -6,7 +6,7 @@ Official instance: https://abcms.olio.ovh
 
 You can now post images on abCMS.cozy! It's a fall themed photo sharing sister-site to abCMS.text with the same base philosophy. The mana system has not been implemented on the cozy site and might never be. Depends on my mood basically.
 
-There are two ways you can upload photos:
+There are two main ways you can upload photos:
 1. Through the website: You can just select the image, give it a title (optional) and post it. (**Beware, no delete function implemented yet!**)
 2. Through the [Custom Uploader](Shttps://github.com/SrS2225a/custom_uploader) ([F-droid](https://f-droid.org/en/packages/com.nyx.custom_uploader/), [Google Play](https://play.google.com/store/apps/details?id=com.nyx.custom_uploader)):
     - Log into the abCMS.cozy site in a browser an set an upload key, this will be you key to upload files without publishing them yet.
@@ -16,6 +16,9 @@ There are two ways you can upload photos:
     - And set the Form Data Name to ```image```
     - File encoding can be left off
     - Save this uploader and then tap on it in the list to select it. From now on you can upload images in the app, or share them from your gallery with the app.
+    - If you have uploaded some photos this way, you can log in to the website and go through your uploads, filtering them out if needed.
+
+The endpoint for the app uploader can accept multipart/form-data with one field named ```image``` from anywhere, so feel free to use your own solution.
 
 The official instance has plenty storage, so feel free to post your best images taken this time of year.
 
