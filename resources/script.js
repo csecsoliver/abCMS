@@ -17,7 +17,7 @@ class Leaf {
         // this is to avoid cutting them in half
         let img = new Image()
         img.onload = () => {
-            let aspectRatio = img.naturalHeight / img.naturalWidth
+            let aspectRatio = img.naturalWidth / img.naturalHeight
             this.element.style.width = (50 * aspectRatio) + "px"
         }
         img.src = imgUrl
