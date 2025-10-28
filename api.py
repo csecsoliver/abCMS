@@ -152,7 +152,8 @@ def cozy_postimg():
 @app.get('/cozy/posts')
 def cozy_getposts():
     cozy_data = getjson(Path("cozy") / "posts.json")
-    posts = cozy_data.get("posts", [])
+    posts: list = cozy_data.get("posts", [])
+    posts.reverse()
     posts_html = ""
     for post in posts:
         with myopen(BASE_DIR / "imgcard.html", 'r') as f:
