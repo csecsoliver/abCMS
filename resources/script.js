@@ -10,8 +10,18 @@ class Leaf {
     constructor() {
         this.element = document.createElement("div")
         this.element.classList.add("leaf")
-        let img = Math.ceil(Math.random() * 4)
-        this.element.style.backgroundImage = `url("${img}.png")`
+        let imgNum = Math.ceil(Math.random() * 4)
+        let imgUrl = `${imgNum}.png`
+        this.element.style.backgroundImage = `url("${imgUrl}")`
+        
+        // this is to avoid cutting them in half
+        let img = new Image()
+        img.onload = () => {
+            let aspectRatio = img.naturalHeight / img.naturalWidth
+            this.element.style.width = (50 * aspectRatio) + "px"
+        }
+        img.src = imgUrl
+        
         document.querySelector("body").appendChild(this.element)
         this.x = Math.random() * window.innerWidth
         this.y = Math.random() * window.innerHeight

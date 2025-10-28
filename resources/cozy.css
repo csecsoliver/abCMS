@@ -42,7 +42,9 @@ body, html {
 .leaf {
     position: fixed;
     width: 50px;
-    background-size: cover;
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
     opacity: 0.8;
     transform: translate(-50%, -50%);
     animation: fadeIn 5s ease-in;
