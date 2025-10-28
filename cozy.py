@@ -95,14 +95,18 @@ def confirm(username, request: Request, response: Response, *args):
             image_path = Path(i["path"])
             final_path = Path("cozy") / username / "images" / postid
             if request.forms.get("option") == "reject":
-                os.remove(image_path)
+                os.remove(str(Path(os.getcwd()) / image_path))
                 pending_list.remove(i)
                 response.body = "Image rejected and removed."
                 response.status = 200
+                print("Pending list after operation:", pending_list)
+                pending["pending"] = pending_list
+                print("Saving pending.json:", pending)
+                setjson(pending_path, pending)
                 return response
             elif request.forms.get("option") == "approve":
                 myopen(final_path, "wb").close()
-                os.remove(final_path)
+                os.remove(str(Path(os.getcwd()) / final_path))
                 os.rename(image_path, final_path)
             else:
                 response.status = 400
@@ -110,7 +114,9 @@ def confirm(username, request: Request, response: Response, *args):
                 return response
             pending_list.remove(i)
             break
+    print("Pending list after operation:", pending_list)
     pending["pending"] = pending_list
+    print("Saving pending.json:", pending)
     setjson(pending_path, pending)
     
     posts = getjson(Path("cozy") / "posts.json")

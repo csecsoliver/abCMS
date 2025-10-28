@@ -8,3 +8,5 @@ pex_build
 .github
 cozy
 .vscode
+app
+app.pex
