@@ -1,0 +1,13 @@
+{
+  "reportMissingTypeStubs": false,
+  "reportCallIssue": false,
+  "reportUnknownMemberType": false,
+  "reportUntypedFunctionDecorator": false,
+  "reportIndexIssue": false,
+  "reportUnknownVariableType": false,
+  "reportUnknownArgumentType": false,
+  "reportAny": false,
+  "reportUnknownLambdaType": false,
+  "reportExplicitAny": false,
+  "reportUnusedParameter": false
+}

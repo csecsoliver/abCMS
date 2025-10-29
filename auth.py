@@ -1,14 +1,17 @@
+import datetime
+import json
+from typing import Literal
+
 import argon2
 import jwt
-import datetime
-from bottle import Response
-from typing import *
+from bottle import Request, Response
+
 from fileinterface import myopen
-import json
 
 ph = argon2.PasswordHasher()
 
-def checkpass(username, password, response: Response) -> bool:
+
+def checkpass(username: str, password: str, response: Response) -> bool:
     try:
         with myopen(f"users/{username}", "r") as f:
             user_data = json.load(f)
@@ -17,32 +20,36 @@ def checkpass(username, password, response: Response) -> bool:
         response.status = 401
         return False
     try:
-        ph.verify(hashed, password)
+        _ = ph.verify(hashed, password)
         token = jwt.encode(
             {
-                'username': username,
-                'exp': datetime.datetime.now() + datetime.timedelta(days=7)
+                "username": username,
+                "exp": datetime.datetime.now() + datetime.timedelta(days=7),
             },
             getsecret("cs"),
-            algorithm='HS256'
+            algorithm="HS256",
         )
-        response.set_cookie("token", token, httponly=True, samesite='Strict', max_age=7*24*60*60)
+        response.set_cookie(
+            "token", token, httponly=True, samesite="Strict", max_age=7 * 24 * 60 * 60
+        )
         return True
     except argon2.exceptions.VerifyMismatchError:
         response.status = 401
         return False
-    
-def checkcookie(request) -> Union[str, None]:
+
+
+def checkcookie(request: Request) -> str | None:
     token = request.get_cookie("token")
     if token is None:
         return None
     try:
-        payload = jwt.decode(token, getsecret("cs"), algorithms=['HS256'])
-        return payload['username']
+        payload = jwt.decode(token, getsecret("cs"), algorithms=["HS256"])
+        return payload["username"]
     except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
         return None
 
-def createuser(username, password, secret, response: Response) -> bool:
+
+def createuser(username: str, password: str, secret: str, response: Response) -> bool:
     if secret != getsecret("ss"):
         return False
     try:
@@ -57,27 +64,31 @@ def createuser(username, password, secret, response: Response) -> bool:
         json.dump(user_data, f)
     token = jwt.encode(
         {
-            'username': username,
-            'exp': datetime.datetime.now() + datetime.timedelta(days=7)
+            "username": username,
+            "exp": datetime.datetime.now() + datetime.timedelta(days=7),
         },
         getsecret("cs"),
-        algorithm='HS256'
+        algorithm="HS256",
     )
-    response.set_cookie("token", token, httponly=True, samesite='Strict', max_age=7*24*60*60)
+    response.set_cookie(
+        "token", token, httponly=True, samesite="Strict", max_age=7 * 24 * 60 * 60
+    )
     return True
+
 
 def get_coins(username: str) -> int:
     with myopen(f"users/{username}", "r") as f:
         user_data = json.load(f)
     return user_data.get("coins", 0)
 
+
 def get_xp(username: str) -> int:
     with myopen(f"users/{username}", "r") as f:
         user_data = json.load(f)
     return user_data.get("xp", 0)
 
+
 def update_coins(username: str, amount: int) -> bool:
-    
     with myopen(f"users/{username}", "r") as f:
         user_data = json.load(f)
     user_data["coins"] = user_data.get("coins", 0) + amount
@@ -88,6 +99,7 @@ def update_coins(username: str, amount: int) -> bool:
     with myopen(f"users/{username}", "w") as f:
         json.dump(user_data, f)
     return True
+
 
 def getsecret(opt: Literal["ss", "cs"]) -> str:
     signupsecret = "securesignup"
@@ -105,7 +117,8 @@ def getsecret(opt: Literal["ss", "cs"]) -> str:
         print("COOKIE_SECRET not found in .env, using insecure default.")
     return signupsecret if opt == "ss" else (cookiesecret if opt == "cs" else "")
 
-def get_prefs(username: str) -> dict:
+
+def get_prefs(username: str) -> dict[str, str]:
     try:
         with myopen(f"users/{username}", "r") as f:
             user_data = json.load(f)
@@ -113,7 +126,8 @@ def get_prefs(username: str) -> dict:
         return {}
     return user_data.get("prefs", {"social": ""})
 
-def save_prefs(username: str, prefs: dict) -> None:
+
+def save_prefs(username: str, prefs: dict[str, str]) -> None:
     with myopen(f"users/{username}", "r") as f:
         user_data = json.load(f)
     user_data["prefs"] = prefs
