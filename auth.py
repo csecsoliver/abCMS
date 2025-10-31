@@ -7,16 +7,20 @@ import jwt
 from bottle import Request, Response
 
 from fileinterface import myopen
-
+from pathlib import Path
 ph = argon2.PasswordHasher()
 
 
 def checkpass(username: str, password: str, response: Response) -> bool:
     try:
-        with myopen(f"users/{username}", "r") as f:
-            user_data = json.load(f)
-        hashed = user_data["password"]
-    except (FileNotFoundError, KeyError):
+        path = Path(f"users={username}")
+        if path.exists(): 
+            with myopen(f"users/{username}", "r") as f:
+                user_data = json.load(f)
+            hashed = user_data["password"]
+        else:
+            raise Exception("user nonexistent")
+    except:
         response.status = 401
         return False
     try:

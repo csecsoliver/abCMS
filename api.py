@@ -1,8 +1,7 @@
-import uuid
-
 from gevent import monkey
-
 _ = monkey.patch_all()
+
+import uuid
 import os
 from pathlib import Path
 
@@ -18,10 +17,11 @@ from bottle import (
 )
 from bottle_cors_plugin import cors_plugin
 
-import auth
 import blog
+import auth
 import userroutes as ur  # these are all the routes needing authorization
 from fileinterface import getjson, html, myopen, setjson
+
 
 app = Bottle()
 
@@ -218,6 +218,14 @@ def cozy_getimg(filename: str) -> Response:
     response.body = "Image not found."
     return response
 
+@app.get("/cozy/post/<filename>")
+def cozy_getpost(filename: str) -> Response:
+    posts: list = getjson(Path("cozy") / "posts.json").get("posts", [])
+    for i in posts:
+        if i["id"] == filename:
+            postdata = i;
+            
+    
 
 @app.get("/<filepath>")
 def server_static(filepath: str) -> Response:

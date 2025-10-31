@@ -5,7 +5,7 @@ from bottle import Request, Response, FileUpload, static_file
 import uuid
 import os
 
-BASE_DIR = Path(__file__).parent / "resources"
+BASE_DIR= Path(__file__).parent / "resources"
 # sibling to Python files inside the PEX
 FRONTEND_DIR = BASE_DIR
 
@@ -14,12 +14,12 @@ def main(username: str, request: Request, response: Response, *args: str):
     response = routes[args[0]](username, request, response, *args[1:])
     return response
 
-
 def postimg(username: str, request: Request, response: Response, *args: str):
     if request.method != "POST":
         response.status = 405
         response.body = "Method Not Allowed"
         return response
+    
     # if request.content_type != 'multipart/form-data':
     #     response.status = 400
     #     response.body = "Bad Request: Expected multipart/form-data"
@@ -27,6 +27,7 @@ def postimg(username: str, request: Request, response: Response, *args: str):
     #     return response
     upload: FileUpload = request.files["image"]
     title = request.forms.get("title", "")
+    
     if not upload:
         response.status = 400
         response.body = "Bad Request: Missing image file"
@@ -143,6 +144,8 @@ def savesettings(username: str, request: Request, response: Response, *args: str
     response.add_header("HX-Trigger", "postlist")
     return "Settings saved!"
 
+def getpost(postid:str, username: str):
+    
 
 routes = {
     "postimg": postimg,  # manual form submission endpoint

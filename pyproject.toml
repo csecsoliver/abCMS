@@ -31,3 +31,8 @@ include = [
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "python-lsp-server (>=1.13.1,<2.0.0)"
+]

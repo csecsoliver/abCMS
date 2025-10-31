@@ -9,5 +9,6 @@
   "reportAny": false,
   "reportUnknownLambdaType": false,
   "reportExplicitAny": false,
-  "reportUnusedParameter": false
+  "reportUnusedParameter": false,
+  "venvPath": "/var/home/olio/.cache/pypoetry/virtualenvs/abcms-node-ghR7k5HM-py3.12/"
 }
