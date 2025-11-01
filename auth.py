@@ -13,7 +13,7 @@ ph = argon2.PasswordHasher()
 
 def checkpass(username: str, password: str, response: Response) -> bool:
     try:
-        path = Path(f"users={username}")
+        path = Path(f"users/{username}")
         if path.exists(): 
             with myopen(f"users/{username}", "r") as f:
                 user_data = json.load(f)

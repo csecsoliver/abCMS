@@ -22,7 +22,7 @@ from bottle_cors_plugin import cors_plugin
 import blog
 import auth
 import userroutes as ur  # these are all the routes needing authorization
-from fileinterface import getjson, html, myopen, setjson
+from fileinterface import clean, getjson, html, myopen, setjson
 
 
 app = Bottle()
@@ -158,7 +158,6 @@ def get_post(postid: str):
 @app.post("/cozy/postimg")
 def cozy_postimg(): # this is the endpoint for uploading images to cozy with an app. No need to return anything other than text.
     print("Cozy postimg request from", request.params["user"])
-    print("Token:", request.params["token"])
     if request.params["token"] != auth.get_prefs(request.params["user"])["cozy_token"]:
         response.status = 401
         return response
@@ -167,9 +166,10 @@ def cozy_postimg(): # this is the endpoint for uploading images to cozy with an 
         response.status = 400
         response.body = "Bad Request: Missing image file"
         return response
-    postid = uuid.uuid4().hex + "_" + str(upload.filename)
+    filename = clean(str(upload.filename))
+    postid = uuid.uuid4().hex + "_" + str(filename)
     save_path = Path("cozy") / request.params["user"] / "pending" / postid
-    ext = os.path.splitext(str(upload.filename))[1]
+    ext = os.path.splitext(str(filename))[1]
     if ext.lower() not in [".jpg", ".jpeg", ".png", ".gif", ".webp"]:
         response.status = 400
         response.body = "Unsupported file type"

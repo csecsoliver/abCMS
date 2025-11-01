@@ -1,5 +1,6 @@
+import bleach
 import auth
-from fileinterface import html, myopen, getjson, setjson
+from fileinterface import clean, clean, html, myopen, getjson, setjson
 from pathlib import Path
 from bottle import Request, Response, FileUpload, static_file
 import uuid
@@ -33,11 +34,11 @@ def postimg(username: str, request: Request, response: Response, *args: str):
         response.body = html("Bad Request: Missing image file", "/cozypost.html", cozy=True)
         print("print:", response.body)
         return response
-
-    postid = uuid.uuid4().hex + "_" + str(upload.filename)
+    filename = clean(str(upload.filename))
+    postid = uuid.uuid4().hex + "_" + str(filename)
     save_path = Path("cozy") / username / "images" / postid
 
-    ext = os.path.splitext(str(upload.filename))[1]
+    ext = os.path.splitext(str(filename))[1]
     if ext.lower() not in [".jpg", ".jpeg", ".png", ".gif", ".webp"]:
         response.status = 400
         response.body = html("Unsupported file type", "/cozypost.html", cozy=True)
@@ -46,7 +47,7 @@ def postimg(username: str, request: Request, response: Response, *args: str):
     if "posts" not in cozy_data:
         cozy_data["posts"] = []
     _ = cozy_data["posts"].append(
-        {"id": postid, "title": title, "path": str(save_path)}
+        {"id": postid, "title": bleach.clean(title), "path": str(save_path)}
     )
     setjson(Path("cozy") / "posts.json", cozy_data)
     # Save the uploaded file
@@ -121,8 +122,8 @@ def confirm(username: str, request: Request, response: Response, *args: str):
     posts = getjson(Path("cozy") / "posts.json")
     if "posts" not in posts:
         posts["posts"] = []
-    title = request.forms.get("title", "") # type: ignore
-    _ = posts["posts"].append({"id": postid, "title": title, "path": str(final_path)})
+    title = bleach.clean(request.forms.get("title", "")) # type: ignore
+    _ = posts["posts"].append({"id": postid, "title": title, "path": str(final_path)}) # pyright: ignore[reportPossiblyUnboundVariable]
     setjson(Path("cozy") / "posts.json", posts)
 
     response.body = html("Image confirmed and moved to posts.", "/cozypost.html", cozy=True)

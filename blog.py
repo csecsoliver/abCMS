@@ -16,7 +16,7 @@ def post(
     if currentid.isnumeric() == False:
         currentid = "0"
     newid = str(int(currentid) + 1)
-    if existing_id is not "":
+    if existing_id != "":
         newid = existing_id
     content = f"# {title}\n\n{author}\n\n{content}"
 
@@ -31,7 +31,12 @@ def post(
 
 def get(id: str, format: str = "md", truncate: bool = False) -> dict[str, str]:
     if id.isnumeric() == False:
-        return {"error": "Invalid ID"}
+        return {
+            "content": "Post not found.",
+            "title": "Interesting...",
+            "author": "",
+            "color": "#ffffff",
+        }
 
     with myopen("md_blog_content/" + id + ".md", "r") as fileob:
         content = fileob.readlines()

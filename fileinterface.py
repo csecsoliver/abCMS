@@ -31,4 +31,8 @@ def html(text: str, back="/", cozy=False) -> str:
         template = f.read()
     return template.format(message=text, back=back)
 
+def clean(s:str)->str:
+    s = "".join(c for c in s if c.isalnum() or c in ("_", "-", ".")).strip()
+    return s
+
 
