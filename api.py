@@ -10,10 +10,12 @@ from bottle import (
     Bottle,
     FileUpload,
     Response,
+    Request,
     redirect,
     request,
     response,
     static_file,
+    WSGIHeaderDict,
 )
 from bottle_cors_plugin import cors_plugin
 
@@ -61,23 +63,25 @@ def auth_page() -> str:
 
 @app.post("/getin")
 def getin():
+    form_source = request.headers.get("Referer", "") # pyright: ignore[reportAttributeAccessIssue]
     username = request.forms["username"].split("@")[0]
     username = "".join(c for c in username if c.isalnum() or c in ("_", "-")).strip()
     password = request.forms["password"]
     if auth.checkpass(username, password, response):
-        return "Signed in successfully."
-    return "Failed to sign in"
+        return html("Signed in successfully.", form_source)
+    return html("Failed to sign in.", form_source)
 
 
 @app.post("/getup")
 def getup():
+    form_source = request.headers.get("Referer", "") # pyright: ignore[reportAttributeAccessIssue]
     username = request.forms["username"].split("@")[0]
     username = "".join(c for c in username if c.isalnum() or c in ("_", "-")).strip()
     password = request.forms["password"]
     secret = request.forms["secret"] if auth.getsecret("ss") != "" else ""
     if auth.createuser(username, password, secret, response):
-        return html("User signed up and in successfully.")
-    return html("Invalid token (if applicable) or user exists, I won't tell which.")
+        return html("User signed up and in successfully.", form_source)
+    return html("Invalid token (if applicable) or user exists, I won't tell which.", form_source)
 
 
 @app.route("/user/<route:path>", method=["GET", "POST"]) # type: ignore
@@ -124,6 +128,7 @@ def get_posts():
 
 @app.get("/post/<postid>")
 def get_post(postid: str):
+    
     post_dict = blog.get(postid, format="html")
     if post_dict:
         content_html = post_dict["content"]
@@ -151,7 +156,7 @@ def get_post(postid: str):
 
 
 @app.post("/cozy/postimg")
-def cozy_postimg():
+def cozy_postimg(): # this is the endpoint for uploading images to cozy with an app. No need to return anything other than text.
     print("Cozy postimg request from", request.params["user"])
     print("Token:", request.params["token"])
     if request.params["token"] != auth.get_prefs(request.params["user"])["cozy_token"]:
@@ -206,6 +211,7 @@ def cozy_getposts():
 
 @app.get("/cozy/img/<filename>")
 def cozy_getimg(filename: str) -> Response:
+    form_source = request.headers.get("Referer", "") # pyright: ignore[reportAttributeAccessIssue]
     posts = getjson(Path("cozy") / "posts.json").get("posts", [])
     for i in posts:
         if i["id"] == filename:
@@ -216,12 +222,11 @@ def cozy_getimg(filename: str) -> Response:
     if Path(filepath).exists():
         return static_file(filepath, root=os.getcwd())
     response.status = 404
-    response.body = "Image not found."
+    response.body = html("Image not found.", form_source, cozy=True)
     return response
 
 @app.get("/cozy/post/<filename>")
 def cozy_getpost(filename: str) -> Response:
-    
     posts: list = getjson(Path("cozy") / "posts.json").get("posts", [])
     postdata = None
     for i in posts:
@@ -238,7 +243,7 @@ def cozy_getpost(filename: str) -> Response:
         response.body = post_template.format(title = bleach.clean(postdata["title"]), postid=postdata["id"], author=postdata["path"].split("/")[1], spookify=spookify)
     else:
         response.status = 404
-        response.body = "Post not found."
+        response.body = html("Post not found.", "/cozy.html", cozy=True)
     return response
 
 @app.get("/<filepath>")

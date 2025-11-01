@@ -1,7 +1,7 @@
 from pathlib import Path
 import blog
 from bottle import Request, Response
-from fileinterface import myopen
+from fileinterface import html, myopen
 import auth
 import cozy
 
@@ -38,10 +38,10 @@ def delete_post(username: str, request: Request, response: Response, *args: str)
     postid = args[0]
     success = blog.delete(postid, username)
     if success:
-        return f"Post {postid} deleted."
+        return html(f"Post {postid} deleted.", "/admin.html")
     else:
         response.status = 403
-        return "You do not have permission to delete this post."
+        return html("You do not have permission to delete this post.", "/admin.html")
 
 
 def get_coins(username: str, request: Request, response: Response, *args: str):
@@ -73,7 +73,7 @@ def save_settings(username: str, request: Request, response: Response, *args: st
     formdict["social"] = request.forms["social"]
     auth.save_prefs(username, formdict)
     response.add_header("HX-Trigger", "postlist")
-    return "Settings saved!"
+    return html("Settings saved!", "/admin.html")
 
 
 routes = {

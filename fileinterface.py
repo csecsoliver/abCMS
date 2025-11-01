@@ -26,7 +26,9 @@ def setjson(path: Path | str, data: dict[str, str]):
         json.dump(data, f)
 
 
-def html(text: str) -> str:
-    with myopen(BASE_DIR / "html.html", "r") as f:
+def html(text: str, back="/", cozy=False) -> str:
+    with myopen(BASE_DIR / ("html.html" if not cozy else "cozyhtml.html"), "r") as f:
         template = f.read()
-    return template.format(message=text)
+    return template.format(message=text, back=back)
+
+

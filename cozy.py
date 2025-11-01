@@ -1,5 +1,5 @@
 import auth
-from fileinterface import myopen, getjson, setjson
+from fileinterface import html, myopen, getjson, setjson
 from pathlib import Path
 from bottle import Request, Response, FileUpload, static_file
 import uuid
@@ -30,7 +30,7 @@ def postimg(username: str, request: Request, response: Response, *args: str):
     
     if not upload:
         response.status = 400
-        response.body = "Bad Request: Missing image file"
+        response.body = html("Bad Request: Missing image file", "/cozypost.html", cozy=True)
         print("print:", response.body)
         return response
 
@@ -40,7 +40,7 @@ def postimg(username: str, request: Request, response: Response, *args: str):
     ext = os.path.splitext(str(upload.filename))[1]
     if ext.lower() not in [".jpg", ".jpeg", ".png", ".gif", ".webp"]:
         response.status = 400
-        response.body = "Unsupported file type"
+        response.body = html("Unsupported file type", "/cozypost.html", cozy=True)
         return response
     cozy_data = getjson(Path("cozy") / "posts.json")
     if "posts" not in cozy_data:
@@ -53,7 +53,7 @@ def postimg(username: str, request: Request, response: Response, *args: str):
     myopen(save_path, "wb").close()
     _ = upload.save(str(save_path), overwrite=True)
     response.status = 201
-    response.body = "Image uploaded successfully."
+    response.body = html("Image uploaded successfully.", "/cozypost.html", cozy=True)
     return response
 
 
@@ -96,7 +96,7 @@ def confirm(username: str, request: Request, response: Response, *args: str):
             if request.forms["option"] == "reject":
                 os.remove(str(Path(os.getcwd()) / image_path))
                 pending_list.remove(i)
-                response.body = "Image rejected and removed."
+                response.body = html("Image rejected and removed.", "/cozypost.html", cozy=True)
                 response.status = 200
                 print("Pending list after operation:", pending_list)
                 pending["pending"] = pending_list
@@ -125,7 +125,7 @@ def confirm(username: str, request: Request, response: Response, *args: str):
     _ = posts["posts"].append({"id": postid, "title": title, "path": str(final_path)})
     setjson(Path("cozy") / "posts.json", posts)
 
-    response.body = "Image confirmed and moved to posts."
+    response.body = html("Image confirmed and moved to posts.", "/cozypost.html", cozy=True)
     return response
 
 
