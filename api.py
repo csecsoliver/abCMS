@@ -80,7 +80,7 @@ def getup():
     return html("Invalid token (if applicable) or user exists, I won't tell which.")
 
 
-@app.route("/user/<route:path>", method=["GET", "POST"])
+@app.route("/user/<route:path>", method=["GET", "POST"]) # type: ignore
 def user(route: str):
     username = auth.checkcookie(request)
     if username is None:
@@ -192,9 +192,10 @@ def cozy_getposts():
             card_template = f.read()
         filename = post["id"]
         author = post["path"].split("/")[1]
-        title = bleach.clean(post["title"])
+        title = post["title"].replace("[spookify]", "")
+        title = bleach.clean(title)
         title = (
-            f'<h2><a href="/cozy/img/{filename}" target="_blank">{title}</a></h2>'
+            f'<h2><a>{bleach.clean(title)}</a></h2>'
             if title
             else ""
         )
@@ -220,12 +221,25 @@ def cozy_getimg(filename: str) -> Response:
 
 @app.get("/cozy/post/<filename>")
 def cozy_getpost(filename: str) -> Response:
+    
     posts: list = getjson(Path("cozy") / "posts.json").get("posts", [])
+    postdata = None
     for i in posts:
         if i["id"] == filename:
-            postdata = i;
-            
-    
+            postdata = i
+            break
+    with myopen(BASE_DIR / "imgpost.html", "r") as f:
+        post_template = f.read()
+    if postdata:
+        spookify = "false"
+        if "[spookify]" in postdata["title"]:
+            postdata["title"] = postdata["title"].replace("[spookify]", "")
+            spookify = "true"
+        response.body = post_template.format(title = bleach.clean(postdata["title"]), postid=postdata["id"], author=postdata["path"].split("/")[1], spookify=spookify)
+    else:
+        response.status = 404
+        response.body = "Post not found."
+    return response
 
 @app.get("/<filepath>")
 def server_static(filepath: str) -> Response:

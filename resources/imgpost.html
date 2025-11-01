@@ -1,21 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} by {author}</title>
-    <script src="./htmx.min.js"></script>
-    <script src="./htmx-ext-response-targets.js"></script>
-    <script src="./htmx-ext-sse.js"></script>
-    <script src="./htmx-ext-ws.js"></script>
-    <link rel="stylesheet" href="./styles.css">
-    <link rel="stylesheet" href="./cozy.css">
-	<script defer>
-		var spook = {spook};
-	</script>
-	<script src="./misc.js" defer></script>
-</head>
-<body>
-    
-</body>
-</html>
+<div class="imgpost">
+    <button onclick="location.reload()">Back</button>
+    <h1>
+        {title}
+    </h1>
+    <h2>by {author}</h2>
+    <img src="/cozy/img/{postid}" style="max-width: 98vw;" alt="This image is not available.">
+    <div id="spook" style="display: none;">{spookify}</div>
+    <!-- <script src="misc.js"></script> -->
+</div>

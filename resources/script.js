@@ -12,7 +12,7 @@ class Leaf {
         this.element.classList.add("leaf")
         let imgNum = Math.ceil(Math.random() * 4)
         let imgUrl = `${imgNum}.png`
-        this.element.style.backgroundImage = `url("${imgUrl}")`
+        this.element.style.backgroundImage = `url("/${imgUrl}")`
         
         // this is to avoid cutting them in half
         let img = new Image()
@@ -20,7 +20,7 @@ class Leaf {
             let aspectRatio = img.naturalWidth / img.naturalHeight
             this.element.style.width = (50 * aspectRatio) + "px"
         }
-        img.src = imgUrl
+        img.src = "/" + imgUrl
         
         document.querySelector("body").appendChild(this.element)
         this.x = Math.random() * window.innerWidth

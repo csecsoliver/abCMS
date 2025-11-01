@@ -26,7 +26,7 @@ def postimg(username: str, request: Request, response: Response, *args: str):
     #     print("print:", response.body)
     #     return response
     upload: FileUpload = request.files["image"]
-    title = request.forms.get("title", "")
+    title = request.forms.get("title", "") # type: ignore
     
     if not upload:
         response.status = 400
@@ -121,7 +121,7 @@ def confirm(username: str, request: Request, response: Response, *args: str):
     posts = getjson(Path("cozy") / "posts.json")
     if "posts" not in posts:
         posts["posts"] = []
-    title = request.forms.get("title", "")
+    title = request.forms.get("title", "") # type: ignore
     _ = posts["posts"].append({"id": postid, "title": title, "path": str(final_path)})
     setjson(Path("cozy") / "posts.json", posts)
 
@@ -145,7 +145,7 @@ def savesettings(username: str, request: Request, response: Response, *args: str
     return "Settings saved!"
 
 def getpost(postid:str, username: str):
-    
+    pass
 
 routes = {
     "postimg": postimg,  # manual form submission endpoint
