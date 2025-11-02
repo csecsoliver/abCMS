@@ -20,6 +20,14 @@
             <a href="./cozy.html">Visit abCMS.cozy</a>
         </nav>
     </header>
+
+    <div class="filter">
+        <form hx-get="/posts" hx-target="main" hx-swap="innerHTML">
+            <label for="username">Filter by author:</label>
+            <input type="text" name="username" id="username">
+            <button type="submit">Go</button>
+        </form>
+    </div>
     <main hx-get="/posts" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
         Loading...
 

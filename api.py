@@ -96,6 +96,7 @@ def user(route: str):
 
 @app.get("/posts")
 def get_posts():
+    username = request.query.get("username", "") # pyright: ignore[reportAttributeAccessIssue]
     postids = blog.listids(reverse=True)
     posts_html = ""
     for pid in postids:
@@ -121,7 +122,9 @@ def get_posts():
             content=content_html,
             social=social,
         )
-        posts_html += postcard_html
+        if author.split("<")[0] == username or username == "":
+            print(author.split("<")[0], username)
+            posts_html += postcard_html
 
     return posts_html if posts_html else "<p>No posts available.</p>"
 
