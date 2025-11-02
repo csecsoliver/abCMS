@@ -1,3 +1,6 @@
+"""
+Contains methods related to managin the text based blog posts.
+"""
 import json
 import auth
 import markdown
@@ -11,6 +14,18 @@ import colorsys
 def post(
     title: str, author: str, content: str, color: str, existing_id: str = ""
 ) -> str:
+    """Create post with the specified content
+
+    Args:
+        title (str): Title string to set. Does NOT get sanitized
+        author (str): Author string to set. Does NOT get sanitized
+        content (str): Content string to set. Does NOT get sanitized
+        color (str):  Color string to set. Does NOT get sanitized or validated
+        existing_id (str, optional): Existing post to modify. Not tested. Defaults to "".
+
+    Returns:
+        str: The id of the new post
+    """
     with myopen("md_blog_content/currentid.txt", "r") as f:
         currentid = f.read()
     if currentid.isnumeric() == False:
@@ -30,6 +45,16 @@ def post(
 
 
 def get(id: str, format: str = "md", truncate: bool = False) -> dict[str, str]:
+    """Gets the content of a blog post
+
+    Args:
+        id (str): The post id to look for
+        format (str, optional): The format of the returned string. Can be "html" or "md" Defaults to "md".
+        truncate (bool, optional): Whether to truncate the body of the post at 200 characters. Defaults to False.
+
+    Returns:
+        dict[str, str]: Post data. Contains content, title, author and color.
+    """
     if id.isnumeric() == False:
         return {
             "content": "Post not found.",
@@ -77,6 +102,15 @@ def get(id: str, format: str = "md", truncate: bool = False) -> dict[str, str]:
 
 
 def listids(reverse: bool = False, username: str = "") -> list[str]:
+    """List the existing posts by id
+
+    Args:
+        reverse (bool, optional): Whether to reverse the list. Normal order is oldest first. Defaults to False.
+        username (str, optional): Filter posts by username. If it's empty, they are not filtered. Defaults to "".
+
+    Returns:
+        list[str]: List of id strings (actually always numbers)
+    """
     ids = []
     folder = Path("md_blog_content")
     if not folder.exists():
@@ -97,6 +131,15 @@ def listids(reverse: bool = False, username: str = "") -> list[str]:
 
 
 def delete(id: str, username: str) -> bool:
+    """Delete Post by id and username
+
+    Args:
+        id (str): Id of the post
+        username (str): Username of user requesting the action
+
+    Returns:
+        bool: Whether is succeeded
+    """
     post_dict: dict[str, str] = get(id, format="md")
     if post_dict["author"] != username:
         return False
@@ -105,6 +148,14 @@ def delete(id: str, username: str) -> bool:
 
 
 def get_text_color(bg_color: str):
+    """Handles the setting of post colors. I am not sure this works correctly
+
+    Args:
+        bg_color (str): CSS compatible color representation of the background
+
+    Returns:
+        str: CSS compatible representation of the best text color for it
+    """
     htmlcolor = webcolors.html5_parse_legacy_color(bg_color)
     lightness = colorsys.rgb_to_hls(*htmlcolor)[1]  # HLS lightness (0-1)
     print(lightness)
