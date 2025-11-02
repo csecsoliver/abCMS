@@ -16,7 +16,7 @@
     <script src="./script.js" defer></script>
 </head>
 <body>
-    <header>
+    <header hx-boost="true">
         <h1>abCMS.cozy</h1>
         <nav>
             <a href="./cozy.html"><b>Feed</b></a>
@@ -24,6 +24,13 @@
             <a href="./index.html">Visit abCMS.text</a>
         </nav>
     </header>
+    <div class="filter">
+        <form hx-get="/cozy/posts" hx-target="main" hx-swap="innerHTML">
+            <label for="username">Filter by author:</label>
+            <input type="text" name="username" id="username">
+            <button type="submit">Go</button>
+        </form>
+    </div>
     <main hx-get="/cozy/posts" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
         Loading...
         

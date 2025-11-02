@@ -37,6 +37,7 @@ nav {
     margin: 1rem 2rem;
     background-color: #fff;
     width: 20rem;
+    height: fit-content;
 }
 .card img{
     width: 20rem;
@@ -121,6 +122,15 @@ input[type="text"], input[type="email"], input[type="password"] {
 label, input[type="radio"] {
     vertical-align: middle;
 }
+
+.filter {
+    margin-top:2rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 @media screen and (max-width: 600px) {
     header {
         flex-direction: column;

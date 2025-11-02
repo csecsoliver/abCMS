@@ -61,6 +61,18 @@ body, html {
 .confirmcard form *{
     margin: 0.5rem;
 }
+#user-postlist .card img{
+    width: 7.8rem;
+}
+#user-postlist .card{
+    width: 8rem;
+    line-break: anywhere;
+    margin-left: 0;
+    margin-right: 1rem;
+}
+#user-postlist {
+    display: flex;
+}
 
 @media screen and (max-width: 600px) {
     header {

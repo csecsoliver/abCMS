@@ -15,7 +15,13 @@
         </form>
         <div id="post-creation-status"></div>
     </div>
+    <div id="list-cozypost">
+        <h2>List of your posts</h2>
+        <button hx-get="/user/cozy/listposts" hx-target="#user-postlist" hx-swap="innerHTML">Refresh</button>
+        <div id="user-postlist" hx-get="/user/cozy/listposts" hx-target="#user-postlist" hx-swap="innerHTML" hx-trigger="load">
 
+        </div>
+    </div>
 
     <div id="confirm-cozyposts" hx-get="/user/cozy/getpending" hx-trigger="load, confirmed from:body" hx-target="this" hx-swap="innerHTML" >
 

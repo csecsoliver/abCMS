@@ -45,6 +45,7 @@ def index():
 
 @app.post("/auth_page")
 def auth_page() -> str:
+    
     cookie = auth.checkcookie(request)
     print("Cookie check:", cookie)
     if cookie is None:
@@ -68,9 +69,8 @@ def getin():
     username = "".join(c for c in username if c.isalnum() or c in ("_", "-")).strip()
     password = request.forms["password"]
     if auth.checkpass(username, password, response):
-        return html("Signed in successfully.", form_source)
-    return html("Failed to sign in.", form_source)
-
+        return html("Signed in successfully.", form_source, cozy=("cozy" in form_source))
+    return html("Failed to sign in.", form_source, cozy=("cozy" in form_source))
 
 @app.post("/getup")
 def getup():
@@ -80,8 +80,8 @@ def getup():
     password = request.forms["password"]
     secret = request.forms["secret"] if auth.getsecret("ss") != "" else ""
     if auth.createuser(username, password, secret, response):
-        return html("User signed up and in successfully.", form_source)
-    return html("Invalid token (if applicable) or user exists, I won't tell which.", form_source)
+        return html("User signed up and in successfully.", form_source, cozy=("cozy" in form_source))
+    return html("Invalid token (if applicable) or user exists, I won't tell which.", form_source, cozy=("cozy" in form_source))
 
 
 @app.route("/user/<route:path>", method=["GET", "POST"]) # type: ignore
@@ -188,6 +188,8 @@ def cozy_postimg(): # this is the endpoint for uploading images to cozy with an 
 
 @app.get("/cozy/posts")
 def cozy_getposts():
+    username = request.query.get("username", "") # pyright: ignore[reportAttributeAccessIssue]
+    print("Cozy getposts request, filter by user:", username)
     cozy_data = getjson(Path("cozy") / "posts.json")
     posts = cozy_data.get("posts", [])
     _ = posts.reverse()
@@ -205,8 +207,12 @@ def cozy_getposts():
             else ""
         )
         card_html = card_template.format(filename=filename, title=title, author=author)
-        posts_html += card_html
+        if author == username or username == "":
+            posts_html += card_html
     return posts_html if posts_html else "<p>No images available.</p>"
+
+
+
 
 
 @app.get("/cozy/img/<filename>")

@@ -145,8 +145,42 @@ def savesettings(username: str, request: Request, response: Response, *args: str
     response.add_header("HX-Trigger", "postlist")
     return "Settings saved!"
 
-def getpost(postid:str, username: str):
-    pass
+def delpost(username: str, request: Request, response: Response, *args: str):
+    postid = args[0]
+    posts = getjson(Path("cozy") / "posts.json")
+    response.body = html("Post not deleted.", back="/cozypost.html", cozy=True)
+    if "posts" not in posts:
+        posts["posts"] = []
+    for i in posts["posts"]:
+        if i["id"] == postid and i["path"].split("/")[1] == username:
+            print(i["path"].split("/")[1], username)
+            image_path = Path(i["path"])
+            print("Post found to remove")
+            if image_path.exists():
+                os.remove(str(Path(os.getcwd()) / image_path))
+                posts["posts"].remove(i)
+                response.body = html("Post deleted successfully.", back="/cozypost.html", cozy=True)
+            break
+    setjson(Path("cozy") / "posts.json", posts)
+    return response
+
+def status(username: str, request: Request, response: Response, *args: str):
+    response.body = username
+    return response
+
+def listposts(username: str, request: Request, response: Response, *args: str):
+    posts = getjson(Path("cozy") / "posts.json")
+    print(posts)
+    response.body = ""
+    if "posts" not in posts:
+        posts["posts"] = []
+    for i in posts["posts"]:
+        print(i["path"].split("/")[1], username)
+        if i["path"].split("/")[1] == username:
+            with myopen(BASE_DIR / "userpostlistcard.html", "r") as f:
+                response.body += f.read().format(title = i["title"], postid = i["id"])
+            
+    return response
 
 routes = {
     "postimg": postimg,  # manual form submission endpoint
@@ -156,4 +190,7 @@ routes = {
     "dashboard": dashboard,
     "getsettings": getsettings,  # html for settings
     "savesettings": savesettings,
+    "delete": delpost,
+    "status": status,
+    "listposts": listposts
 }
