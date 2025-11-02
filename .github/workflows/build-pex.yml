@@ -19,3 +19,13 @@ jobs:
         run: poetry install && poetry env use python3 && eval $(poetry env activate)
       - name: Run build script
         run: ./linux_build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: standalone
+          path: ./app
+          if-no-files-found: erroró
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pex
+          path: ./app.pex
+          if-no-files-found: error
