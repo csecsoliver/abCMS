@@ -123,13 +123,6 @@ label, input[type="radio"] {
     vertical-align: middle;
 }
 
-.filter {
-    margin-top:2rem;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
 @media screen and (max-width: 600px) {
     header {

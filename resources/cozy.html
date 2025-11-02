@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>abCMS.cozy</title>
     <script src="./htmx.min.js"></script>
     <script src="./htmx-ext-response-targets.js"></script>
@@ -12,16 +13,17 @@
     <link rel="stylesheet" href="./cozy.css">
     <script src="https://sfxr.me/riffwave.js"></script>
     <script src="https://sfxr.me/sfxr.js"></script>
-    
+
     <script src="./script.js" defer></script>
 </head>
+
 <body>
-    <header hx-boost="true">
+    <header>
         <h1>abCMS.cozy</h1>
-        <nav>
+        <nav hx-boost="true">
             <a href="./cozy.html"><b>Feed</b></a>
             <a href="./cozypost.html">Post</a>
-            <a href="./index.html">Visit abCMS.text</a>
+            <a href="./index.html" hx-boost="false">Visit abCMS.text</a>
         </nav>
     </header>
     <div class="filter">
@@ -33,10 +35,11 @@
     </div>
     <main hx-get="/cozy/posts" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
         Loading...
-        
-        
+
+
     </main>
     <div id="leaves"></div>
-    
+
 </body>
+
 </html>

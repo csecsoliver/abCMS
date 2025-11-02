@@ -13,8 +13,8 @@ body {
     padding: 0;
 }
 body{
-
-    margin: 1rem;
+    padding: 0.5rem; 
+    height: fit-content;
 }
 * {
 
@@ -34,10 +34,6 @@ button, input, input * {
 .card{
     border-color: var(--3);
     background-color: var(--2);
-}
-
-body, html {
-  height: 100%;
 }
 .leaf {
     position: fixed;
@@ -75,6 +71,13 @@ body, html {
     flex-wrap: wrap;
 }
 
+.filter {
+    margin-top:2rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 @media screen and (max-width: 600px) {
     header {
         flex-direction: column;
