@@ -1,5 +1,14 @@
 let leaves = new Array();
 async function falling_leaves() {
+    // Respect reduced motion preference
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        console.log(localStorage.getItem("motion") == "optout")
+        if ((localStorage.getItem("motion") == null)) {
+            localStorage.setItem("motion", confirm("You have reduced motion enabled. Do you want to see the pretty leaves?")?"optin":"optout");
+        } else if (localStorage.getItem("motion") == "optout") {
+            return;
+        }
+    }
     for (let i = 0; i < 50; i++) {
         leaves.push(new Leaf())
 
@@ -60,6 +69,8 @@ class Leaf {
 }
 async function loo() {
     requestAnimationFrame(loo)
+    // Pause animation when page is hidden
+    if (document.hidden) return;
     for (const i of leaves) {
         i.tick()
     }
