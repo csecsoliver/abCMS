@@ -36,11 +36,11 @@ nav {
     padding: 1rem;
     margin: 1rem 2rem;
     background-color: #fff;
-    width: fit-content;
+    width: 20rem;
     height: fit-content;
 }
 .card img{
-    height: 28rem;
+    width: 20rem;
     
     
 }
@@ -68,10 +68,10 @@ nav {
     padding: 1rem;
     margin: 1rem 2rem;
     background-color: #fff;
-    width: fit-content;
+    width: 20rem;
 }
 .imgcard img {
-    height: 28rem;
+    width: 20rem;
     
     
 }
