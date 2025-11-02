@@ -69,6 +69,7 @@ nav {
     margin: 1rem 2rem;
     background-color: #fff;
     width: fit-content;
+
 }
 .imgcard img {
     width: auto;
@@ -77,6 +78,11 @@ nav {
     max-height: 28rem;
     
     
+
+}
+.imgcard h3, .imgcard h2 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 
@@ -153,6 +159,9 @@ label, input[type="radio"] {
        margin: 2rem 0;
     }
     .imgcard img{
+        max-width: 20rem;
+    }
+    .imgcard{
         max-width: 20rem;
     }
 }

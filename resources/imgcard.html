@@ -1,5 +1,5 @@
 <div class="imgcard card" id="{filename}">
-	<a><img src="/cozy/img/{filename}" alt="Image went missing..." loading="lazy" decoding="async" title="Double click to view in large!"></a>
+	<a><img src="/cozy/img/{filename}" alt="Image went missing..." loading="lazy" decoding="async" title="Double click to view in large!" onload="this.parentElement.parentElement.style.width = this.offsetWidth + 'px'"></a>
 	{title}
 	<h3>by {author}</h3>
 	<button onclick="navigator.clipboard.writeText(location.origin + '/cozy/img/{filename}');this.innerText = 'Link copied!'">Copy image link</button>
