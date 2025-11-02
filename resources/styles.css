@@ -36,11 +36,11 @@ nav {
     padding: 1rem;
     margin: 1rem 2rem;
     background-color: #fff;
-    width: 20rem;
+    width: fit-content;
     height: fit-content;
 }
 .card img{
-    width: 20rem;
+    height: 28rem;
     
     
 }
@@ -68,10 +68,10 @@ nav {
     padding: 1rem;
     margin: 1rem 2rem;
     background-color: #fff;
-    width: 20rem;
+    width: fit-content;
 }
 .imgcard img {
-    width: 20rem;
+    height: 28rem;
     
     
 }
@@ -97,8 +97,11 @@ textarea {
     background-color: #f8f9fa;
     cursor: pointer;
 }
-input[type="text"], input[type="email"], input[type="password"] {
+input[type="text"], input[type="email"], input[type="password"] , input[type="search"] {
     width: 10rem;
+}
+input[type="search"] {
+    height: 2rem;
 }
 #signin-button {
     display: none;
@@ -128,6 +131,13 @@ label, input[type="radio"] {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.filter form {
+    display: flex;
+    align-items: center;
+}
+.filter form * {
+    margin-right: 0.5rem;
 }
 
 @media screen and (max-width: 600px) {
