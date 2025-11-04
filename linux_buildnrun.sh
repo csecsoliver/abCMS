@@ -1,0 +1,2 @@
+./zip.com redbean.com .init.lua .lua/fullmoon.lua -vvv
+./redbean.com
