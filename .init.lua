@@ -8,7 +8,19 @@ fm.setTemplate({"/views/", tmpl = "fmt"})
 
 ---@param r table
 ---@return function
+fm.setRoute("/:file", function (r)
+    return fm.serveAsset("resources/"..r.params.file)
+end)
 fm.setRoute("/", function (r)
-    return fm.serveContent()
+    return fm.serveContent("index")
+end)
+fm.setRoute("/post", function (r)
+    
+end)
+fm.setRoute("/cozy", function (r)
+    
+end)
+fm.setRoute("/cozy/post", function (r)
+    
 end)
 fm.run()
