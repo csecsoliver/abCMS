@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap');
+html, body{
+    font-family: 'Noto Sans Mono', monospace;
+    background-color: #e9ecef;
+    margin: 0;
+    padding: 0;
+}
+main {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem;
+    justify-content: center;
+}
+
+#auth {
+    padding: 1rem;
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f8f9fa;
+}
+header h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+nav {
+    display: flex;
+    gap: 1rem;
+}
+.card{
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 2rem;
+    background-color: #fff;
+    width: 20rem;
+    height: fit-content;
+}
+.card img{
+    width: 20rem;
+    
+    
+}
+.postcard {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 2rem;
+    background-color: #fff;
+    width: 20rem;
+}
+.postcard * {
+    word-break: break-word;
+    /* color: white;
+    mix-blend-mode: difference; */
+    color: inherit;
+    
+    
+}
+
+
+.imgcard {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 2rem;
+    background-color: #fff;
+    width: fit-content;
+
+}
+.imgcard img {
+    width: auto;
+    height: auto;
+    max-width: 34rem;
+    max-height: 28rem;
+    
+    
+
+}
+.imgcard h3, .imgcard h2 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
+button, input {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    width: fit-content;
+    height: 1.1rem;
+    padding: 0.5rem 1rem;
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+button{
+    height: 2rem;
+}
+textarea {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    width: fit-content;
+    padding: 0.5rem 1rem;
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+input[type="text"], input[type="email"], input[type="password"] , input[type="search"] {
+    width: 10rem;
+}
+input[type="search"] {
+    height: 2rem;
+}
+#signin-button {
+    display: none;
+}
+.postpage{
+    padding: 1rem;
+}
+.postpage * {
+    word-break: break-word;
+    color: inherit;
+}
+#blog-section {
+    width: 50%;
+}
+#deployment-section {
+    width: 50%;
+}   
+#coin-display {
+    padding: 0;
+}
+label, input[type="radio"] {
+    vertical-align: middle;
+}
+.filter {
+    margin-top:2rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.filter form {
+    display: flex;
+    align-items: center;
+}
+.filter form * {
+    margin-right: 0.5rem;
+}
+
+@media screen and (max-width: 600px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .card, .postcard, .imgcard {
+     
+       margin: 2rem 0;
+    }
+    .imgcard img{
+        max-width: 20rem;
+    }
+    .imgcard{
+        max-width: 20rem;
+    }
+}

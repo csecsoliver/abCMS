@@ -13,3 +13,6 @@ redbean.com
 zip.com
 unzip.com
 sqlite3.com
+builds
+logs
+*_temp

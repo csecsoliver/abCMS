@@ -1,6 +1,6 @@
-local fm = require("fullmoon")
-local posts = require("posts")
-local pages = require("pages")
+local fm = require("for_reference.lua.fullmoon")
+local posts = require("for_reference.lua.posts")
+local pages = require("for_reference.lua.pages")
 
 
 fm.setTemplate({"/views/", tmpl = "fmt"})
