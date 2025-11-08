@@ -19,6 +19,11 @@ do
           method = "POST",
           action = "/protected/login"
         }, function()
+          self:input({
+            type = "hidden",
+            name = "return_to",
+            value = self.return_to or ""
+          })
           self:div(function()
             self:label({
               ["for"] = "login-username"
@@ -53,6 +58,11 @@ do
           method = "POST",
           action = "/protected/signup"
         }, function()
+          self:input({
+            type = "hidden",
+            name = "return_to",
+            value = self.return_to or ""
+          })
           self:div(function()
             self:label({
               ["for"] = "signup-username"

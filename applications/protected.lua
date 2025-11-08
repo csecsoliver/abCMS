@@ -11,6 +11,7 @@ do
   local _parent_0 = lapis.Application
   local _base_0 = {
     [{ protected_login_page = "/protected/login" }] = function(self)
+      self.return_to = self.params.return_to or self:url_for("protected_dashboard")
       return {
         render = "login"
       }
@@ -19,8 +20,10 @@ do
       POST = function(self)
         local username = self.params.username
         local password = self.params.password
+        local return_to = self.params.return_to or self:url_for("protected_dashboard")
         if not (username and password) then
           self.error_message = "Username and password required"
+          self.return_to = return_to
           return {
             render = "login"
           }
@@ -28,6 +31,7 @@ do
         local user = Auth:authenticate(username, password)
         if not user then
           self.error_message = "Invalid username or password"
+          self.return_to = return_to
           return {
             render = "login"
           }
@@ -35,7 +39,7 @@ do
         local token = Auth:generate_token(username)
         self.cookies.jwt_token = token
         return {
-          redirect_to = self:url_for("protected_dashboard")
+          redirect_to = return_to
         }
       end
     }),
@@ -44,14 +48,17 @@ do
         local username = self.params.username
         local password = self.params.password
         local confirm_password = self.params.confirm_password
+        local return_to = self.params.return_to or self:url_for("protected_dashboard")
         if not (username and password and confirm_password) then
           self.error_message = "All fields required"
+          self.return_to = return_to
           return {
             render = "login"
           }
         end
         if not (password == confirm_password) then
           self.error_message = "Passwords do not match"
+          self.return_to = return_to
           return {
             render = "login"
           }
@@ -59,6 +66,7 @@ do
         local user, err = Auth:create_user(username, password)
         if not user then
           self.error_message = err or "Failed to create user"
+          self.return_to = return_to
           return {
             render = "login"
           }
@@ -66,7 +74,7 @@ do
         local token = Auth:generate_token(username)
         self.cookies.jwt_token = token
         return {
-          redirect_to = self:url_for("protected_dashboard")
+          redirect_to = return_to
         }
       end
     }),
@@ -116,8 +124,12 @@ do
     local token = self.cookies.jwt_token
     local username = Auth:verify_token(token)
     if not username then
+      local return_to = self.req.parsed_url.path
+      if self.req.parsed_url.query then
+        return_to = return_to .. "?" .. self.req.parsed_url.query
+      end
       return {
-        redirect_to = self:url_for("protected_login_page")
+        redirect_to = self:url_for("protected_login_page", {}, {return_to = return_to})
       }
     end
     self.current_user = Users:find({

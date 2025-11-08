@@ -14,6 +14,13 @@ class Login extends Widget
         method: "POST"
         action: "/protected/login"
       }, ->
+        -- Hidden field to preserve return URL
+        input {
+          type: "hidden"
+          name: "return_to"
+          value: @return_to or ""
+        }
+        
         div ->
           label for: "login-username", "Username:"
           input {
@@ -44,6 +51,13 @@ class Login extends Widget
         method: "POST"
         action: "/protected/signup"
       }, ->
+        -- Hidden field to preserve return URL
+        input {
+          type: "hidden"
+          name: "return_to"
+          value: @return_to or ""
+        }
+        
         div ->
           label for: "signup-username", "Username:"
           input {
