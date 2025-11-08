@@ -55,14 +55,11 @@ do
             h1("abCMS.text")
             return nav(function()
               a({
-                href = "./index.html"
-              }, "Feed")
-              a({
-                href = "./admin.html"
-              }, "Post")
+                href = "./"
+              }, "Homepage")
               return a({
-                href = "./cozy.html"
-              }, "Visit abCMS.cozy")
+                href = "./admin.html"
+              }, "Account")
             end)
           end)
           return self:content_for("inner")

@@ -16,3 +16,4 @@ sqlite3.com
 builds
 logs
 *_temp
+*.sqlit*
