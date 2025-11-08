@@ -10,10 +10,14 @@ do
         class = "login-container"
       }, function()
         self:h2("Login")
+        if self.error_message then
+          self:div({
+            class = "error"
+          }, self.error_message)
+        end
         self:form({
-          ["hx-post"] = "/protected/login",
-          ["hx-target"] = "#message",
-          ["hx-swap"] = "innerHTML"
+          method = "POST",
+          action = "/protected/login"
         }, function()
           self:div(function()
             self:label({
@@ -43,15 +47,11 @@ do
             }, "Login")
           end)
         end)
-        self:div({
-          id = "message"
-        })
         self:hr()
         self:h2("Sign Up")
-        self:form({
-          ["hx-post"] = "/protected/signup",
-          ["hx-target"] = "#signup-message",
-          ["hx-swap"] = "innerHTML"
+        return self:form({
+          method = "POST",
+          action = "/protected/signup"
         }, function()
           self:div(function()
             self:label({
@@ -92,9 +92,6 @@ do
             }, "Sign Up")
           end)
         end)
-        return self:div({
-          id = "signup-message"
-        })
       end)
     end
   }

@@ -1,9 +1,6 @@
 local lapis = require("lapis")
-local respond_to, json_params
-do
-  local _obj_0 = require("lapis.application")
-  respond_to, json_params = _obj_0.respond_to, _obj_0.json_params
-end
+local respond_to
+respond_to = require("lapis.application").respond_to
 local Auth
 Auth = require("lib.auth").Auth
 local Users
@@ -23,24 +20,23 @@ do
         local username = self.params.username
         local password = self.params.password
         if not (username and password) then
+          self.error_message = "Username and password required"
           return {
-            status = 400,
-            layout = false
-          }, "Username and password required"
+            render = "login"
+          }
         end
         local user = Auth:authenticate(username, password)
         if not user then
+          self.error_message = "Invalid username or password"
           return {
-            status = 401,
-            layout = false
-          }, "Invalid username or password"
+            render = "login"
+          }
         end
         local token = Auth:generate_token(username)
         self.cookies.jwt_token = token
-        self.res.headers["HX-Redirect"] = "/protected/dashboard"
         return {
-          layout = false
-        }, "Login successful"
+          redirect_to = self:url_for("protected_dashboard")
+        }
       end
     }),
     [{ protected_signup = "/protected/signup" }] = respond_to({
@@ -49,30 +45,29 @@ do
         local password = self.params.password
         local confirm_password = self.params.confirm_password
         if not (username and password and confirm_password) then
+          self.error_message = "All fields required"
           return {
-            status = 400,
-            layout = false
-          }, "All fields required"
+            render = "login"
+          }
         end
         if not (password == confirm_password) then
+          self.error_message = "Passwords do not match"
           return {
-            status = 400,
-            layout = false
-          }, "Passwords do not match"
+            render = "login"
+          }
         end
         local user, err = Auth:create_user(username, password)
         if not user then
+          self.error_message = err or "Failed to create user"
           return {
-            status = 400,
-            layout = false
-          }, err or "Failed to create user"
+            render = "login"
+          }
         end
         local token = Auth:generate_token(username)
         self.cookies.jwt_token = token
-        self.res.headers["HX-Redirect"] = "/protected/dashboard"
         return {
-          layout = false
-        }, "Signup successful"
+          redirect_to = self:url_for("protected_dashboard")
+        }
       end
     }),
     [{ protected_dashboard = "/protected/dashboard" }] = function(self)
@@ -121,16 +116,9 @@ do
     local token = self.cookies.jwt_token
     local username = Auth:verify_token(token)
     if not username then
-      if self.req.headers["hx-request"] then
-        self.res.headers["HX-Redirect"] = "/protected/login"
-        return {
-          status = 401
-        }
-      else
-        return {
-          render = "login"
-        }
-      end
+      return {
+        redirect_to = self:url_for("protected_login_page")
+      }
     end
     self.current_user = Users:find({
       username = username

@@ -5,11 +5,14 @@ class Login extends Widget
     div class: "login-container", ->
       h2 "Login"
       
+      -- Show error message if present
+      if @error_message
+        div class: "error", @error_message
+      
       -- Login form
       form {
-        ["hx-post"]: "/protected/login"
-        ["hx-target"]: "#message"
-        ["hx-swap"]: "innerHTML"
+        method: "POST"
+        action: "/protected/login"
       }, ->
         div ->
           label for: "login-username", "Username:"
@@ -32,17 +35,14 @@ class Login extends Widget
         div ->
           button type: "submit", "Login"
       
-      div id: "message"
-      
       hr!
       
       h2 "Sign Up"
       
       -- Signup form
       form {
-        ["hx-post"]: "/protected/signup"
-        ["hx-target"]: "#signup-message"
-        ["hx-swap"]: "innerHTML"
+        method: "POST"
+        action: "/protected/signup"
       }, ->
         div ->
           label for: "signup-username", "Username:"
@@ -73,5 +73,3 @@ class Login extends Widget
         
         div ->
           button type: "submit", "Sign Up"
-      
-      div id: "signup-message"

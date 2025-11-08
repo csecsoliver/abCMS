@@ -8,7 +8,7 @@ This project implements a simple JWT-based authentication system with middleware
 - Bcrypt password hashing
 - Login and signup functionality
 - Protected routes with middleware
-- HTMX-powered forms (no page reloads)
+- Traditional form submissions with full page reloads
 
 ## Routes
 
@@ -26,14 +26,15 @@ This project implements a simple JWT-based authentication system with middleware
 ## How It Works
 
 1. **Authentication Flow**:
-   - User submits username/password via HTMX form
+   - User submits username/password via form
    - Server validates credentials against database
    - On success, JWT token is generated and set as cookie
-   - User is redirected to protected area
+   - User is redirected to protected area via server-side redirect
+   - On failure, error message is displayed on login page
 
 2. **Middleware Protection**:
    - Every route in the protected module checks for JWT token
-   - If token is missing or invalid, user sees login page
+   - If token is missing or invalid, user is redirected to login page
    - If token is valid, user info is loaded into `@current_user`
 
 3. **JWT Tokens**:
