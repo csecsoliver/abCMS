@@ -1,13 +1,29 @@
 local lapis = require("lapis")
+local Widget
+Widget = require("lapis.html").Widget
+local Posts
+Posts = require("models").Posts
+local HomePage
 do
   local _class_0
-  local _parent_0 = lapis.Application
+  local _parent_0 = Widget
   local _base_0 = {
-    layout = require("views.layout"),
-    ["/"] = function(self)
-      return {
-        render = "index"
-      }
+    content = function(self)
+      return div({
+        class = "grid"
+      }, function()
+        local _list_0 = Posts:select()
+        for _index_0 = 1, #_list_0 do
+          local post = _list_0[_index_0]
+          div({
+            class = "cardfield"
+          }, function()
+            return img({
+              src = "/img/" .. post.path
+            })
+          end)
+        end
+      end)
     end
   }
   _base_0.__index = _base_0
@@ -17,7 +33,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = nil,
+    __name = "HomePage",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -38,11 +54,9 @@ do
     end
   })
   _base_0.__class = _class_0
-  local self = _class_0
-  self:enable("etlua")
-  self:include("applications.protected")
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
+  HomePage = _class_0
   return _class_0
 end

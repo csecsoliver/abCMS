@@ -1,15 +1,10 @@
-local lapis = require("lapis")
+local Model
+Model = require("lapis.db.model").Model
+local Posts
 do
   local _class_0
-  local _parent_0 = lapis.Application
-  local _base_0 = {
-    layout = require("views.layout"),
-    ["/"] = function(self)
-      return {
-        render = "index"
-      }
-    end
-  }
+  local _parent_0 = Model
+  local _base_0 = { }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
@@ -17,7 +12,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = nil,
+    __name = "Posts",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -38,11 +33,9 @@ do
     end
   })
   _base_0.__class = _class_0
-  local self = _class_0
-  self:enable("etlua")
-  self:include("applications.protected")
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
+  Posts = _class_0
   return _class_0
 end
