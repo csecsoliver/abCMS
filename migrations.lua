@@ -7,15 +7,15 @@ return {
   [1] = function(self)
     return create_table("users", {
       {
-        "username",
-        types.text({
-          unique = true
-        })
-      },
-      {
         "userid",
         types.integer({
           primary_key = true
+        })
+      },
+      {
+        "username",
+        types.text({
+          unique = true
         })
       },
       {
@@ -26,6 +26,40 @@ return {
         "xp",
         types.integer({
           default = 0
+        })
+      }
+    })
+  end,
+  [2] = function(self)
+    return create_table("posts", {
+      {
+        "postid",
+        types.integer({
+          primary_key = true
+        })
+      },
+      {
+        "title",
+        types.text({
+          default = ""
+        })
+      },
+      {
+        "has_image",
+        types.integer({
+          default = 0
+        })
+      },
+      {
+        "path",
+        types.text({
+          default = ""
+        })
+      },
+      {
+        "content",
+        types.text({
+          default = ""
         })
       }
     })
