@@ -13,7 +13,7 @@ class Auth
 
   -- Generate a JWT token for a user
   @generate_token: (username) =>
-    secret = @get_secret!
+    secret = @@get_secret!
     jwt_token = jwt:sign(secret, {
       header: { typ: "JWT", alg: "HS256" }
       payload: {
@@ -26,7 +26,7 @@ class Auth
   -- Verify a JWT token and return the username if valid
   @verify_token: (token) =>
     return nil unless token
-    secret = @get_secret!
+    secret = @@get_secret!
     jwt_obj = jwt:verify(secret, token)
     return nil unless jwt_obj and jwt_obj.verified
     jwt_obj.payload.username
@@ -43,7 +43,7 @@ class Auth
   @authenticate: (username, password) =>
     user = Users\find username: username
     return nil unless user
-    return nil unless @verify_password(password, user.passhash)
+    return nil unless @@verify_password(password, user.passhash)
     user
 
   -- Create a new user
@@ -53,7 +53,7 @@ class Auth
     return nil, "User already exists" if existing
     
     -- Hash password and create user
-    hash = @hash_password(password)
+    hash = @@hash_password(password)
     user = Users\create {
       username: username
       passhash: hash
