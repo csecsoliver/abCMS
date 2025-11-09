@@ -3,12 +3,39 @@ local Widget
 Widget = require("lapis.html").Widget
 local Posts
 Posts = require("models").Posts
-local HomePage
+local PostForm = require("views/postform")
+local Dashboard
 do
   local _class_0
   local _parent_0 = Widget
   local _base_0 = {
-    content = function(self) end
+    content = function(self)
+      nav({
+        class = "dashboard-nav"
+      }, function()
+        a({
+          href = "/dashboard"
+        }, "Dashboard Home")
+        a({
+          href = "/dashboard/posts"
+        }, " My Posts")
+        return a({
+          href = "/dashboard/posts/add"
+        }, "Add New Post")
+      end)
+      return div(function()
+        local _exp_0 = self.params.splat
+        if "posts/add" == _exp_0 then
+          h2("Add New Post")
+          return div(function()
+            return widget(PostForm)
+          end)
+        else
+          h2("Welcome to your Dashboard")
+          return p("Use the navigation above to manage your posts.")
+        end
+      end)
+    end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
@@ -17,7 +44,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = "HomePage",
+    __name = "Dashboard",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -41,6 +68,6 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  HomePage = _class_0
+  Dashboard = _class_0
   return _class_0
 end

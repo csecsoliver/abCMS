@@ -13,7 +13,7 @@ do
   local _parent_0 = lapis.Application
   local _base_0 = {
     [{
-      dashboard = "/dashboard"
+      dashboard = "/dashboard(/*)"
     }] = function(self)
       self.page_title = "Dashboard"
       return {

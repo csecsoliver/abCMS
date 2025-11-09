@@ -9,7 +9,7 @@ async function falling_leaves() {
             return;
         }
     }
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 15; i++) {
         leaves.push(new Leaf())
 
     }

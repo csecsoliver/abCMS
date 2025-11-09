@@ -14,7 +14,7 @@ class extends lapis.Application
     render: "index"
   [login: "/login"]: respond_to {
     GET: => 
-      if @session.user
+      if @session.user and (Users\find username: @session.user) and (@session.expiry > os.time!)
         return redirect_to: "/dashboard"
       @page_title = "Login"
       render: "login"

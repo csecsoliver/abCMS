@@ -14,8 +14,9 @@ class ProtectedApplication extends lapis.Application
     else
       @write redirect_to: @url_for "login"
 
-  [dashboard: "/dashboard"]: =>
+  [dashboard: "/dashboard(/*)"]: =>
     @page_title = "Dashboard"
+
     render: "dashboard"
 
   @include "applications.blog"

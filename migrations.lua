@@ -44,7 +44,7 @@ return {
       },
       {
         "created_at",
-        types.text
+        types.integer
       },
       {
         "title",

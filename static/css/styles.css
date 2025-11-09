@@ -6,8 +6,7 @@ html, body{
     padding: 0;
 }
 main {
-    display: flex;
-    flex-wrap: wrap;
+    /* display: flex; */
     padding: 1rem;
 }
 

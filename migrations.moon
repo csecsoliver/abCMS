@@ -12,7 +12,7 @@ import create_table, types from require "lapis.db.schema"
         create_table "posts", {
             {"id", types.integer primary_key: true}
             {"user_id", types.integer}
-            {"created_at", types.text}
+            {"created_at", types.integer}
             {"title", types.text default: ""}
             {"has_image", types.integer default: 0}
             {"path", types.text default: ""}

@@ -24,7 +24,9 @@ do
       login = "/login"
     }] = respond_to({
       GET = function(self)
-        if self.session.user then
+        if self.session.user and (Users:find({
+          username = self.session.user
+        })) and (self.session.expiry > os.time()) then
           return {
             redirect_to = "/dashboard"
           }
