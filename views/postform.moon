@@ -6,7 +6,7 @@ import Posts from require "models"
 class PostForm extends Widget
     content: =>
         post = @options.post or {}
-        form_method = if post.id then "PUT" else "POST"
+        form_method = "POST" -- todo: make proper mod handling
         form_action = if post.id then "/formapi/posts/mod/" .. post.id else "/formapi/posts/add"
         
         form action: form_action, method: form_method, class: "post-form", ->
