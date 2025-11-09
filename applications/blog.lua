@@ -1,7 +1,6 @@
 local lapis = require("lapis")
 local escape
 escape = require("lapis.html").escape
-local discount = require("discount")
 local Posts, Users
 do
   local _obj_0 = require("models")
@@ -12,7 +11,7 @@ do
   local _class_0
   local _parent_0 = lapis.Application
   local _base_0 = {
-    ["/posts/add"] = function(self)
+    ["/formapi/posts/add"] = function(self)
       local author = Users:find({
         username = self.session.user
       })

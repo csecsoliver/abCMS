@@ -3,6 +3,8 @@ local Widget
 Widget = require("lapis.html").Widget
 local Posts
 Posts = require("models").Posts
+local markdown = require("markdown")
+local string = require("string")
 local HomePage
 do
   local _class_0
@@ -10,17 +12,20 @@ do
   local _base_0 = {
     content = function(self)
       return div({
-        class = "grid"
+        class = "grid-container"
       }, function()
         local _list_0 = Posts:select()
         for _index_0 = 1, #_list_0 do
           local post = _list_0[_index_0]
           div({
-            class = "cardfield"
+            class = "grid-item"
           }, function()
-            return img({
-              src = "/img/" .. post.path
-            })
+            h3(post.title)
+            local content = string.sub(post.content, 1, 150)
+            raw(markdown(content .. "..."))
+            return a({
+              href = "/posts/" .. tostring(post.id)
+            }, "Read more")
           end)
         end
       end)

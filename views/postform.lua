@@ -18,9 +18,9 @@ do
       end
       local form_action
       if post.id then
-        form_action = "/posts/mod/" + post.id
+        form_action = "/formapi/posts/mod/" + post.id
       else
-        form_action = "/posts/add"
+        form_action = "/formapi/posts/add"
       end
       return form({
         action = form_action,

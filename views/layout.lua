@@ -33,11 +33,7 @@ do
           })
           link({
             rel = "stylesheet",
-            href = "/static/css/styles.css"
-          })
-          link({
-            rel = "stylesheet",
-            href = "/static/css/cozy.css"
+            href = "/static/css/union.css"
           })
           script({
             src = "https://sfxr.me/riffwave.js"

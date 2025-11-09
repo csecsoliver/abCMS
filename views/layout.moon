@@ -13,8 +13,9 @@ class Layout extends Widget
         script src: "/static/js/htmx-ext-response-targets.js"
         script src: "/static/js/htmx-ext-sse.js"
         script src: "/static/js/htmx-ext-ws.js"
-        link rel: "stylesheet", href: "/static/css/styles.css"
-        link rel: "stylesheet", href: "/static/css/cozy.css"
+        link rel: "stylesheet", href: "/static/css/union.css"
+        -- link rel: "stylesheet", href: "/static/css/styles.css"
+        -- link rel: "stylesheet", href: "/static/css/cozy.css"
         script src: "https://sfxr.me/riffwave.js"
         script src: "https://sfxr.me/sfxr.js"
         script src: "/static/js/script.js", defer: true
