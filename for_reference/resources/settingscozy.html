@@ -1,9 +1,0 @@
-<form hx-post="/user/cozy/savesettings" hx-target="#settings-status" hx-swap="innerHTML">
-    <label for="cozy_token">Set a key to use when uploading from app:</label><br>
-    <input type="text" id="cozy_token" name="cozy_token" value="{cozy_token}"><br><br>
-    <button type="submit">Update Settings</button>
-</form>
-<div id="settings-status"></div>
-
-
-<!-- hx-on::after-request="if (event.detail.successful) this.reset()" -->
