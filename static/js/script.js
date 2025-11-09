@@ -20,7 +20,7 @@ class Leaf {
         this.element = document.createElement("div")
         this.element.classList.add("leaf")
         let imgNum = Math.ceil(Math.random() * 4)
-        let imgUrl = `${imgNum}.png`
+        let imgUrl = `static/images/${imgNum}.png`
         this.element.style.backgroundImage = `url("/${imgUrl}")`
         
         // this is to avoid cutting them in half

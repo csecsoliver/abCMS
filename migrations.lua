@@ -7,7 +7,7 @@ return {
   [1] = function(self)
     return create_table("users", {
       {
-        "userid",
+        "id",
         types.integer({
           primary_key = true
         })
@@ -33,10 +33,18 @@ return {
   [2] = function(self)
     return create_table("posts", {
       {
-        "postid",
+        "id",
         types.integer({
           primary_key = true
         })
+      },
+      {
+        "user_id",
+        types.integer
+      },
+      {
+        "created_at",
+        types.text
       },
       {
         "title",

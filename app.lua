@@ -1,4 +1,15 @@
 local lapis = require("lapis")
+local slugify
+slugify = require("lapis.util").slugify
+local os = require("os")
+local respond_to, render
+do
+  local _obj_0 = require("lapis.application")
+  respond_to, render = _obj_0.respond_to, _obj_0.render
+end
+local bcrypt = require("bcrypt")
+local Users
+Users = require("models").Users
 do
   local _class_0
   local _parent_0 = lapis.Application
@@ -8,7 +19,74 @@ do
       return {
         render = "index"
       }
-    end
+    end,
+    [{
+      login = "/login"
+    }] = respond_to({
+      GET = function(self)
+        return {
+          render = "login"
+        }
+      end,
+      POST = function(self)
+        if self.params.option == "signup" then
+          if Users:find({
+            username = slugify(self.params.username)
+          }) then
+            self.error_message = "Username already exists"
+            return {
+              render = "login"
+            }
+          end
+          local user = Users:create({
+            username = slugify(self.params.username),
+            passhash = bcrypt.digest(self.params.password, 12)
+          })
+          self.session.user = user.username
+          self.session.expiry = os.time() + 360000
+          print("User " .. tostring(self.session.user) .. " signed up.")
+          local redirect_url
+          if self.params.return_to and self.params.return_to ~= "" then
+            redirect_url = self.params.return_to
+          else
+            redirect_url = "/prottest"
+          end
+          return {
+            redirect_to = redirect_url,
+            layout = false
+          }
+        elseif self.params.option == "login" then
+          local user = Users:find({
+            username = slugify(self.params.username)
+          })
+          if user and bcrypt.verify(self.params.password, user.passhash) then
+            self.session.user = user.username
+            self.session.expiry = os.time() + 360000
+            print("User " .. tostring(self.session.user) .. " logged in.")
+            local redirect_url
+            if self.params.return_to and self.params.return_to ~= "" then
+              redirect_url = self.params.return_to
+            else
+              redirect_url = "/prottest"
+            end
+            return {
+              redirect_to = redirect_url,
+              layout = false
+            }
+          else
+            self.error_message = "Invalid username or password"
+            return {
+              render = "login"
+            }
+          end
+        else
+          self.error_message = "Please select login or signup"
+          return {
+            render = "login"
+          }
+        end
+      end
+    })
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)

@@ -1,6 +1,6 @@
 local Model
 Model = require("lapis.db.model").Model
-local Posts
+local Users
 do
   local _class_0
   local _parent_0 = Model
@@ -12,7 +12,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = "Posts",
+    __name = "Users",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -36,13 +36,13 @@ do
   local self = _class_0
   self.relations = {
     {
-      "user",
-      belongs_to = "Users"
+      "posts",
+      has_many = "Posts"
     }
   }
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  Posts = _class_0
+  Users = _class_0
   return _class_0
 end

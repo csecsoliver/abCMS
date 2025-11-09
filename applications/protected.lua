@@ -1,9 +1,23 @@
 local lapis = require("lapis")
+local bcrypt = require("bcrypt")
+local Users
+Users = require("models").Users
+local slugify
+slugify = require("lapis.util").slugify
+local os = require("os")
+local respond_to
+respond_to = require("lapis.application").respond_to
 local UserApplication
 do
   local _class_0
   local _parent_0 = lapis.Application
-  local _base_0 = { }
+  local _base_0 = {
+    [{
+      prottest = "/prottest"
+    }] = function(self)
+      return "cool protected content for " .. tostring(self.current_user.username) .. "!"
+    end
+  }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)
   _class_0 = setmetatable({
@@ -33,6 +47,25 @@ do
   })
   _base_0.__class = _class_0
   local self = _class_0
+  self:before_filter(function(self)
+    print("Checking protected route for user " .. tostring(self.session.user))
+    print("Current time: " .. tostring(os.time()))
+    print("Session expiry time: " .. tostring(self.session.expiry - os.time()))
+    print("User exists: " .. tostring((Users:find({
+      username = self.session.user
+    })).username))
+    if (self.session.user) and (Users:find({
+      username = self.session.user
+    })) and (self.session.expiry > os.time()) then
+      self.current_user = Users:find({
+        username = self.session.user
+      })
+    else
+      return self:write({
+        redirect_to = self:url_for("login")
+      })
+    end
+  end)
   self:include("applications.blog")
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)

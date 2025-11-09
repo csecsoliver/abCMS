@@ -8,17 +8,17 @@ class Layout extends Widget
         meta charset: "UTF-8"
         meta name: "viewport", content: "width=device-width, initial-scale=1.0"
         title @page_title or "Page"
-        
-        script src: "./htmx.min.js"
-        script src: "./htmx-ext-response-targets.js"
-        script src: "./htmx-ext-sse.js"
-        script src: "./htmx-ext-ws.js"
-        link rel: "stylesheet", href: "./styles.css"
-        link rel: "stylesheet", href: "./cozy.css"
+
+        script src: "/static/js/htmx.min.js"
+        script src: "/static/js/htmx-ext-response-targets.js"
+        script src: "/static/js/htmx-ext-sse.js"
+        script src: "/static/js/htmx-ext-ws.js"
+        link rel: "stylesheet", href: "/static/css/styles.css"
+        link rel: "stylesheet", href: "/static/css/cozy.css"
         script src: "https://sfxr.me/riffwave.js"
         script src: "https://sfxr.me/sfxr.js"
-        script src: "./script.js", defer: true
-      
+        script src: "/static/js/script.js", defer: true
+
       body ->
         header ->
           h1 "abCMS.text"

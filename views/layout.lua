@@ -20,24 +20,24 @@ do
           })
           title(self.page_title or "Page")
           script({
-            src = "./htmx.min.js"
+            src = "/static/js/htmx.min.js"
           })
           script({
-            src = "./htmx-ext-response-targets.js"
+            src = "/static/js/htmx-ext-response-targets.js"
           })
           script({
-            src = "./htmx-ext-sse.js"
+            src = "/static/js/htmx-ext-sse.js"
           })
           script({
-            src = "./htmx-ext-ws.js"
+            src = "/static/js/htmx-ext-ws.js"
           })
           link({
             rel = "stylesheet",
-            href = "./styles.css"
+            href = "/static/css/styles.css"
           })
           link({
             rel = "stylesheet",
-            href = "./cozy.css"
+            href = "/static/css/cozy.css"
           })
           script({
             src = "https://sfxr.me/riffwave.js"
@@ -46,7 +46,7 @@ do
             src = "https://sfxr.me/sfxr.js"
           })
           return script({
-            src = "./script.js",
+            src = "/static/js/script.js",
             defer = true
           })
         end)
