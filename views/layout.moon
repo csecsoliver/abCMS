@@ -21,9 +21,9 @@ class Layout extends Widget
 
       body ->
         header ->
-          h1 "abCMS.text"
+          h1 "abCMS"
           nav ->
-            a href: "./", "Homepage"
-            a href: "./admin.html", "Account"
-        
-        @content_for "inner"
+            a href: "/", "Homepage"
+            a href: "/dashboard", "Dashboard"
+        main ->
+          @content_for "inner"

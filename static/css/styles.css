@@ -9,7 +9,6 @@ main {
     display: flex;
     flex-wrap: wrap;
     padding: 1rem;
-    justify-content: center;
 }
 
 #auth {
@@ -134,6 +133,15 @@ input[type="search"] {
 label, input[type="radio"] {
     vertical-align: middle;
 }
+.radio-group {
+    display: flex;
+    gap: 0.5rem;
+}
+.radio-label {
+    cursor: pointer;
+    padding: 0.1rem 0.4rem;
+    user-select: none;
+}
 .filter {
     margin-top:2rem;
     width: 100%;
@@ -148,7 +156,9 @@ label, input[type="radio"] {
 .filter form * {
     margin-right: 0.5rem;
 }
-
+form div {
+    margin-bottom: 0.5rem;
+}
 @media screen and (max-width: 600px) {
     header {
         flex-direction: column;

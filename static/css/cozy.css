@@ -44,6 +44,7 @@ button, input, input * {
     opacity: 0.8;
     transform: translate(-50%, -50%);
     animation: fadeIn 5s ease-in;
+    pointer-events: none;
 }
 
 @keyframes fadeIn {
@@ -70,7 +71,27 @@ button, input, input * {
     display: flex;
     flex-wrap: wrap;
 }
-
+input:checked {
+    font-weight: bold;
+    text-decoration: underline;
+    border: 1px solid var(--3);
+}
+.radio-label {
+    border: 1px solid var(--3);
+    border-radius: 0.5rem;
+    background-color: var(--2);
+    color: var(--4);
+}
+.radio-label:hover {
+    border-color: var(--4);
+    background-color: var(--1);
+}
+input[type="radio"]:checked + .radio-label {
+    background-color: var(--3);
+    color: var(--2);
+    border-color: var(--4);
+    font-weight: bold;
+}
 
 @media screen and (max-width: 600px) {
     header {

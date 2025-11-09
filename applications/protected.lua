@@ -7,15 +7,18 @@ slugify = require("lapis.util").slugify
 local os = require("os")
 local respond_to
 respond_to = require("lapis.application").respond_to
-local UserApplication
+local ProtectedApplication
 do
   local _class_0
   local _parent_0 = lapis.Application
   local _base_0 = {
     [{
-      prottest = "/prottest"
+      dashboard = "/dashboard"
     }] = function(self)
-      return "cool protected content for " .. tostring(self.current_user.username) .. "!"
+      self.page_title = "Dashboard"
+      return {
+        render = "dashboard"
+      }
     end
   }
   _base_0.__index = _base_0
@@ -25,7 +28,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = "UserApplication",
+    __name = "ProtectedApplication",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -48,12 +51,6 @@ do
   _base_0.__class = _class_0
   local self = _class_0
   self:before_filter(function(self)
-    print("Checking protected route for user " .. tostring(self.session.user))
-    print("Current time: " .. tostring(os.time()))
-    print("Session expiry time: " .. tostring(self.session.expiry - os.time()))
-    print("User exists: " .. tostring((Users:find({
-      username = self.session.user
-    })).username))
     if (self.session.user) and (Users:find({
       username = self.session.user
     })) and (self.session.expiry > os.time()) then
@@ -70,6 +67,6 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  UserApplication = _class_0
+  ProtectedApplication = _class_0
   return _class_0
 end

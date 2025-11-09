@@ -24,6 +24,12 @@ do
       login = "/login"
     }] = respond_to({
       GET = function(self)
+        if self.session.user then
+          return {
+            redirect_to = "/dashboard"
+          }
+        end
+        self.page_title = "Login"
         return {
           render = "login"
         }
@@ -49,7 +55,7 @@ do
           if self.params.return_to and self.params.return_to ~= "" then
             redirect_url = self.params.return_to
           else
-            redirect_url = "/prottest"
+            redirect_url = "/dashboard"
           end
           return {
             redirect_to = redirect_url,
@@ -67,7 +73,7 @@ do
             if self.params.return_to and self.params.return_to ~= "" then
               redirect_url = self.params.return_to
             else
-              redirect_url = "/prottest"
+              redirect_url = "/dashboard"
             end
             return {
               redirect_to = redirect_url,

@@ -5,16 +5,13 @@ class Login extends Widget
     div class: "login-container", ->
       h2 "Login"
       
-      -- Show error message if present
       if @error_message
         div class: "error", @error_message
       
-      -- Login form
       form {
         method: "POST"
         action: "/login"
       }, ->
-        -- Hidden field to preserve return URL
         input {
           type: "hidden"
           name: "return_to"
@@ -38,22 +35,30 @@ class Login extends Widget
             name: "password"
             required: true
           }
-        div ->
-          label for: "option-login", "Login"
-          label for: "option-signup", "Sign Up"
+        div class: "radio-group", ->
           input {
             id: "option-login"
             type: "radio"
             name: "option"
             value: "login"
-            -- style: "width: 0; height: 0;"
+            checked: true
+            style: "position: absolute; opacity: 0; width: 0; height: 0;"
           }
+          label {
+            for: "option-login"
+            class: "radio-label"
+          }, "Login"
+          
           input {
             id: "option-signup"
             type: "radio"
             name: "option"
             value: "signup"
-            -- style: "width: 0; height: 0;"
+            style: "position: absolute; opacity: 0; width: 0; height: 0;"
           }
+          label {
+            for: "option-signup"
+            class: "radio-label"
+          }, "Sign Up"
         div ->
           button type: "submit", "Go"

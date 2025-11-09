@@ -46,25 +46,32 @@ do
               required = true
             })
           end)
-          div(function()
-            label({
-              ["for"] = "option-login"
-            }, "Login")
-            label({
-              ["for"] = "option-signup"
-            }, "Sign Up")
+          div({
+            class = "radio-group"
+          }, function()
             input({
               id = "option-login",
               type = "radio",
               name = "option",
-              value = "login"
+              value = "login",
+              checked = true,
+              style = "position: absolute; opacity: 0; width: 0; height: 0;"
             })
-            return input({
+            label({
+              ["for"] = "option-login",
+              class = "radio-label"
+            }, "Login")
+            input({
               id = "option-signup",
               type = "radio",
               name = "option",
-              value = "signup"
+              value = "signup",
+              style = "position: absolute; opacity: 0; width: 0; height: 0;"
             })
+            return label({
+              ["for"] = "option-signup",
+              class = "radio-label"
+            }, "Sign Up")
           end)
           return div(function()
             return button({

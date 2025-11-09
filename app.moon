@@ -13,7 +13,11 @@ class extends lapis.Application
   "/": =>
     render: "index"
   [login: "/login"]: respond_to {
-    GET: => render: "login"
+    GET: => 
+      if @session.user
+        return redirect_to: "/dashboard"
+      @page_title = "Login"
+      render: "login"
     POST: =>
         if @params.option == "signup"
           if Users\find username: slugify @params.username
@@ -26,7 +30,7 @@ class extends lapis.Application
           @session.user = user.username
           @session.expiry = os.time! + 360000
           print "User #{@session.user} signed up."
-          redirect_url = if @params.return_to and @params.return_to != "" then @params.return_to else "/prottest"
+          redirect_url = if @params.return_to and @params.return_to != "" then @params.return_to else "/dashboard"
           return { redirect_to: redirect_url, layout: false }
         elseif @params.option == "login"
           user = Users\find username: slugify @params.username
@@ -34,7 +38,7 @@ class extends lapis.Application
             @session.user = user.username
             @session.expiry = os.time! + 360000
             print "User #{@session.user} logged in."
-            redirect_url = if @params.return_to and @params.return_to != "" then @params.return_to else "/prottest"
+            redirect_url = if @params.return_to and @params.return_to != "" then @params.return_to else "/dashboard"
             return { redirect_to: redirect_url, layout: false }
             -- return "User #{@session.user} logged in."
           else

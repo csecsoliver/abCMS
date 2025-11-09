@@ -52,17 +52,19 @@ do
         end)
         return body(function()
           header(function()
-            h1("abCMS.text")
+            h1("abCMS")
             return nav(function()
               a({
-                href = "./"
+                href = "/"
               }, "Homepage")
               return a({
-                href = "./admin.html"
-              }, "Account")
+                href = "/dashboard"
+              }, "Dashboard")
             end)
           end)
-          return self:content_for("inner")
+          return main(function()
+            return self:content_for("inner")
+          end)
         end)
       end)
     end
