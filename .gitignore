@@ -9,3 +9,11 @@ cozy
 .vscode
 app
 app.pex
+redbean.com
+zip.com
+unzip.com
+sqlite3.com
+builds
+logs
+*_temp
+*.sqlit*

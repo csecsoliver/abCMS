@@ -1,9 +1,0 @@
-<form hx-post="/user/settings" hx-target="#settings-status" hx-swap="innerHTML">
-    <label for="social">Connect some account: (this should probably be your github)</label><br>
-    <input type="social" id="social" name="social" value="{social}"><br><br>
-    <button type="submit">Update Settings</button>
-</form>
-<div id="settings-status"></div>
-
-
-<!-- hx-on::after-request="if (event.detail.successful) this.reset()" -->
