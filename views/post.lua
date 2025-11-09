@@ -5,31 +5,21 @@ local Posts
 Posts = require("models").Posts
 local markdown = require("markdown")
 local string = require("string")
-local HomePage
+local PostPage
 do
   local _class_0
   local _parent_0 = Widget
   local _base_0 = {
     content = function(self)
       return div({
-        class = "grid-container"
+        class = "grid-item"
       }, function()
-        local _list_0 = Posts:select()
-        for _index_0 = 1, #_list_0 do
-          local post = _list_0[_index_0]
-          div({
-            class = "grid-item"
-          }, function()
-            h3(post.title)
-            local author = post:get_user().username
-            p("Author: " .. tostring(author) .. " on " .. os.date("%Y-%m-%d %H:%M:%S", post.created_at))
-            local content = string.sub(post.content, 1, 150)
-            raw(markdown(content .. "..."))
-            return a({
-              href = "/posts/" .. tostring(post.id)
-            }, "Read more")
-          end)
-        end
+        h2(self.post.title)
+        local author = self.post:get_user().username
+        p("Author: " .. tostring(author) .. " on " .. os.date("%Y-%m-%d %H:%M:%S", self.post.created_at))
+        return div(function()
+          return raw(markdown(self.post.content))
+        end)
       end)
     end
   }
@@ -40,7 +30,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = "HomePage",
+    __name = "PostPage",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -64,6 +54,6 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  HomePage = _class_0
+  PostPage = _class_0
   return _class_0
 end

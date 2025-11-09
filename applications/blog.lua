@@ -26,6 +26,20 @@ do
       return self:write({
         redirect_to = "/dashboard/posts"
       })
+    end,
+    ["/posts/:postid"] = function(self)
+      self.post = Posts:find({
+        id = self.params.postid
+      })
+      if self.post then
+        return self:write({
+          render = "post"
+        })
+      else
+        return self:write("Post not found", {
+          status = 404
+        })
+      end
     end
   }
   _base_0.__index = _base_0
