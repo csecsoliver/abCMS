@@ -23,11 +23,15 @@ do
             h3(post.title)
             local author = post:get_user().username
             p("Author: " .. tostring(author) .. " on " .. os.date("%Y-%m-%d %H:%M:%S", post.created_at))
-            local content = string.sub(post.content, 1, 150)
-            raw(markdown(content .. "..."))
-            return a({
-              href = "/posts/" .. tostring(post.id)
-            }, "Read more")
+            if string.len(post.content) <= 150 then
+              return raw(markdown(post.content))
+            else
+              local content = string.sub(post.content, 1, 150)
+              raw(markdown(content .. "..."))
+              return a({
+                href = "/posts/" .. tostring(post.id)
+              }, "Read more")
+            end
           end)
         end
       end)

@@ -16,9 +16,6 @@ do
         a({
           href = "/dashboard"
         }, "Dashboard Home")
-        a({
-          href = "/dashboard/posts"
-        }, " My Posts")
         return a({
           href = "/dashboard/posts/add"
         }, "Add New Post")

@@ -10,12 +10,7 @@ do
   local _base_0 = {
     content = function(self)
       local post = self.options.post or { }
-      local form_method
-      if post.id then
-        form_method = "PUT"
-      else
-        form_method = "POST"
-      end
+      local form_method = "POST"
       local form_action
       if post.id then
         form_action = "/formapi/posts/mod/" .. post.id

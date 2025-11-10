@@ -7,7 +7,7 @@ class Dashboard extends Widget
     content: =>
         nav class: "dashboard-nav", ->
             a href: "/dashboard", "Dashboard Home"
-            a href: "/dashboard/posts", " My Posts"
+            -- a href: "/dashboard/posts", " My Posts"
             a href: "/dashboard/posts/add", "Add New Post"
         div ->
             switch @params.splat
