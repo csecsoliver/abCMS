@@ -6,3 +6,12 @@ config "development", ->
   num_workers "1"
   sqlite ->
     database "abcms.sqlite"
+
+config "test", ->
+  server "nginx"
+  code_cache "off"
+  num_workers "1"
+  sqlite ->
+    database "abcms.test.sqlite"
+
+nil

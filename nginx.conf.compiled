@@ -1,4 +1,4 @@
-env LAPIS_ENVIRONMENT=development;
+env LAPIS_ENVIRONMENT=test;
 worker_processes 1;
 error_log stderr notice;
 daemon off;
