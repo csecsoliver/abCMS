@@ -16,6 +16,7 @@ do
   local _base_0 = {
     layout = require("views.layout"),
     ["/"] = function(self)
+      self.page_title = "Homepage"
       return {
         render = "index"
       }

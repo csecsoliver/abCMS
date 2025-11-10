@@ -11,6 +11,7 @@ class extends lapis.Application
   @enable "etlua"
   @include "applications.protected"
   "/": =>
+    @page_title = "Homepage"
     render: "index"
   [login: "/login"]: respond_to {
     GET: => 
