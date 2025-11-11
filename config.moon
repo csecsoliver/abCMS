@@ -4,5 +4,6 @@ config "development", ->
   server "nginx"
   code_cache "off"
   num_workers "1"
+  port "8081"
   sqlite ->
     database "abcms.sqlite"

@@ -13,8 +13,7 @@ description = {
       for OpenResty/nginx. It features blog functionality, user authentication,
       and markdown support.
    ]],
-   homepage = "https://github.com/csecsoliver/abCMS",
-   license = "MIT" -- Update with your actual license
+   homepage = "https://github.com/csecsoliver/abCMS"
 }
 
 dependencies = {
