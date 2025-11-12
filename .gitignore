@@ -17,3 +17,5 @@ builds
 logs
 *_temp
 *.sqlit*
+static/uploads/*
+filestore/config

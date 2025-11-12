@@ -20,7 +20,8 @@ do
       return form({
         action = form_action,
         method = form_method,
-        class = "post-form"
+        class = "post-form",
+        enctype = "multipart/form-data"
       }, function()
         div(function()
           label({
@@ -45,6 +46,17 @@ do
             id = "content",
             required = true
           }, post.content or "")
+        end)
+        div(function()
+          label({
+            ["for"] = "image"
+          }, "Upload image:")
+          br()
+          return input({
+            type = "file",
+            name = "image",
+            id = "image"
+          })
         end)
         return button({
           type = "submit"

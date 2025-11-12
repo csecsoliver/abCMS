@@ -1,12 +1,16 @@
 lapis = require "lapis"
 import escape from require "lapis.html"
-
+file_utils = require "lib.file_utils"
 import Posts, Users from require "models"
 class BlogApplication extends lapis.Application
     "/formapi/posts/add": =>
         author = Users\find username: @session.user
         title = escape(@params.title or "")
         content = escape(@params.content or "")
+        if @params.image and @params.image.filename and @params.image.content
+            image_filename = @params.image.filename
+            image_content = @params.image.image_content
+            
         
         Posts\create
             user_id: author.id

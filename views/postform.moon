@@ -21,6 +21,6 @@ class PostForm extends Widget
             div ->
                 label for: "image", "Upload image:"
                 br!
-                input type: "file", name: "image", id: "image", required: true
+                input type: "file", name: "image", id: "image"
                 
             button type: "submit", "Post"
