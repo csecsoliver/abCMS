@@ -7,9 +7,11 @@ class BlogApplication extends lapis.Application
         author = Users\find username: @session.user
         title = escape(@params.title or "")
         content = escape(@params.content or "")
-        if @params.image and @params.image.filename and @params.image.content
-            image_filename = @params.image.filename
-            image_content = @params.image.image_content
+        if @params.files
+            if @params.files.image
+                file_utils.UploadImage!
+                
+
             
         
         Posts\create
