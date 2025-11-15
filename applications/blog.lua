@@ -1,6 +1,8 @@
 local lapis = require("lapis")
 local escape
 escape = require("lapis.html").escape
+local UploadImage
+UploadImage = require("lib.file_utils").UploadImage
 local Posts, Users
 do
   local _obj_0 = require("models")
@@ -17,11 +19,22 @@ do
       })
       local title = escape(self.params.title or "")
       local content = escape(self.params.content or "")
+      local has_image = 0
+      local path = ""
+      local thumbnail_path = ""
+      print(self.params.image.filename)
+      if self.params.image and self.params.image.filename ~= "" then
+        has_image = 1
+        path, thumbnail_path = UploadImage(self)
+      end
       Posts:create({
         user_id = author.id,
         title = title,
         content = content,
-        created_at = os.time()
+        created_at = os.time(),
+        has_image = has_image,
+        path = path,
+        thumbnail_path = thumbnail_path
       })
       return self:write({
         redirect_to = "/dashboard/posts"

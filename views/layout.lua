@@ -41,9 +41,20 @@ do
           script({
             src = "https://sfxr.me/sfxr.js"
           })
-          return script({
+          script({
+            src = "/static/js/misc.js",
+            defer = true
+          })
+          script({
             src = "/static/js/script.js",
             defer = true
+          })
+          link({
+            rel = "stylesheet",
+            href = "https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css"
+          })
+          return script({
+            src = "https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"
           })
         end)
         return body(function()
@@ -58,8 +69,11 @@ do
               }, "Dashboard")
             end)
           end)
-          return main(function()
+          main(function()
             return self:content_for("inner")
+          end)
+          return script(function()
+            return raw("const easymde = new EasyMDE({element: document.getElementById('content'),});")
           end)
         end)
       end)

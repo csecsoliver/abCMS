@@ -1,0 +1,1 @@
+Separate categories for devlogs, found cool stuff ,questions, opinions, vibes, 

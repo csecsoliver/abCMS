@@ -18,7 +18,11 @@ class Layout extends Widget
         -- link rel: "stylesheet", href: "/static/css/cozy.css"
         script src: "https://sfxr.me/riffwave.js"
         script src: "https://sfxr.me/sfxr.js"
+        script src: "/static/js/misc.js", defer: true
         script src: "/static/js/script.js", defer: true
+        -- link rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css"
+        -- script src: "https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"
+
 
       body ->
         header ->
@@ -28,3 +32,5 @@ class Layout extends Widget
             a href: "/dashboard", "Dashboard"
         main ->
           @content_for "inner"
+        -- script ->
+        --   raw "const easymde = new EasyMDE({element: document.getElementById('content'),});"

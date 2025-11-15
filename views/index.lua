@@ -14,7 +14,7 @@ do
       return div({
         class = "grid-container"
       }, function()
-        local _list_0 = Posts:select()
+        local _list_0 = Posts:select("order by created_at desc")
         for _index_0 = 1, #_list_0 do
           local post = _list_0[_index_0]
           div({
@@ -23,15 +23,36 @@ do
             h3(post.title)
             local author = post:get_user().username
             p("Author: " .. tostring(author) .. " on " .. os.date("%Y-%m-%d %H:%M:%S", post.created_at))
-            if string.len(post.content) <= 150 then
-              return raw(markdown(post.content))
+            if post.has_image == 1 and post.thumbnail_path ~= "" then
+              img({
+                src = post.thumbnail_path,
+                ["data-fullsrc"] = post.path,
+                alt = "Post Image",
+                style = "width: 100%;"
+              })
             else
-              local content = string.sub(post.content, 1, 150)
-              raw(markdown(content .. "..."))
-              return a({
-                href = "/posts/" .. tostring(post.id)
-              }, "Read more")
+              if post.has_image == 1 and post.thumbnail_path == "" then
+                img({
+                  src = post.path,
+                  alt = "Post Image",
+                  style = "width: 100%;"
+                })
+              end
             end
+            if string.len(post.content) <= 200 and post.has_image == 0 then
+              raw(markdown(post.content))
+            elseif string.len(post.content) > 200 and post.has_image == 0 then
+              local content = string.sub(post.content, 1, 200)
+              raw(markdown(content .. "..."))
+            elseif string.len(post.content) <= 50 and post.has_image == 1 then
+              raw(markdown(post.content))
+            elseif string.len(post.content) > 50 and post.has_image == 1 then
+              local content = string.sub(post.content, 1, 50)
+              raw(markdown(content .. "..."))
+            end
+            return a({
+              href = "/posts/" .. tostring(post.id)
+            }, "Open post")
           end)
         end
       end)

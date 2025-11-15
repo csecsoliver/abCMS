@@ -1,4 +1,4 @@
-import create_table, types from require "lapis.db.schema"
+import create_table, types, add_column from require "lapis.db.schema"
 
 {
     [1]: =>
@@ -18,4 +18,6 @@ import create_table, types from require "lapis.db.schema"
             {"path", types.text default: ""}
             {"content", types.text default: ""}
         }
+    [3]: =>
+        add_column "posts", "thumbnail_path", types.text default: ""
 }

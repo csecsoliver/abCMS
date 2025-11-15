@@ -1,7 +1,7 @@
-local create_table, types
+local create_table, types, add_column
 do
   local _obj_0 = require("lapis.db.schema")
-  create_table, types = _obj_0.create_table, _obj_0.types
+  create_table, types, add_column = _obj_0.create_table, _obj_0.types, _obj_0.add_column
 end
 return {
   [1] = function(self)
@@ -71,5 +71,10 @@ return {
         })
       }
     })
+  end,
+  [3] = function(self)
+    return add_column("posts", "thumbnail_path", types.text({
+      default = ""
+    }))
   end
 }
