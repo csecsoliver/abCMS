@@ -30,9 +30,14 @@ class BlogApplication extends lapis.Application
             thumbnail_path: thumbnail_path
 
         @write redirect_to: "/dashboard/posts"
-    "/posts/:postid": =>
-        @post = Posts\find id: @params.postid
-        if @post
-            @write render: "post"
-        else
-            @write "Post not found", status: 404
+
+    "/formapi/posts/delete/:postid": =>
+        post = Posts\find id: @params.postid
+        unless post
+            @write redirect_to: "/dashboard/posts?error_message=Post not found."
+            return
+        if post.user_id != (Users\find username: @session.user).id
+            @write redirect_to: "/dashboard/posts?error_message=You are not authorized to delete this post."
+            return
+        post\delete!
+        @write redirect_to: "/dashboard/posts?error_message=Post deleted successfully."

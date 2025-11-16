@@ -3,8 +3,7 @@ import slugify from require "lapis.util"
 os = require "os"
 import respond_to, render from require "lapis.application"
 bcrypt = require "bcrypt"
-import Users from require "models"
-
+import Posts, Users from require "models"
 
 class extends lapis.Application
   layout:require "views.layout"
@@ -49,4 +48,10 @@ class extends lapis.Application
           @error_message = "Please select login or signup"
           return render: "login"
   }
+  "/posts/:postid": =>
+        @post = Posts\find id: @params.postid
+        if @post
+            @write render: "post"
+        else
+            @write "Post not found", status: 404
   

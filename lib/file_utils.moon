@@ -8,11 +8,13 @@ UploadImage = =>
 
     image = magick.load_image_from_blob @params.image.content
     format = image and image\get_format!
+    print("Image format: " .. format)
     allowed = {"JPEG", "JPG", "PNG", "GIF", "WEBP", "BMP", "TIFF", "TIF", "ICO", "CUR", "SVG", "SVGZ", "APNG", "AVIF", "JXL", "HEIC", "HEIF"}
-    unless format and lume.find(allowed, format)
+    unless format and lume.find(allowed, string.upper format)
         @write status: 418
         return
-    
+    filename = ""
+    fullsize_content = nil
     -- Convert HEIC/HEIF to JPEG for full-size image
     if format == "HEIC" or format == "HEIF"
         image\set_format "JPEG"
@@ -22,7 +24,7 @@ UploadImage = =>
         fullsize_content = @params.image.content
         filename = tostring(uuid.new!) .. @params.image.filename
     
-    file = assert(io.open('static/uploads/' ..  filename, 'wb'))
+    file = assert(io.open('static/uploads/' .. filename, 'wb'))
     file\write(fullsize_content)
     print("Uploaded image to static/uploads/" .. filename)
     file\close()

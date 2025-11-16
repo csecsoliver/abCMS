@@ -8,8 +8,11 @@ do
   respond_to, render = _obj_0.respond_to, _obj_0.render
 end
 local bcrypt = require("bcrypt")
-local Users
-Users = require("models").Users
+local Posts, Users
+do
+  local _obj_0 = require("models")
+  Posts, Users = _obj_0.Posts, _obj_0.Users
+end
 do
   local _class_0
   local _parent_0 = lapis.Application
@@ -95,7 +98,21 @@ do
           }
         end
       end
-    })
+    }),
+    ["/posts/:postid"] = function(self)
+      self.post = Posts:find({
+        id = self.params.postid
+      })
+      if self.post then
+        return self:write({
+          render = "post"
+        })
+      else
+        return self:write("Post not found", {
+          status = 404
+        })
+      end
+    end
   }
   _base_0.__index = _base_0
   setmetatable(_base_0, _parent_0.__base)

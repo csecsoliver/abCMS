@@ -9,6 +9,7 @@ local UploadImage
 UploadImage = function(self)
   local image = magick.load_image_from_blob(self.params.image.content)
   local format = image and image:get_format()
+  print("Image format: " .. format)
   local allowed = {
     "JPEG",
     "JPG",
@@ -28,19 +29,21 @@ UploadImage = function(self)
     "HEIC",
     "HEIF"
   }
-  if not (format and lume.find(allowed, format)) then
+  if not (format and lume.find(allowed, string.upper(format))) then
     self:write({
       status = 418
     })
     return 
   end
+  local filename = ""
+  local fullsize_content = nil
   if format == "HEIC" or format == "HEIF" then
     image:set_format("JPEG")
-    local fullsize_content = image:get_blob()
-    local filename = tostring(uuid.new()) .. self.params.image.filename .. ".jpg"
+    fullsize_content = image:get_blob()
+    filename = tostring(uuid.new()) .. self.params.image.filename .. ".jpg"
   else
-    local fullsize_content = self.params.image.content
-    local filename = tostring(uuid.new()) .. self.params.image.filename
+    fullsize_content = self.params.image.content
+    filename = tostring(uuid.new()) .. self.params.image.filename
   end
   local file = assert(io.open('static/uploads/' .. filename, 'wb'))
   file:write(fullsize_content)

@@ -4,6 +4,7 @@ Widget = require("lapis.html").Widget
 local Posts
 Posts = require("models").Posts
 local PostForm = require("views/postform")
+local UserPosts = require("views/userposts")
 local Dashboard
 do
   local _class_0
@@ -16,16 +17,29 @@ do
         a({
           href = "/dashboard"
         }, "Dashboard Home")
+        a({
+          href = "/dashboard/posts"
+        }, "My Posts")
         return a({
           href = "/dashboard/posts/add"
         }, "Add New Post")
       end)
       return div(function()
+        if self.params.error_message then
+          p({
+            class = "error-message"
+          }, self.params.error_message)
+        end
         local _exp_0 = self.params.splat
         if "posts/add" == _exp_0 then
           h2("Add New Post")
           return div(function()
             return widget(PostForm)
+          end)
+        elseif "posts" == _exp_0 then
+          h2("My Posts")
+          return div(function()
+            return widget(UserPosts)
           end)
         else
           h2("Welcome to your Dashboard")

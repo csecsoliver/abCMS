@@ -46,19 +46,28 @@ do
         redirect_to = "/dashboard/posts"
       })
     end,
-    ["/posts/:postid"] = function(self)
-      self.post = Posts:find({
+    ["/formapi/posts/delete/:postid"] = function(self)
+      local post = Posts:find({
         id = self.params.postid
       })
-      if self.post then
-        return self:write({
-          render = "post"
+      if not (post) then
+        self:write({
+          redirect_to = "/dashboard/posts?error_message=Post not found."
         })
-      else
-        return self:write("Post not found", {
-          status = 404
-        })
+        return 
       end
+      if post.user_id ~= (Users:find({
+        username = self.session.user
+      })).id then
+        self:write({
+          redirect_to = "/dashboard/posts?error_message=You are not authorized to delete this post."
+        })
+        return 
+      end
+      post:delete()
+      return self:write({
+        redirect_to = "/dashboard/posts?error_message=Post deleted successfully."
+      })
     end
   }
   _base_0.__index = _base_0
