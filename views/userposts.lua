@@ -62,10 +62,6 @@ do
                 href = "/posts/" .. tostring(post.id)
               }, "Open post")
               br()
-              a({
-                href = "/formapi/posts/edit/" .. tostring(post.id)
-              }, " Edit Post")
-              br()
               return a({
                 href = "/formapi/posts/delete/" .. tostring(post.id)
               }, " Delete Post")

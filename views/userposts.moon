@@ -32,6 +32,4 @@ class UserPosts extends Widget
                         br!
                         a href: "/posts/#{post.id}", "Open post"
                         br!
-                        a href: "/formapi/posts/edit/#{post.id}", " Edit Post"
-                        br!
                         a href: "/formapi/posts/delete/#{post.id}", " Delete Post"
