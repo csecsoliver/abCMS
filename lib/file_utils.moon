@@ -2,7 +2,8 @@ lfs = require 'lfs'
 uuid = require "lua-uuid"
 magick = require "magick"
 import escape from require "lapis.util"
-
+curl = require "cURL"
+lume = require "lume"
 UploadImage = =>
     filename = tostring(uuid.new!) .. @params.image.filename
     file = assert(io.open('static/uploads/' ..  filename, 'wb'))
@@ -23,10 +24,20 @@ UploadImage = =>
 
     return "/static/uploads/" .. filename, "/static/uploads/thumb-" .. filename.. ".jpg"
 
-GenerateThumbnail = (image_path, filename) ->
-    magick = require "magick"
-    magick.thumb image_path, "100x100", "static/uploads/thumb-" .. filename.. ".jpg"
-    print("Generated thumbnail at static/uploads/thumb-" .. filename.. ".jpg")
-    return "/static/uploads/thumb-" .. filename.. ".jpg"
+GetFreeSpace = ->
+    pieces = {}
+    r = curl.easy
+      url: "http://localhost:25511/img?pw=changeme&ls=t"--..os.getenv("COPYPARTY_PASS") currently hardcoded, so don't expose the 25511 port publicly
+    --   httpheader:
+    --     "X-Test-Header1: Header-Data1"
+    --     "X-Test-Header2: Header-Data2"
+      writefunction: (chunk) ->
+        table.insert pieces, chunk
+        chunk
+    r\perform!
+    r\close!
+    response = table.concat pieces
+    response_data = lume.split(response, "//")[2]
+    response_data
 
-{ :UploadImage, :GenerateThumbnail }
+{ :UploadImage, :GetFreeSpace }

@@ -8,16 +8,17 @@ class PostForm extends Widget
         post = @options.post or {}
         form_method = "POST" -- todo: make proper mod handling
         form_action = if post.id then "/formapi/posts/mod/" .. post.id else "/formapi/posts/add"
-
+        if @params.error_message
+            p class: "error-message", @params.error_message
         form action: form_action, method: form_method, class: "post-form", enctype: "multipart/form-data", ->
             div ->
                 label for: "title", "Title:"
                 br!
-                input type: "text", name: "title", id: "title", value: post.title or "", required: true
+                input type: "text", name: "title", id: "title", value: post.title or ""
             div ->
                 label for: "content", "Content:"
                 br!
-                textarea name: "content", id: "content", required: true, post.content or ""
+                textarea name: "content", id: "content", post.content or ""
             div ->
                 label for: "image", "Upload image:"
                 br!

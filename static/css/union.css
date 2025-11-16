@@ -290,13 +290,25 @@ form div {
     padding: 1rem;
     word-break: break-word;
 }
+.post-big {
+    padding: 2rem 5rem;
+    max-width: 1000px;
+}
+.post-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
 /* Media queries - merged (cozy.css adds body and main rules) */
 @media screen and (max-width: 600px) {
     header {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+    .post-big {
+        padding: 2rem;
+        max-width: 1000px;
+    }
     body {
         margin: 0; /* from cozy.css */
     }

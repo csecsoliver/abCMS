@@ -17,6 +17,11 @@ do
       else
         form_action = "/formapi/posts/add"
       end
+      if self.params.error_message then
+        p({
+          class = "error-message"
+        }, self.params.error_message)
+      end
       return form({
         action = form_action,
         method = form_method,
@@ -32,8 +37,7 @@ do
             type = "text",
             name = "title",
             id = "title",
-            value = post.title or "",
-            required = true
+            value = post.title or ""
           })
         end)
         div(function()
@@ -43,8 +47,7 @@ do
           br()
           return textarea({
             name = "content",
-            id = "content",
-            required = true
+            id = "content"
           }, post.content or "")
         end)
         div(function()

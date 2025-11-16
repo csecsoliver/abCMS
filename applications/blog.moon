@@ -14,6 +14,10 @@ class BlogApplication extends lapis.Application
         if @params.image and @params.image.filename != "" 
             has_image = 1
             path, thumbnail_path = UploadImage self
+
+        if title == "" and content == "" and @params.image.filename == "" and @params.image
+            @write redirect_to: "/dashboard/posts/add?error_message=At least one of title, content, or image must be provided."
+            return
         
         Posts\create
             user_id: author.id

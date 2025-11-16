@@ -16,7 +16,7 @@ http {
   }
   client_max_body_size 20m;
   server {
-    listen 8081;
+    listen 8080;
     lua_code_cache off;
 
     location / {

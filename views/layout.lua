@@ -1,5 +1,6 @@
 local Widget
 Widget = require("lapis.html").Widget
+local file_utils = require("lib/file_utils")
 local Layout
 do
   local _class_0
@@ -45,21 +46,15 @@ do
             src = "/static/js/misc.js",
             defer = true
           })
-          script({
+          return script({
             src = "/static/js/script.js",
             defer = true
-          })
-          link({
-            rel = "stylesheet",
-            href = "https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css"
-          })
-          return script({
-            src = "https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"
           })
         end)
         return body(function()
           header(function()
             h1("abCMS")
+            p(file_utils:GetFreeSpace())
             return nav(function()
               a({
                 href = "/"
@@ -69,11 +64,8 @@ do
               }, "Dashboard")
             end)
           end)
-          main(function()
+          return main(function()
             return self:content_for("inner")
-          end)
-          return script(function()
-            return raw("const easymde = new EasyMDE({element: document.getElementById('content'),});")
           end)
         end)
       end)

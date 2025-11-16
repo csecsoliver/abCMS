@@ -12,13 +12,24 @@ do
   local _base_0 = {
     content = function(self)
       return div({
-        class = "grid-item"
+        class = "post-container"
       }, function()
-        h2(self.post.title)
-        local author = self.post:get_user().username
-        p("Author: " .. tostring(author) .. " on " .. os.date("%Y-%m-%d %H:%M:%S", self.post.created_at))
-        return div(function()
-          return raw(markdown(self.post.content))
+        return div({
+          class = "grid-item post-big"
+        }, function()
+          h2(self.post.title)
+          local author = self.post:get_user().username
+          p("Author: " .. tostring(author) .. " on " .. os.date("%Y-%m-%d %H:%M:%S", self.post.created_at))
+          if self.post.has_image == 1 then
+            img({
+              src = self.post.path,
+              alt = "Post Image",
+              style = "width: 100%;"
+            })
+          end
+          return div(function()
+            return raw(markdown(self.post.content))
+          end)
         end)
       end)
     end

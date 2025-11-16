@@ -3,6 +3,8 @@ local uuid = require("lua-uuid")
 local magick = require("magick")
 local escape
 escape = require("lapis.util").escape
+local curl = require("cURL")
+local lume = require("lume")
 local UploadImage
 UploadImage = function(self)
   local filename = tostring(uuid.new()) .. self.params.image.filename
@@ -20,14 +22,23 @@ UploadImage = function(self)
   image:destroy()
   return "/static/uploads/" .. filename, "/static/uploads/thumb-" .. filename .. ".jpg"
 end
-local GenerateThumbnail
-GenerateThumbnail = function(image_path, filename)
-  magick = require("magick")
-  magick.thumb(image_path, "100x100", "static/uploads/thumb-" .. filename .. ".jpg")
-  print("Generated thumbnail at static/uploads/thumb-" .. filename .. ".jpg")
-  return "/static/uploads/thumb-" .. filename .. ".jpg"
+local GetFreeSpace
+GetFreeSpace = function()
+  local pieces = { }
+  local r = curl.easy({
+    url = "http://localhost:25511/img?pw=changeme&ls=t",
+    writefunction = function(chunk)
+      table.insert(pieces, chunk)
+      return chunk
+    end
+  })
+  r:perform()
+  r:close()
+  local response = table.concat(pieces)
+  local response_data = lume.split(response, "//")[2]
+  return response_data
 end
 return {
   UploadImage = UploadImage,
-  GenerateThumbnail = GenerateThumbnail
+  GetFreeSpace = GetFreeSpace
 }

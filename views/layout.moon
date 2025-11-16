@@ -1,5 +1,5 @@
 import Widget from require "lapis.html"
-
+file_utils = require "lib/file_utils"
 class Layout extends Widget
   content: =>
     raw "<!DOCTYPE HTML>"
@@ -27,6 +27,7 @@ class Layout extends Widget
       body ->
         header ->
           h1 "abCMS"
+          p file_utils\GetFreeSpace!
           nav ->
             a href: "/", "Homepage"
             a href: "/dashboard", "Dashboard"
