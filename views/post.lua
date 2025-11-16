@@ -5,6 +5,7 @@ local Posts
 Posts = require("models").Posts
 local markdown = require("markdown")
 local string = require("string")
+local lfs = require("lfs")
 local PostPage
 do
   local _class_0
@@ -27,9 +28,19 @@ do
               style = "width: 100%;"
             })
           end
-          return div(function()
+          div(function()
             return raw(markdown(self.post.content))
           end)
+          local imagefile = lfs.attributes("." .. self.post.path)
+          local thumbfile = lfs.attributes("." .. self.post.thumbnail_path)
+          if imagefile then
+            local size_kb = imagefile.size
+            p("The original image takes up " .. size_kb .. " bytes of storage.")
+          end
+          if thumbfile then
+            local thumb_size_kb = thumbfile.size
+            return p("The thumbnail image takes up " .. thumb_size_kb .. " bytes of storage.")
+          end
         end)
       end)
     end

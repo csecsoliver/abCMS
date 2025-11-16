@@ -1,5 +1,6 @@
 import Widget from require "lapis.html"
 file_utils = require "lib/file_utils"
+lfs = require "lfs"
 class Layout extends Widget
   content: =>
     raw "<!DOCTYPE HTML>"
@@ -28,6 +29,10 @@ class Layout extends Widget
         header ->
           h1 "abCMS"
           p file_utils\GetFreeSpace!
+          dbfile = lfs.attributes "abcms.sqlite"
+          if dbfile
+              db_size_kb = dbfile.size
+              p "The database takes up " .. db_size_kb .. " bytes of space."
           nav ->
             a href: "/", "Homepage"
             a href: "/dashboard", "Dashboard"

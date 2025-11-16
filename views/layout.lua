@@ -1,6 +1,7 @@
 local Widget
 Widget = require("lapis.html").Widget
 local file_utils = require("lib/file_utils")
+local lfs = require("lfs")
 local Layout
 do
   local _class_0
@@ -55,6 +56,11 @@ do
           header(function()
             h1("abCMS")
             p(file_utils:GetFreeSpace())
+            local dbfile = lfs.attributes("abcms.sqlite")
+            if dbfile then
+              local db_size_kb = dbfile.size
+              p("The database takes up " .. db_size_kb .. " bytes of storage.")
+            end
             return nav(function()
               a({
                 href = "/"
