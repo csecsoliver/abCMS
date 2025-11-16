@@ -1,78 +1,73 @@
-let leaves = new Array();
-async function falling_leaves() {
-    // Respect reduced motion preference
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        console.log(localStorage.getItem("motion") == "optout")
-        if ((localStorage.getItem("motion") == null)) {
-            localStorage.setItem("motion", confirm("You have reduced motion enabled. Do you want to see the pretty leaves?")?"optin":"optout");
-        } else if (localStorage.getItem("motion") == "optout") {
-            return;
-        }
-    }
-    for (let i = 0; i < 15; i++) {
-        leaves.push(new Leaf())
 
-    }
-    loo()
-}
-class Leaf {
-    constructor() {
-        this.element = document.createElement("div")
-        this.element.classList.add("leaf")
-        let imgNum = Math.ceil(Math.random() * 4)
-        let imgUrl = `static/images/${imgNum}.png`
-        this.element.style.backgroundImage = `url("/${imgUrl}")`
-        
-        // this is to avoid cutting them in half
-        let img = new Image()
-        img.onload = () => {
-            let aspectRatio = img.naturalWidth / img.naturalHeight
-            this.element.style.width = (50 * aspectRatio) + "px"
-        }
-        img.src = "/" + imgUrl
-        
-        document.querySelector("body").appendChild(this.element)
-        this.x = Math.random() * window.innerWidth
-        this.y = Math.random() * window.innerHeight
-        this.element.style.left = this.x + "px"
-        this.element.style.top = this.y + "px"
-        this.dx = 0
-        this.dy = 0
-        this.rotation = Math.random() * 360
-        this.drotation = 0
-    }
-    tick() {
-        if(this.disabled){
-            this.life -= 1
-            if (this.life <= 0){
+function starryNight() {
+    // Create a canvas element and append it to the body
+    const canvas = document.createElement('canvas');
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
 
-                leaves.splice(leaves.findIndex(e => e === this), 1)
-                this.element.remove()
+    // Set the canvas size to the full window size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Style the canvas to be in the background
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.zIndex = '-1';
+
+    // Array to hold the stars
+    const stars = [];
+
+    // Number of stars to create
+    const numStars = 300;
+
+    // Create the stars
+    for (let i = 0; i < numStars; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 1.5,
+            alpha: Math.random(),
+            twinkle: Math.random() * 0.04 + 0.01 // Twinkle speed
+        });
+    }
+
+    // Function to draw a single star
+    function drawStar(star) {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+        ctx.fill();
+    }
+
+    // Function to update and redraw the stars
+    function update() {
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Update and draw each star
+        stars.forEach(star => {
+            // Make the stars twinkle
+            star.alpha += star.twinkle;
+            if (star.alpha > 1 || star.alpha < 0) {
+                star.twinkle = -star.twinkle;
             }
-            return
-        }
-        this.dx = (this.dx) + (Math.random()*2 - 1)*0.1
-        this.dy = (this.dy) + (Math.random()*2 - 1)*0.1
-        this.drotation = (this.drotation) + (Math.random()*2 - 1)*0.1
-        this.x += this.dx
-        this.y += this.dy
-        this.rotation += this.drotation
-        this.element.style.left = (this.x) + "px"
-        this.element.style.top = (this.y) + "px"
-        this.element.style.transform = `translate(-50%, -50%) rotate(${this.rotation}deg)`
-        if (this.x > window.innerWidth || this.x < 0 || this.y > window.innerHeight || this.y < 0 ){
-            leaves.push(new Leaf())
-            this.disabled = true
-            this.life = 60*40
-        }
+            drawStar(star);
+        });
+
+        // Request the next animation frame
+        requestAnimationFrame(update);
     }
+
+    // Start the animation
+    update();
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
 }
-async function loo() {
-    requestAnimationFrame(loo)
-    // Pause animation when page is hidden
-    if (document.hidden) return;
-    for (const i of leaves) {
-        i.tick()
-    }
-}
-falling_leaves()
+
+// Run the starry night animation
+starryNight();

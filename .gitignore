@@ -19,3 +19,4 @@ logs
 *.sqlit*
 static/uploads/*
 filestore/config
+*.tar.*
