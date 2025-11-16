@@ -98,11 +98,19 @@ button, input, textarea {
     border: 1px solid var(--2);
     width: fit-content;
     padding: 0.5rem 1rem;
-    /* background-color: var(--1); */
+    margin: 0.7rem 0;
+    background-color: var(--1) !important;
     color: var(--2);
     cursor: pointer;
+    filter: none;
+    margin-right: 0.5rem;
 }
-
+label {
+    margin-right: 0.5rem;
+}
+input:autofill {
+  background: var(--1); /* or any other */
+}
 button {
     height: 2.2rem;
 }

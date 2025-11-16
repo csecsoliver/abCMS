@@ -1,5 +1,5 @@
 
-function starryNight() {
+async function starryNight() {
     // Create a canvas element and append it to the body
     const canvas = document.createElement('canvas');
     document.body.appendChild(canvas);
@@ -19,7 +19,7 @@ function starryNight() {
     const stars = [];
 
     // Number of stars to create
-    const numStars = 300;
+    const numStars = 5000;
 
     // Create the stars
     for (let i = 0; i < numStars; i++) {
@@ -28,12 +28,12 @@ function starryNight() {
             y: Math.random() * canvas.height,
             radius: Math.random() * 1.5,
             alpha: Math.random(),
-            twinkle: Math.random() * 0.04 + 0.01 // Twinkle speed
+            twinkle: Math.random() * 0.04 -0.02 // Twinkle speed
         });
     }
 
     // Function to draw a single star
-    function drawStar(star) {
+    async function drawStar(star) {
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
@@ -41,7 +41,7 @@ function starryNight() {
     }
 
     // Function to update and redraw the stars
-    function update() {
+    async function update() {
         // Clear the canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
