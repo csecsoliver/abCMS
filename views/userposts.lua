@@ -7,6 +7,7 @@ do
   Posts, Users = _obj_0.Posts, _obj_0.Users
 end
 local PostForm = require("views/postform")
+local markdown = require("markdown")
 local UserPosts
 do
   local _class_0

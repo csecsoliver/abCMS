@@ -17,6 +17,6 @@ sudo luarocks install luafilesystem
 sudo luarocks install magick
 sudo luarocks install Lua-curl CURL_INCDIR=/usr/include/x86_64-linux-gnu
 sudo luarocks install lume
+sudo luarocks install argon2
 moonc .
 lapis migrate
-lapis server

@@ -3,6 +3,7 @@ lapis = require "lapis"
 import Widget from require "lapis.html"
 import Posts, Users from require "models"
 PostForm = require "views/postform"
+markdown = require "markdown"
 class UserPosts extends Widget
     content: =>
         posts = Posts\select "where user_id = ? order by created_at desc", (Users\find username: @session.user).id

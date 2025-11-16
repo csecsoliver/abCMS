@@ -76,5 +76,19 @@ return {
     return add_column("posts", "thumbnail_path", types.text({
       default = ""
     }))
+  end,
+  [4] = function(self)
+    add_column("users", "coins", types.integer({
+      default = 0
+    }))
+    add_column("users", "social", types.text({
+      default = ""
+    }))
+    add_column("users", "upload_token", types.text({
+      default = ""
+    }))
+    return add_column("posts", "color", types.text({
+      default = ""
+    }))
   end
 }

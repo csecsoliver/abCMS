@@ -8,6 +8,7 @@ do
   respond_to, render = _obj_0.respond_to, _obj_0.render
 end
 local bcrypt = require("bcrypt")
+local argon2 = require("argon2")
 local Posts, Users
 do
   local _obj_0 = require("models")
@@ -71,7 +72,7 @@ do
           local user = Users:find({
             username = slugify(self.params.username)
           })
-          if user and bcrypt.verify(self.params.password, user.passhash) then
+          if user and (bcrypt.verify(self.params.password, user.passhash) or (argon2.verify(user.passhash, self.params.password).ok)) then
             self.session.user = user.username
             self.session.expiry = os.time() + 360000
             print("User " .. tostring(self.session.user) .. " logged in.")

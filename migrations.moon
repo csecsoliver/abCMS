@@ -20,4 +20,9 @@ import create_table, types, add_column from require "lapis.db.schema"
         }
     [3]: =>
         add_column "posts", "thumbnail_path", types.text default: ""
+    [4]: =>
+        add_column "users", "coins", types.integer default: 0
+        add_column "users", "social", types.text default: ""
+        add_column "users", "upload_token", types.text default: ""
+        add_column "posts", "color", types.text default: ""
 }

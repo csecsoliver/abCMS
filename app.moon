@@ -3,6 +3,7 @@ import slugify from require "lapis.util"
 os = require "os"
 import respond_to, render from require "lapis.application"
 bcrypt = require "bcrypt"
+argon2 = require "argon2"
 import Posts, Users from require "models"
 
 class extends lapis.Application
@@ -34,7 +35,7 @@ class extends lapis.Application
           return { redirect_to: redirect_url, layout: false }
         elseif @params.option == "login"
           user = Users\find username: slugify @params.username
-          if user and bcrypt.verify(@params.password, user.passhash)
+          if user and (bcrypt.verify(@params.password, user.passhash) or (argon2.verify(user.passhash, @params.password).ok))
             @session.user = user.username
             @session.expiry = os.time! + 360000
             print "User #{@session.user} logged in."
