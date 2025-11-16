@@ -59,7 +59,7 @@ do
             local dbfile = lfs.attributes("abcms.sqlite")
             if dbfile then
               local db_size_kb = dbfile.size
-              p("The database takes up " .. db_size_kb .. " bytes of storage.")
+              p("The database takes up " .. db_size_kb .. " bytes of space.")
             end
             return nav(function()
               a({

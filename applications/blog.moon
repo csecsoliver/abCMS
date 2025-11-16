@@ -11,7 +11,8 @@ class BlogApplication extends lapis.Application
         path = ""
         thumbnail_path = ""
         print @params.image.filename
-        if @params.image and @params.image.filename != "" 
+        if @params.image and @params.image.filename != ""
+            
             has_image = 1
             path, thumbnail_path = UploadImage self
 

@@ -7,12 +7,48 @@ local curl = require("cURL")
 local lume = require("lume")
 local UploadImage
 UploadImage = function(self)
-  local filename = tostring(uuid.new()) .. self.params.image.filename
+  local image = magick.load_image_from_blob(self.params.image.content)
+  local format = image and image:get_format()
+  local allowed = {
+    "JPEG",
+    "JPG",
+    "PNG",
+    "GIF",
+    "WEBP",
+    "BMP",
+    "TIFF",
+    "TIF",
+    "ICO",
+    "CUR",
+    "SVG",
+    "SVGZ",
+    "APNG",
+    "AVIF",
+    "JXL",
+    "HEIC",
+    "HEIF"
+  }
+  if not (format and lume.find(allowed, format)) then
+    self:write({
+      status = 418
+    })
+    return 
+  end
+  if format == "HEIC" or format == "HEIF" then
+    image:set_format("JPEG")
+    local fullsize_content = image:get_blob()
+    local filename = tostring(uuid.new()) .. self.params.image.filename .. ".jpg"
+  else
+    local fullsize_content = self.params.image.content
+    local filename = tostring(uuid.new()) .. self.params.image.filename
+  end
   local file = assert(io.open('static/uploads/' .. filename, 'wb'))
-  file:write(self.params.image.content)
+  file:write(fullsize_content)
   print("Uploaded image to static/uploads/" .. filename)
   file:close()
-  local image = magick.load_image_from_blob(self.params.image.content)
+  if format == "HEIC" or format == "HEIF" then
+    image = magick.load_image_from_blob(self.params.image.content)
+  end
   image:set_format("JPEG")
   image:thumb("1000x1000")
   local thumbfile = assert(io.open('static/uploads/thumb-' .. filename .. ".jpg", 'wb'))

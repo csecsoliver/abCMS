@@ -5,13 +5,32 @@ import escape from require "lapis.util"
 curl = require "cURL"
 lume = require "lume"
 UploadImage = =>
-    filename = tostring(uuid.new!) .. @params.image.filename
-    file = assert(io.open('static/uploads/' ..  filename, 'wb'))
-    file\write(@params.image.content)
-    print("Uploaded image to static/uploads/" .. filename)
-    file\close()
 
     image = magick.load_image_from_blob @params.image.content
+    format = image and image\get_format!
+    allowed = {"JPEG", "JPG", "PNG", "GIF", "WEBP", "BMP", "TIFF", "TIF", "ICO", "CUR", "SVG", "SVGZ", "APNG", "AVIF", "JXL", "HEIC", "HEIF"}
+    unless format and lume.find(allowed, format)
+        @write status: 418
+        return
+    
+    -- Convert HEIC/HEIF to JPEG for full-size image
+    if format == "HEIC" or format == "HEIF"
+        image\set_format "JPEG"
+        fullsize_content = image\get_blob!
+        filename = tostring(uuid.new!) .. @params.image.filename .. ".jpg"
+    else
+        fullsize_content = @params.image.content
+        filename = tostring(uuid.new!) .. @params.image.filename
+    
+    file = assert(io.open('static/uploads/' ..  filename, 'wb'))
+    file\write(fullsize_content)
+    print("Uploaded image to static/uploads/" .. filename)
+    file\close()
+    
+    -- Reset image for thumbnail if we converted HEIC/HEIF
+    if format == "HEIC" or format == "HEIF"
+        image = magick.load_image_from_blob @params.image.content
+    
     image\set_format "JPEG"
     image\thumb "1000x1000"
 
@@ -19,9 +38,8 @@ UploadImage = =>
     thumbfile\write(image\get_blob!)
     print("Uploaded thumbnail to static/uploads/thumb-" .. filename.. ".jpg")
     thumbfile\close!
-
+    
     image\destroy!
-
     return "/static/uploads/" .. filename, "/static/uploads/thumb-" .. filename.. ".jpg"
 
 GetFreeSpace = ->

@@ -35,11 +35,11 @@ do
           local thumbfile = lfs.attributes("." .. self.post.thumbnail_path)
           if imagefile then
             local size_kb = imagefile.size
-            p("The original image takes up " .. size_kb .. " bytes of storage.")
+            p("The original image takes up " .. size_kb .. " bytes of space.")
           end
           if thumbfile then
             local thumb_size_kb = thumbfile.size
-            return p("The thumbnail image takes up " .. thumb_size_kb .. " bytes of storage.")
+            return p("The thumbnail image takes up " .. thumb_size_kb .. " bytes of space.")
           end
         end)
       end)
