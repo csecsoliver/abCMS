@@ -37,7 +37,8 @@ GetFreeSpace = ->
     r\perform!
     r\close!
     response = table.concat pieces
-    response_data = lume.split(response, "//")[2]
-    response_data
+    response = lume.split(response, "//")[2]
+    response = lume.split(response, "2025")[1]
+    response
 
 { :UploadImage, :GetFreeSpace }

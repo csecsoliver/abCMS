@@ -35,8 +35,9 @@ GetFreeSpace = function()
   r:perform()
   r:close()
   local response = table.concat(pieces)
-  local response_data = lume.split(response, "//")[2]
-  return response_data
+  response = lume.split(response, "//")[2]
+  response = lume.split(response, "2025")[1]
+  return response
 end
 return {
   UploadImage = UploadImage,
