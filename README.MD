@@ -1,3 +1,6 @@
+File attributions:
+filestore/copyparty.py is made by https://github.com/9001 and is downloadable from https://copyparty.eu/py
+
 # abCMS
 This has been my ongoing project throughout siege. This week I made good progress rewriting the entire thing in moonscript (lua) with the lapis framework. Image posts work now, post colors do not
 
@@ -17,4 +20,5 @@ If you were ever brave enough to host an instance of this, you can now migrate o
 - The releases only have the python versions as I have yet to figure out packaging. 
 - The v3-legacy-python branch contains the code for the python version
 - The v4-rewrite branch is not relevant
+
 
