@@ -35,7 +35,7 @@ class extends lapis.Application
           return { redirect_to: redirect_url, layout: false }
         elseif @params.option == "login"
           user = Users\find username: slugify @params.username
-          if user and (bcrypt.verify(@params.password, user.passhash) or (argon2.verify(user.passhash, @params.password).ok))
+          if user and (bcrypt.verify(@params.password, user.passhash) or (argon2.verify(user.passhash, @params.password)))
             @session.user = user.username
             @session.expiry = os.time! + 360000
             print "User #{@session.user} logged in."

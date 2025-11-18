@@ -72,7 +72,7 @@ do
           local user = Users:find({
             username = slugify(self.params.username)
           })
-          if user and (bcrypt.verify(self.params.password, user.passhash) or (argon2.verify(user.passhash, self.params.password).ok)) then
+          if user and (bcrypt.verify(self.params.password, user.passhash) or (argon2.verify(user.passhash, self.params.password))) then
             self.session.user = user.username
             self.session.expiry = os.time() + 360000
             print("User " .. tostring(self.session.user) .. " logged in.")
