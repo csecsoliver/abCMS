@@ -18,9 +18,9 @@ class PostPage extends Widget
                     raw markdown(@post.content)
                 imagefile = lfs.attributes "."..@post.path
                 thumbfile = lfs.attributes "."..@post.thumbnail_path
-                if imagefile
-                    size_kb = imagefile.size
+                if imagefile.size > 4100
+                    size_kb = imagefile.size 
                     p "The original image takes up " .. size_kb .. " bytes of space."
-                if thumbfile
+                if thumbfile > 4100
                     thumb_size_kb = thumbfile.size
                     p "The thumbnail image takes up " .. thumb_size_kb .. " bytes of space."
