@@ -14,7 +14,7 @@ http {
   init_by_lua_block {
     require "lpeg"
   }
-  client_max_body_size 100m;
+  client_max_body_size 15m;
   server {
     listen 8080;
     lua_code_cache off;

@@ -9,7 +9,6 @@ local UploadImage
 UploadImage = function(self)
   local image = magick.load_image_from_blob(self.params.image.content)
   local format = image and image:get_format()
-  print("Image format: " .. format)
   local allowed = {
     "JPEG",
     "JPG",

@@ -8,7 +8,6 @@ UploadImage = =>
 
     image = magick.load_image_from_blob @params.image.content
     format = image and image\get_format!
-    print("Image format: " .. format)
     allowed = {"JPEG", "JPG", "PNG", "GIF", "WEBP", "BMP", "TIFF", "TIF", "ICO", "CUR", "SVG", "SVGZ", "APNG", "AVIF", "JXL", "HEIC", "HEIF"}
     unless format and lume.find(allowed, string.upper format)
         @write status: 418
