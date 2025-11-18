@@ -21,6 +21,6 @@ class PostPage extends Widget
                 if imagefile.size > 4100
                     size_kb = imagefile.size 
                     p "The original image takes up " .. size_kb .. " bytes of space."
-                if thumbfile > 4100
+                if thumbfile.size > 4100
                     thumb_size_kb = thumbfile.size
                     p "The thumbnail image takes up " .. thumb_size_kb .. " bytes of space."

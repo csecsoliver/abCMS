@@ -33,11 +33,11 @@ do
           end)
           local imagefile = lfs.attributes("." .. self.post.path)
           local thumbfile = lfs.attributes("." .. self.post.thumbnail_path)
-          if imagefile then
+          if imagefile.size > 4100 then
             local size_kb = imagefile.size
             p("The original image takes up " .. size_kb .. " bytes of space.")
           end
-          if thumbfile then
+          if thumbfile.size > 4100 then
             local thumb_size_kb = thumbfile.size
             return p("The thumbnail image takes up " .. thumb_size_kb .. " bytes of space.")
           end
