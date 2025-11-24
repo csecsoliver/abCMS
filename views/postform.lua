@@ -29,6 +29,11 @@ do
         enctype = "multipart/form-data"
       }, function()
         div(function()
+          return p(function()
+            return b("Note: Images are not sanitized of metadata. This is an intentional design choice. In case you don't want your data on here, deal with it yourself.")
+          end)
+        end)
+        div(function()
           label({
             ["for"] = "title"
           }, "Title:")
