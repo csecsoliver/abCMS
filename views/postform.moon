@@ -12,6 +12,9 @@ class PostForm extends Widget
             p class: "error-message", @params.error_message
         form action: form_action, method: form_method, class: "post-form", enctype: "multipart/form-data", ->
             div ->
+                p ->
+                    b "Note: Images are not sanitized of metadata. This is an intentional design choice. In case you don't want your data on here, deal with it yourself."
+            div ->
                 label for: "title", "Title:"
                 br!
                 input type: "text", name: "title", id: "title", value: post.title or ""
