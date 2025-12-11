@@ -10,7 +10,6 @@ class BlogApplication extends lapis.Application
         has_image = 0
         path = ""
         thumbnail_path = ""
-        print @params.image.filename
         if @params.image and @params.image.filename != ""
             
             has_image = 1
