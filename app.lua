@@ -19,6 +19,32 @@ do
   local _parent_0 = lapis.Application
   local _base_0 = {
     layout = require("views.layout"),
+    handle_404 = function(self)
+      self.page_title = "404 - Page Not Found"
+      if self.session.user and (self.session.expiry > os.time()) then
+        self.current_user = Users:find({
+          username = self.session.user
+        })
+      end
+      return {
+        render = "404"
+      }
+    end,
+    handle_error = function(self, err, trace)
+      print("Error: ", err)
+      if trace then
+        print("Trace: ", trace)
+      end
+      self.page_title = "500 - Server Error"
+      if self.session.user and (self.session.expiry > os.time()) then
+        self.current_user = Users:find({
+          username = self.session.user
+        })
+      end
+      return "Internal Server Error", {
+        status = 500
+      }
+    end,
     ["/"] = function(self)
       self.page_title = "abCMS"
       return {
@@ -105,13 +131,14 @@ do
         id = self.params.postid
       })
       if self.post then
-        return self:write({
+        self.page_title = self.post.title
+        return {
           render = "post"
-        })
+        }
       else
-        return self:write("Post not found", {
+        return {
           status = 404
-        })
+        }, "Post not found"
       end
     end
   }

@@ -10,6 +10,20 @@ class extends lapis.Application
   layout:require "views.layout"
   @enable "etlua"
   @include "applications.protected"
+
+  handle_404: =>
+    @page_title = "404 - Page Not Found"
+    @current_user = Users\find username: @session.user if @session.user and (@session.expiry > os.time!)
+    render: "404"
+
+  handle_error: (err, trace) =>
+    -- Log the error for debugging
+    print "Error: ", err
+    if trace
+      print "Trace: ", trace
+    @page_title = "500 - Server Error"
+    @current_user = Users\find username: @session.user if @session.user and (@session.expiry > os.time!)
+    "Internal Server Error", status: 500
   "/": =>
     @page_title = "abCMS"
     render: "index"
@@ -52,7 +66,8 @@ class extends lapis.Application
   "/posts/:postid": =>
         @post = Posts\find id: @params.postid
         if @post
-            @write render: "post"
+            @page_title = @post.title
+            render: "post"
         else
-            @write "Post not found", status: 404
+            return status: 404, "Post not found"
   
