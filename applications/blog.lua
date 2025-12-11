@@ -22,12 +22,11 @@ do
       local has_image = 0
       local path = ""
       local thumbnail_path = ""
-      print(self.params.image.filename)
       if self.params.image and self.params.image.filename ~= "" then
         has_image = 1
         path, thumbnail_path = UploadImage(self)
       end
-      if title == "" and content == "" and self.params.image.filename == "" and self.params.image then
+      if title == "" and content == "" and self.params.image and self.params.image.filename == "" then
         self:write({
           redirect_to = "/dashboard/posts/add?error_message=At least one of title, content, or image must be provided."
         })
