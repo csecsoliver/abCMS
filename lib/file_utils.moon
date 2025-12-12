@@ -45,19 +45,27 @@ UploadImage = =>
 
 GetFreeSpace = ->
     pieces = {}
-    r = curl.easy
-      url: "http://localhost:25511/img?pw=changeme&ls=t"--..os.getenv("COPYPARTY_PASS") currently hardcoded, so don't expose the 25511 port publicly
-    --   httpheader:
-    --     "X-Test-Header1: Header-Data1"
-    --     "X-Test-Header2: Header-Data2"
-      writefunction: (chunk) ->
-        table.insert pieces, chunk
-        chunk
-    r\perform!
-    r\close!
+    ok, err = pcall ->
+        r = curl.easy
+          url: "http://localhost:25511/img?pw=changeme&ls=t"--..os.getenv("COPYPARTY_PASS") currently hardcoded, so don't expose the 25511 port publicly
+        --   httpheader:
+        --     "X-Test-Header1: Header-Data1"
+        --     "X-Test-Header2: Header-Data2"
+          writefunction: (chunk) ->
+            table.insert pieces, chunk
+            chunk
+        r\perform!
+        r\close!
+
+    unless ok
+        return "0 bytes (Service unavailable)"
+
     response = table.concat pieces
     response = lume.split(response, "//")[2]
-    response = lume.split(response, "2025")[1]
-    response
+    if response
+        response = lume.split(response, "2025")[1]
+        response
+    else
+        "0 bytes"
 
 { :UploadImage, :GetFreeSpace }

@@ -19,6 +19,7 @@ do
       })
       local title = escape(self.params.title or "")
       local content = escape(self.params.content or "")
+      local color = escape(self.params.color or "")
       local has_image = 0
       local path = ""
       local thumbnail_path = ""
@@ -36,6 +37,7 @@ do
         user_id = author.id,
         title = title,
         content = content,
+        color = color,
         created_at = os.time(),
         has_image = has_image,
         path = path,

@@ -15,8 +15,15 @@ do
       return div({
         class = "post-container"
       }, function()
+        local style_attr
+        if self.post.color and self.post.color ~= "" then
+          style_attr = "border-color: " .. tostring(self.post.color) .. "; border-width: 2px; border-style: solid;"
+        else
+          style_attr = ""
+        end
         return div({
-          class = "grid-item post-big"
+          class = "grid-item post-big",
+          style = style_attr
         }, function()
           h2(self.post.title)
           local author = self.post:get_user().username

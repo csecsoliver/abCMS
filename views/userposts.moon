@@ -12,7 +12,8 @@ class UserPosts extends Widget
         else
             div class: "grid-container", ->
                 for post in *posts
-                    div class: "grid-item", ->
+                    style_attr = if post.color and post.color != "" then "border-color: #{post.color}; border-width: 2px; border-style: solid;" else ""
+                    div class: "grid-item", style: style_attr, ->
                         h3 post.title
                         author = post\get_user!.username
                         p "Author: #{author} on " .. os.date("%Y-%m-%d %H:%M:%S", post.created_at)
