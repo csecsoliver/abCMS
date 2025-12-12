@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 # setup.sh - Environment setup script for abCMS
@@ -8,7 +8,8 @@ echo "Starting setup for abCMS..."
 
 # Helper function for sudo
 SUDO=""
-if [ "$EUID" -ne 0 ]; then
+# FIX: Use id -u instead of bash-specific $EUID
+if [ "$(id -u)" -ne 0 ]; then
     if command -v sudo >/dev/null 2>&1; then
         SUDO="sudo"
     else
@@ -23,7 +24,8 @@ if [ -f /etc/os-release ]; then
     OS=$NAME
 fi
 
-if [[ "$OS" == "Ubuntu" ]] || [[ "$OS" == "Debian GNU/Linux" ]]; then
+# FIX: Use POSIX [ and =
+if [ "$OS" = "Ubuntu" ] || [ "$OS" = "Debian GNU/Linux" ]; then
     echo "Installing system dependencies for $OS..."
 
     # Update package list
@@ -39,9 +41,9 @@ if [[ "$OS" == "Ubuntu" ]] || [[ "$OS" == "Debian GNU/Linux" ]]; then
         wget -O - https://openresty.org/package/pubkey.gpg | $SUDO gpg --dearmor --yes -o /usr/share/keyrings/openresty.gpg
 
         # Add OpenResty repository
-        if [[ "$OS" == "Ubuntu" ]]; then
+        if [ "$OS" = "Ubuntu" ]; then
             echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openresty.gpg] http://openresty.org/package/ubuntu $(lsb_release -sc) main" | $SUDO tee /etc/apt/sources.list.d/openresty.list
-        elif [[ "$OS" == "Debian GNU/Linux" ]]; then
+        elif [ "$OS" = "Debian GNU/Linux" ]; then
              CODENAME=$(grep -Po 'VERSION="[0-9]+ \(\K[^)]+' /etc/os-release)
              echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openresty.gpg] http://openresty.org/package/debian $CODENAME openresty" | $SUDO tee /etc/apt/sources.list.d/openresty.list
         fi
@@ -69,7 +71,9 @@ if [[ "$OS" == "Ubuntu" ]] || [[ "$OS" == "Debian GNU/Linux" ]]; then
 else
     echo "Warning: This script assumes Ubuntu/Debian. You may need to install dependencies manually for your OS ($OS)."
     echo "Required: OpenResty, ImageMagick (dev), UUID (dev), Argon2 (dev), OpenSSL (dev), SQLite (dev), Lua 5.1 (dev), LuaRocks, Tmux."
-    read -p "Press Enter to continue trying setup with existing tools, or Ctrl+C to abort..."
+    # FIX: Use printf and read instead of read -p
+    printf "Press Enter to continue trying setup with existing tools, or Ctrl+C to abort..."
+    read _
 fi
 
 # Setup Lua Environment (Local)
