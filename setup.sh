@@ -63,6 +63,7 @@ if [ "$OS" = "Ubuntu" ] || [ "$OS" = "Debian GNU/Linux" ]; then
         uuid-dev \
         libargon2-dev \
         libssl-dev \
+        libcurl4-openssl-dev \
         sqlite3 libsqlite3-dev \
         lua5.1 liblua5.1-0-dev \
         luarocks \
@@ -108,7 +109,20 @@ install_rock luasec
 install_rock lume
 install_rock moonscript
 install_rock bcrypt
-install_rock Lua-curl
+
+# Lua-curl setup
+if pkg-config --exists libcurl; then
+    CURL_INCDIR=$(pkg-config --cflags-only-I libcurl | sed 's/-I//g' | awk '{print $1}')
+    if [ -n "$CURL_INCDIR" ]; then
+        echo "Found libcurl headers at: $CURL_INCDIR"
+        install_rock Lua-curl CURL_INCDIR="$CURL_INCDIR"
+    else
+        install_rock Lua-curl
+    fi
+else
+    install_rock Lua-curl
+fi
+
 install_rock markdown
 
 # Magick setup
