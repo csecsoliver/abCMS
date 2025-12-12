@@ -37,8 +37,14 @@ if [[ "$OS" == "Ubuntu" ]] || [[ "$OS" == "Debian GNU/Linux" ]]; then
         echo "Installing OpenResty..."
         # Add OpenResty GPG key
         wget -O - https://openresty.org/package/pubkey.gpg | $SUDO gpg --dearmor --yes -o /usr/share/keyrings/openresty.gpg
+
         # Add OpenResty repository
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openresty.gpg] http://openresty.org/package/ubuntu $(lsb_release -sc) main" | $SUDO tee /etc/apt/sources.list.d/openresty.list
+        if [[ "$OS" == "Ubuntu" ]]; then
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openresty.gpg] http://openresty.org/package/ubuntu $(lsb_release -sc) main" | $SUDO tee /etc/apt/sources.list.d/openresty.list
+        elif [[ "$OS" == "Debian GNU/Linux" ]]; then
+             CODENAME=$(grep -Po 'VERSION="[0-9]+ \(\K[^)]+' /etc/os-release)
+             echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/openresty.gpg] http://openresty.org/package/debian $CODENAME openresty" | $SUDO tee /etc/apt/sources.list.d/openresty.list
+        fi
 
         $SUDO apt-get update
         $SUDO apt-get install -y openresty
