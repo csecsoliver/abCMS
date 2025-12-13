@@ -8,10 +8,12 @@ class HomePage extends Widget
     content: =>
         div class: "grid-container", ->
             for post in *Posts\select "order by created_at desc"
-                div class: "grid-item", ->
+                style_attr = if post.color and post.color != "" then "background-color: " .. post.color .. ";" else ""
+                div class: "grid-item", style: style_attr, ->
                     h3 post.title
                     author = post\get_user!.username
-                    p "Author: #{author} on " .. os.date("%Y-%m-%d %H:%M:%S", post.created_at)
+                    category = post.category or "General"
+                    p "Author: #{author} | Category: #{category} | " .. os.date("%Y-%m-%d %H:%M:%S", post.created_at)
                     if post.has_image == 1 and post.thumbnail_path != ""
                         img src: post.thumbnail_path, ["data-fullsrc"]: post.path, alt: "Post Image", style: "width: 100%;"
                     else if post.has_image == 1 and post.thumbnail_path == ""

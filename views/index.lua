@@ -17,12 +17,20 @@ do
         local _list_0 = Posts:select("order by created_at desc")
         for _index_0 = 1, #_list_0 do
           local post = _list_0[_index_0]
+          local style_attr
+          if post.color and post.color ~= "" then
+            style_attr = "background-color: " .. post.color .. ";"
+          else
+            style_attr = ""
+          end
           div({
-            class = "grid-item"
+            class = "grid-item",
+            style = style_attr
           }, function()
             h3(post.title)
             local author = post:get_user().username
-            p("Author: " .. tostring(author) .. " on " .. os.date("%Y-%m-%d %H:%M:%S", post.created_at))
+            local category = post.category or "General"
+            p("Author: " .. tostring(author) .. " | Category: " .. tostring(category) .. " | " .. os.date("%Y-%m-%d %H:%M:%S", post.created_at))
             if post.has_image == 1 and post.thumbnail_path ~= "" then
               img({
                 src = post.thumbnail_path,
