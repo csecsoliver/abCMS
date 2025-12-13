@@ -15,12 +15,20 @@ do
       return div({
         class = "post-container"
       }, function()
+        local style_attr
+        if self.post.color and self.post.color ~= "" then
+          style_attr = "background-color: " .. self.post.color .. ";"
+        else
+          style_attr = ""
+        end
         return div({
-          class = "grid-item post-big"
+          class = "grid-item post-big",
+          style = style_attr
         }, function()
           h2(self.post.title)
           local author = self.post:get_user().username
-          p("Author: " .. tostring(author) .. " on " .. os.date("%Y-%m-%d %H:%M:%S", self.post.created_at))
+          local category = self.post.category or "General"
+          p("Author: " .. tostring(author) .. " | Category: " .. tostring(category) .. " | " .. os.date("%Y-%m-%d %H:%M:%S", self.post.created_at))
           if self.post.has_image == 1 then
             img({
               src = self.post.path,

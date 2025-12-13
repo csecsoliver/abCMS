@@ -66,6 +66,50 @@ do
             id = "image"
           })
         end)
+        div(function()
+          label({
+            ["for"] = "color"
+          }, "Post color:")
+          br()
+          return input({
+            type = "color",
+            name = "color",
+            id = "color",
+            value = post.color or "#ffffff"
+          })
+        end)
+        div(function()
+          label({
+            ["for"] = "category"
+          }, "Category:")
+          br()
+          return select({
+            name = "category",
+            id = "category"
+          }, function()
+            local categories = {
+              "General",
+              "Devlog",
+              "Cool Stuff",
+              "Questions",
+              "Opinions",
+              "Vibes"
+            }
+            for _index_0 = 1, #categories do
+              local category = categories[_index_0]
+              if post.category == category then
+                option({
+                  value = category,
+                  selected = "selected"
+                }, category)
+              else
+                option({
+                  value = category
+                }, category)
+              end
+            end
+          end)
+        end)
         return button({
           type = "submit"
         }, "Post")

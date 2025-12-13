@@ -25,4 +25,6 @@ import create_table, types, add_column from require "lapis.db.schema"
         add_column "users", "social", types.text default: ""
         add_column "users", "upload_token", types.text default: ""
         add_column "posts", "color", types.text default: ""
+    [5]: =>
+        add_column "posts", "category", types.text default: "General"
 }

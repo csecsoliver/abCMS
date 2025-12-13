@@ -8,10 +8,12 @@ lfs = require "lfs"
 class PostPage extends Widget
     content: =>
         div class: "post-container", ->
-            div class: "grid-item post-big", ->
+            style_attr = if @post.color and @post.color != "" then "background-color: " .. @post.color .. ";" else ""
+            div class: "grid-item post-big", style: style_attr, ->
                 h2 @post.title
                 author = @post\get_user!.username
-                p "Author: #{author} on " .. os.date("%Y-%m-%d %H:%M:%S", @post.created_at)
+                category = @post.category or "General"
+                p "Author: #{author} | Category: #{category} | " .. os.date("%Y-%m-%d %H:%M:%S", @post.created_at)
                 if @post.has_image == 1
                     img src: @post.path, alt: "Post Image", style: "width: 100%;"
                 div ->

@@ -90,5 +90,10 @@ return {
     return add_column("posts", "color", types.text({
       default = ""
     }))
+  end,
+  [5] = function(self)
+    return add_column("posts", "category", types.text({
+      default = "General"
+    }))
   end
 }
