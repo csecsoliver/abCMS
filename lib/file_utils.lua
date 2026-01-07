@@ -74,8 +74,7 @@ GetFreeSpace = function()
   r:close()
   local response = table.concat(pieces)
   response = lume.split(response, "//")[2]
-  local year = os.date("%Y")
-  response = lume.split(response, year)[1]
+  response = lume.split(response, "2025")[1]
   return response
 end
 return {
