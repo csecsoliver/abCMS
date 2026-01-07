@@ -57,7 +57,8 @@ GetFreeSpace = ->
     r\close!
     response = table.concat pieces
     response = lume.split(response, "//")[2]
-    response = lume.split(response, "2025")[1]
+    year = os.date("%Y")
+    response = lume.split(response, year)[1]
     response
 
 { :UploadImage, :GetFreeSpace }
