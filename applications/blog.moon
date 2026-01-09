@@ -7,6 +7,8 @@ class BlogApplication extends lapis.Application
         author = Users\find username: @session.user
         title = escape(@params.title or "")
         content = escape(@params.content or "")
+        color = escape(@params.color or "")
+        category = escape(@params.category or "General")
         has_image = 0
         path = ""
         thumbnail_path = ""
@@ -23,6 +25,8 @@ class BlogApplication extends lapis.Application
             user_id: author.id
             title: title
             content: content
+            color: color
+            category: category
             created_at: os.time!
             has_image: has_image
             path: path

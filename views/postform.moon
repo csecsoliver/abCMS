@@ -26,5 +26,19 @@ class PostForm extends Widget
                 label for: "image", "Upload image:"
                 br!
                 input type: "file", name: "image", id: "image"
+            div ->
+                label for: "color", "Post color:"
+                br!
+                input type: "color", name: "color", id: "color", value: post.color or "#ffffff"
+            div ->
+                label for: "category", "Category:"
+                br!
+                select name: "category", id: "category", ->
+                    categories = {"General", "Devlog", "Cool Stuff", "Questions", "Opinions", "Vibes"}
+                    for category in *categories
+                        if post.category == category
+                            option value: category, selected: "selected", category
+                        else
+                            option value: category, category
                 
             button type: "submit", "Post"
