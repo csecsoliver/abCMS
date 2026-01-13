@@ -61,7 +61,7 @@ GetFreeSpace = ->
     response
 
 GenThumb = (path) ->
-    imgf = assert io.open(path, "rb")
+    imgf = assert io.open("." .. path, "rb")
     imgdata = imgf\read "*all"
     imgf\close!
     imgimg = magick.load_image_from_blob imgdata

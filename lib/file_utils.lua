@@ -79,7 +79,7 @@ GetFreeSpace = function()
 end
 local GenThumb
 GenThumb = function(path)
-  local imgf = assert(io.open(path, "rb"))
+  local imgf = assert(io.open("." .. path, "rb"))
   local imgdata = imgf:read("*all")
   imgf:close()
   local imgimg = magick.load_image_from_blob(imgdata)
