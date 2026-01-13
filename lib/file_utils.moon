@@ -60,4 +60,19 @@ GetFreeSpace = ->
     response = lume.split(response, "2025")[1]
     response
 
+GenThumb = (path) ->
+    imgf = assert io.open(path, "rb")
+    imgdata = imgf\read "*all"
+    imgf\close!
+    imgimg = magick.load_image_from_blob imgdata
+
+    imgimg\set_format "JPEG"
+    imgimg\thumb "1000x1000"
+
+    thumbfile = assert(io.open('static/uploads/thumb-' .. filename.. ".jpg", 'wb'))
+    thumbfile\write(imgimg\get_blob!)
+    print("Uploaded thumbnail to static/uploads/thumb-" .. filename.. ".jpg")
+    thumbfile\close!
+    return "/static/uploads/thumb-" .. filename.. ".jpg"
+
 { :UploadImage, :GetFreeSpace }

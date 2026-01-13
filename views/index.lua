@@ -3,6 +3,8 @@ local Widget
 Widget = require("lapis.html").Widget
 local Posts
 Posts = require("models").Posts
+local GenThumb
+GenThumb = require("lib/file_utils").GenThumb
 local markdown = require("markdown")
 local string = require("string")
 local HomePage
@@ -23,31 +25,27 @@ do
             h3(post.title)
             local author = post:get_user().username
             p("Author: " .. tostring(author) .. " on " .. os.date("%Y-%m-%d %H:%M:%S", post.created_at))
-            if post.has_image == 1 and post.thumbnail_path ~= "" then
+            if post.has_image == 1 then
+              if post.thumbnail_path == "" then
+                post.thumbnail_path = GenThumb(post.path)
+                post:update()
+              end
               img({
                 src = post.thumbnail_path,
                 ["data-fullsrc"] = post.path,
                 alt = "Post Image",
                 style = "width: 100%;"
               })
-            else
-              if post.has_image == 1 and post.thumbnail_path == "" then
-                img({
-                  src = post.path,
-                  alt = "Post Image",
-                  style = "width: 100%;"
-                })
-              end
             end
-            if string.len(post.content) <= 200 and post.has_image == 0 then
+            if string.len(post.content) <= 300 and post.has_image == 0 then
               raw(markdown(post.content))
-            elseif string.len(post.content) > 200 and post.has_image == 0 then
-              local content = string.sub(post.content, 1, 200)
+            elseif string.len(post.content) > 300 and post.has_image == 0 then
+              local content = string.sub(post.content, 1, 300)
               raw(markdown(content .. "..."))
-            elseif string.len(post.content) <= 50 and post.has_image == 1 then
+            elseif string.len(post.content) <= 200 and post.has_image == 1 then
               raw(markdown(post.content))
-            elseif string.len(post.content) > 50 and post.has_image == 1 then
-              local content = string.sub(post.content, 1, 50)
+            elseif string.len(post.content) > 200 and post.has_image == 1 then
+              local content = string.sub(post.content, 1, 200)
               raw(markdown(content .. "..."))
             end
             return a({

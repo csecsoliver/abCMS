@@ -77,6 +77,20 @@ GetFreeSpace = function()
   response = lume.split(response, "2025")[1]
   return response
 end
+local GenThumb
+GenThumb = function(path)
+  local imgf = assert(io.open(path, "rb"))
+  local imgdata = imgf:read("*all")
+  imgf:close()
+  local imgimg = magick.load_image_from_blob(imgdata)
+  imgimg:set_format("JPEG")
+  imgimg:thumb("1000x1000")
+  local thumbfile = assert(io.open('static/uploads/thumb-' .. filename .. ".jpg", 'wb'))
+  thumbfile:write(imgimg:get_blob())
+  print("Uploaded thumbnail to static/uploads/thumb-" .. filename .. ".jpg")
+  thumbfile:close()
+  return "/static/uploads/thumb-" .. filename .. ".jpg"
+end
 return {
   UploadImage = UploadImage,
   GetFreeSpace = GetFreeSpace
