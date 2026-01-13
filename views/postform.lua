@@ -47,6 +47,18 @@ do
         end)
         div(function()
           label({
+            ["for"] = "color"
+          }, "Color:")
+          br()
+          return input({
+            type = "color",
+            name = "color",
+            id = "color",
+            value = post.color or "#ffffff"
+          })
+        end)
+        div(function()
+          label({
             ["for"] = "content"
           }, "Content:")
           br()

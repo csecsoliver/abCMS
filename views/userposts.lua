@@ -25,8 +25,15 @@ do
         }, function()
           for _index_0 = 1, #posts do
             local post = posts[_index_0]
+            local style_attr
+            if post.color and post.color ~= "" then
+              style_attr = "border-color: " .. tostring(post.color) .. "; border-width: 2px; border-style: solid;"
+            else
+              style_attr = ""
+            end
             div({
-              class = "grid-item"
+              class = "grid-item",
+              style = style_attr
             }, function()
               h3(post.title)
               local author = post:get_user().username

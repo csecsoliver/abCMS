@@ -63,19 +63,28 @@ end
 local GetFreeSpace
 GetFreeSpace = function()
   local pieces = { }
-  local r = curl.easy({
-    url = "http://localhost:25511/img?pw=changeme&ls=t",
-    writefunction = function(chunk)
-      table.insert(pieces, chunk)
-      return chunk
-    end
-  })
-  r:perform()
-  r:close()
+  local ok, err = pcall(function()
+    local r = curl.easy({
+      url = "http://localhost:25511/img?pw=changeme&ls=t",
+      writefunction = function(chunk)
+        table.insert(pieces, chunk)
+        return chunk
+      end
+    })
+    r:perform()
+    return r:close()
+  end)
+  if not (ok) then
+    return "0 bytes (Service unavailable)"
+  end
   local response = table.concat(pieces)
   response = lume.split(response, "//")[2]
-  response = lume.split(response, "2025")[1]
-  return response
+  if response then
+    response = lume.split(response, "2025")[1]
+    return response
+  else
+    return "0 bytes"
+  end
 end
 local GenThumb
 GenThumb = function(path)

@@ -8,7 +8,8 @@ lfs = require "lfs"
 class PostPage extends Widget
     content: =>
         div class: "post-container", ->
-            div class: "grid-item post-big", ->
+            style_attr = if @post.color and @post.color != "" then "border-color: #{@post.color}; border-width: 2px; border-style: solid;" else ""
+            div class: "grid-item post-big", style: style_attr, ->
                 h2 @post.title
                 author = @post\get_user!.username
                 p "Author: #{author} on " .. os.date("%Y-%m-%d %H:%M:%S", @post.created_at)
