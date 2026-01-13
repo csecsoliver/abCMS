@@ -93,5 +93,6 @@ GenThumb = function(path)
 end
 return {
   UploadImage = UploadImage,
-  GetFreeSpace = GetFreeSpace
+  GetFreeSpace = GetFreeSpace,
+  GenThumb = GenThumb
 }

@@ -75,4 +75,4 @@ GenThumb = (path) ->
     thumbfile\close!
     return "/static/uploads/thumb-" .. filename.. ".jpg"
 
-{ :UploadImage, :GetFreeSpace }
+{ :UploadImage, :GetFreeSpace, :GenThumb }
