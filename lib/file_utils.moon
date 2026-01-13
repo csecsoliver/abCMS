@@ -68,11 +68,11 @@ GenThumb = (path) ->
 
     imgimg\set_format "JPEG"
     imgimg\thumb "1000x1000"
-
-    thumbfile = assert(io.open('static/uploads/thumb-' .. filename.. ".jpg", 'wb'))
+    newfilename = uuid.new!
+    thumbfile = assert(io.open('static/uploads/thumb-' .. newfilename.. ".jpg", 'wb'))
     thumbfile\write(imgimg\get_blob!)
-    print("Uploaded thumbnail to static/uploads/thumb-" .. filename.. ".jpg")
+    print("Uploaded thumbnail to static/uploads/thumb-" .. newfilename.. ".jpg")
     thumbfile\close!
-    return "/static/uploads/thumb-" .. filename.. ".jpg"
+    return "/static/uploads/thumb-" .. newfilename .. ".jpg"
 
 { :UploadImage, :GetFreeSpace, :GenThumb }

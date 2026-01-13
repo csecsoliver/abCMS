@@ -85,11 +85,12 @@ GenThumb = function(path)
   local imgimg = magick.load_image_from_blob(imgdata)
   imgimg:set_format("JPEG")
   imgimg:thumb("1000x1000")
-  local thumbfile = assert(io.open('static/uploads/thumb-' .. filename .. ".jpg", 'wb'))
+  local newfilename = uuid.new()
+  local thumbfile = assert(io.open('static/uploads/thumb-' .. newfilename .. ".jpg", 'wb'))
   thumbfile:write(imgimg:get_blob())
-  print("Uploaded thumbnail to static/uploads/thumb-" .. filename .. ".jpg")
+  print("Uploaded thumbnail to static/uploads/thumb-" .. newfilename .. ".jpg")
   thumbfile:close()
-  return "/static/uploads/thumb-" .. filename .. ".jpg"
+  return "/static/uploads/thumb-" .. newfilename .. ".jpg"
 end
 return {
   UploadImage = UploadImage,
