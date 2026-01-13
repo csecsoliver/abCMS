@@ -75,7 +75,7 @@ abCMS is a content management system built with MoonScript/Lua and the Lapis web
 - `applications/`: Application modules
   - `protected.moon`: Authentication middleware for protected routes
   - `blog.moon`: Post management (create, edit, delete)
-- `views/`: etlua HTML templates
+- `views/`: moonscript HTML builder templates
 - `lib/`: Utility libraries
   - `file_utils.moon`: Image upload and storage management
 - `static/`: Static assets (CSS, JS, uploaded files)
