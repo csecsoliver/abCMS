@@ -68,7 +68,7 @@ GenThumb = (path) ->
 
     imgimg\set_format "JPEG"
     imgimg\thumb "1000x1000"
-    newfilename = uuid.new!
+    newfilename = tostring uuid.new!
     thumbfile = assert(io.open('static/uploads/thumb-' .. newfilename.. ".jpg", 'wb'))
     thumbfile\write(imgimg\get_blob!)
     print("Uploaded thumbnail to static/uploads/thumb-" .. newfilename.. ".jpg")
