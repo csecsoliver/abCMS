@@ -14,9 +14,10 @@ class HomePage extends Widget
                     author = post\get_user!.username
                     p "Author: #{author} on " .. os.date("%Y-%m-%d %H:%M:%S", post.created_at)
                     if post.has_image == 1
-                        if post.thumbnail_path == ""
-                            post.thumbnail_path = GenThumb post.path
-                            post\update!
+                        if post.thumbnail_path == "" or post.thumbnail_path == nil
+                            thumb_path = GenThumb post.path
+                            post\update thumbnail_path: thumb_path
+                            post.thumbnail_path = thumb_path
                         img src: post.thumbnail_path, ["data-fullsrc"]: post.path, alt: "Post Image", style: "width: 100%;"
                         
                     if string.len(post.content) <= 300 and post.has_image == 0
