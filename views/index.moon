@@ -7,6 +7,8 @@ markdown = require "markdown"
 string = require "string"
 class HomePage extends Widget
     content: =>
+        if (@session.user) and (Users\find username: @session.user) and (@session.expiry > os.time!)
+            a href: "/dashboard/posts/add", "Add post"
         div class: "grid-container", ->
             for post in *Posts\select "order by created_at desc"
                 div class: "grid-item", ->
