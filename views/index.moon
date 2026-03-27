@@ -7,7 +7,7 @@ markdown = require "markdown"
 string = require "string"
 class HomePage extends Widget
     content: =>
-        div ->
+        p ->
             a href: "/dashboard/posts/add", "Add post"
         div class: "grid-container", ->
             for post in *Posts\select "order by created_at desc"
