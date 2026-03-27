@@ -8,7 +8,7 @@ string = require "string"
 class HomePage extends Widget
     content: =>
         div ->
-            a href: "/dashboard/posts/add", "Add post"s
+            a href: "/dashboard/posts/add", "Add post"
         div class: "grid-container", ->
             for post in *Posts\select "order by created_at desc"
                 div class: "grid-item", ->
