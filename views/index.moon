@@ -1,14 +1,13 @@
 lapis = require "lapis"
 
 import Widget from require "lapis.html"
-import Posts from require "models"
+import Posts, Users from require "models"
 import GenThumb from require "lib/file_utils"
 markdown = require "markdown"
 string = require "string"
 class HomePage extends Widget
     content: =>
-        if (@session.user) and (Users\find username: @session.user) and (@session.expiry > os.time!)
-            a href: "/dashboard/posts/add", "Add post"
+        a href: "/dashboard/posts/add", "Add post"
         div class: "grid-container", ->
             for post in *Posts\select "order by created_at desc"
                 div class: "grid-item", ->
