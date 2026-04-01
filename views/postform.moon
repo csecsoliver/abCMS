@@ -19,6 +19,10 @@ class PostForm extends Widget
                 br!
                 input type: "text", name: "title", id: "title", value: post.title or ""
             div ->
+                label for: "color", "Color:"
+                br!
+                input type: "color", name: "color", id: "color", value: post.color or "#ffffff"
+            div ->
                 label for: "content", "Content:"
                 br!
                 textarea name: "content", id: "content", post.content or ""
