@@ -42,6 +42,7 @@ pkgs.mkShell {
     luarocks install bcrypt --local
     luarocks install Lua-curl --local
     luarocks install markdown --local
+    luarocks install busted --local
     luarocks install magick --local MAGICK_DIR=${pkgs.imagemagick} MAGICK_INCDIR=${pkgs.imagemagick.dev}/include MAGICK_LIBDIR=${pkgs.imagemagick.out}/lib
     luarocks install lapis --local CRYPTO_DIR=${pkgs.openssl.out} CRYPTO_INCDIR=${pkgs.openssl.dev}/include OPENSSL_DIR=${pkgs.openssl.out} OPENSSL_INCDIR=${pkgs.openssl.dev}/include
     luarocks install argon2 --local ARGON2_DIR=${pkgs.libargon2} ARGON2_INCDIR=${pkgs.libargon2}/include ARGON2_LIBDIR=${pkgs.libargon2}/lib

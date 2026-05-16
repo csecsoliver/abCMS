@@ -115,7 +115,7 @@ if pkg-config --exists libcurl; then
     CURL_INCDIR=$(pkg-config --cflags-only-I libcurl | sed 's/-I//g' | awk '{print $1}')
     if [ -n "$CURL_INCDIR" ]; then
         echo "Found libcurl headers at: $CURL_INCDIR"
-        install_rock Lua-curl CURL_INCDIR="$CURL_INCDIR"
+install_rock Lua-curl CURL_INCDIR="$CURL_INCDIR"
     else
         install_rock Lua-curl
     fi
@@ -124,6 +124,7 @@ else
 fi
 
 install_rock markdown
+install_rock busted
 
 # Magick setup
 # Attempt to detect paths using pkg-config if available

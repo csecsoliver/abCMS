@@ -16,6 +16,10 @@ If you were ever brave enough to host an instance of this, you can now migrate o
 5. In shell #2 go to the repo dir and run setup_files.sh
 6. Congrats, you now have a working site on port 8080, which you can expose using a reverse proxy. Do not expose port 3923 in the current version.
 
+## Tests
+1. Install dependencies via `setup.sh` or `nix-shell`.
+2. Run `busted` from the repository root.
+
 
 ## Repo structure
 - The releases only have the python versions as I have yet to figure out packaging. 
