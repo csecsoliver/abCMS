@@ -4,6 +4,7 @@ COPY . /app
 WORKDIR /app
 
 RUN go mod download
+RUN go tool templ generate
 RUN go build -o abcms ./cmd/abcms
 
 FROM scratch
