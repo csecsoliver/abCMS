@@ -75,10 +75,10 @@ abCMS is a content management system built with MoonScript/Lua and the Lapis web
 - `applications/`: Application modules
   - `protected.moon`: Authentication middleware for protected routes
   - `blog.moon`: Post management (create, edit, delete)
-- `views/`: moonscript HTML builder templates
+- `views/`: MoonScript HTML builder templates (including `post_form.moon`, `user_posts.moon`, `not_found.moon`)
 - `lib/`: Utility libraries
   - `file_utils.moon`: Image upload and storage management
-- `static/`: Static assets (CSS, JS, uploaded files)
+- `static/`: Static assets (CSS, JS including `static/js/image_hover.js` and `static/js/starry_night.js`, uploaded files)
 - `filestore/`: CopyParty configuration and scripts
 
 ### Key Components
@@ -90,7 +90,7 @@ abCMS is a content management system built with MoonScript/Lua and the Lapis web
    - Protected routes middleware in `applications/protected.moon`
 
 2. **Post Management**:
-   - Create, view, and delete posts
+   - Create, view, and delete posts (using `:post_id` route parameter)
    - Image uploads with thumbnail generation
    - HEIC/HEIF to JPEG conversion
    - Handled in `applications/blog.moon`
@@ -108,20 +108,25 @@ abCMS is a content management system built with MoonScript/Lua and the Lapis web
 
 ## Database Schema
 
-### Users Table
-- `id` (primary key)
-- `username` (unique text)
+### Users Table (`users`)
+- `id` (integer, primary key)
+- `username` (text, unique)
 - `passhash` (text)
 - `xp` (integer, default 0)
+- `coins` (integer, default 0)
+- `social` (text, default "")
+- `upload_token` (text, default "")
 
-### Posts Table
-- `id` (primary key)
-- `user_id` (foreign key to users)
+### Posts Table (`posts`)
+- `id` (integer, primary key)
+- `user_id` (integer, foreign key to `users`)
 - `created_at` (integer timestamp)
-- `title` (text)
-- `content` (text)
-- `filename` (text)
-- `thumbname` (text)
+- `title` (text, default "")
+- `has_image` (integer, default 0)
+- `path` (text, default "")
+- `content` (text, default "")
+- `thumbnail_path` (text, default "")
+- `color` (text, default "")
 
 ## Important Notes
 
@@ -131,6 +136,14 @@ abCMS is a content management system built with MoonScript/Lua and the Lapis web
 - **Port Safety**: Never expose ports 3923 or 25511 publicly
 - **Compilation**: Always run `moonc .` after modifying .moon files
 - **Database**: SQLite database file is `abcms.sqlite`
+
+## Naming Conventions
+
+- **Files & Modules**: `snake_case` filenames (e.g., `views/post_form.moon`, `views/user_posts.moon`, `views/not_found.moon`, `static/js/image_hover.js`, `static/js/starry_night.js`) and dot-separated `snake_case` module requires (e.g., `require "views.post_form"`).
+- **MoonScript / Lua / Python Symbols**: `snake_case` for functions, variables, and Lapis route parameters (e.g., `:post_id`).
+- **Classes**: `PascalCase` ending in `*Application` for Lapis applications and `*View` for Lapis view classes.
+- **HTML Data Attributes**: `kebab-case` `data-*` attributes (e.g., `data-full-src`).
+- **JavaScript Symbols**: `camelCase` for functions and variables (e.g., `initImageHover`, `starryNight`, `starCount`, `updateStars`).
 
 ## Code Style
 

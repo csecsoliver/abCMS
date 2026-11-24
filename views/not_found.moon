@@ -1,6 +1,6 @@
 import Widget from require "lapis.html"
 
-class Error404 extends Widget
+class NotFoundView extends Widget
   content: =>
     div class: "error-container", ->
       h1 class: "error-code", "404"

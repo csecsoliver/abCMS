@@ -1,12 +1,8 @@
-local lapis = require("lapis")
 local Widget
 Widget = require("lapis.html").Widget
-local Posts
-Posts = require("models").Posts
 local markdown = require("markdown")
-local string = require("string")
 local lfs = require("lfs")
-local PostPage
+local PostView
 do
   local _class_0
   local _parent_0 = Widget
@@ -31,15 +27,15 @@ do
           div(function()
             return raw(markdown(self.post.content))
           end)
-          local imagefile = lfs.attributes("." .. self.post.path)
-          local thumbfile = lfs.attributes("." .. self.post.thumbnail_path)
-          if imagefile.size > 4100 then
-            local size_kb = imagefile.size
-            p("The original image takes up " .. size_kb .. " bytes of space.")
+          local image_file = lfs.attributes("." .. self.post.path)
+          local thumbnail_file = lfs.attributes("." .. self.post.thumbnail_path)
+          if image_file.size > 4100 then
+            local image_size_bytes = image_file.size
+            p("The original image takes up " .. image_size_bytes .. " bytes of space.")
           end
-          if thumbfile.size > 4100 then
-            local thumb_size_kb = thumbfile.size
-            return p("The thumbnail image takes up " .. thumb_size_kb .. " bytes of space.")
+          if thumbnail_file.size > 4100 then
+            local thumbnail_size_bytes = thumbnail_file.size
+            return p("The thumbnail image takes up " .. thumbnail_size_bytes .. " bytes of space.")
           end
         end)
       end)
@@ -52,7 +48,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = "PostPage",
+    __name = "PostView",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -76,6 +72,6 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  PostPage = _class_0
+  PostView = _class_0
   return _class_0
 end

@@ -1,13 +1,12 @@
-local lapis = require("lapis")
 local Widget
 Widget = require("lapis.html").Widget
 local Posts
 Posts = require("models").Posts
-local GenThumb
-GenThumb = require("lib/file_utils").GenThumb
+local generate_thumbnail
+generate_thumbnail = require("lib.file_utils").generate_thumbnail
 local markdown = require("markdown")
 local string = require("string")
-local HomePage
+local IndexView
 do
   local _class_0
   local _parent_0 = Widget
@@ -27,15 +26,15 @@ do
             p("Author: " .. tostring(author) .. " on " .. os.date("%Y-%m-%d %H:%M:%S", post.created_at))
             if post.has_image == 1 then
               if post.thumbnail_path == "" or post.thumbnail_path == nil then
-                local thumb_path = GenThumb(post.path)
+                local thumbnail_path = generate_thumbnail(post.path)
                 post:update({
-                  thumbnail_path = thumb_path
+                  thumbnail_path = thumbnail_path
                 })
-                post.thumbnail_path = thumb_path
+                post.thumbnail_path = thumbnail_path
               end
               img({
                 src = post.thumbnail_path,
-                ["data-fullsrc"] = post.path,
+                ["data-full-src"] = post.path,
                 alt = "Post Image",
                 style = "width: 100%;"
               })
@@ -43,13 +42,13 @@ do
             if string.len(post.content) <= 300 and post.has_image == 0 then
               raw(markdown(post.content))
             elseif string.len(post.content) > 300 and post.has_image == 0 then
-              local content = string.sub(post.content, 1, 300)
-              raw(markdown(content .. "..."))
+              local preview_content = string.sub(post.content, 1, 300)
+              raw(markdown(preview_content .. "..."))
             elseif string.len(post.content) <= 200 and post.has_image == 1 then
               raw(markdown(post.content))
             elseif string.len(post.content) > 200 and post.has_image == 1 then
-              local content = string.sub(post.content, 1, 200)
-              raw(markdown(content .. "..."))
+              local preview_content = string.sub(post.content, 1, 200)
+              raw(markdown(preview_content .. "..."))
             end
             return a({
               href = "/posts/" .. tostring(post.id)
@@ -66,7 +65,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = "HomePage",
+    __name = "IndexView",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -90,6 +89,6 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  HomePage = _class_0
+  IndexView = _class_0
   return _class_0
 end

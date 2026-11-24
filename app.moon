@@ -6,7 +6,7 @@ bcrypt = require "bcrypt"
 argon2 = require "argon2"
 import Posts, Users from require "models"
 
-class extends lapis.Application
+class MainApplication extends lapis.Application
   layout:require "views.layout"
   @enable "etlua"
   @include "applications.protected"
@@ -14,7 +14,7 @@ class extends lapis.Application
   handle_404: =>
     @page_title = "404 - Page Not Found"
     @current_user = Users\find username: @session.user if @session.user and (@session.expiry > os.time!)
-    render: "404"
+    render: "not_found"
 
   handle_error: (err, trace) =>
     -- Log the error for debugging
@@ -63,8 +63,8 @@ class extends lapis.Application
           @error_message = "Please select login or signup"
           return render: "login"
   }
-  "/posts/:postid": =>
-        @post = Posts\find id: @params.postid
+  "/posts/:post_id": =>
+        @post = Posts\find id: @params.post_id
         if @post
             @page_title = @post.title
             render: "post"

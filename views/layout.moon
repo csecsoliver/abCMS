@@ -1,7 +1,7 @@
 import Widget from require "lapis.html"
-file_utils = require "lib/file_utils"
+file_utils = require "lib.file_utils"
 lfs = require "lfs"
-class Layout extends Widget
+class LayoutView extends Widget
   content: =>
     raw "<!DOCTYPE HTML>"
     html lang: "en", ->
@@ -19,8 +19,8 @@ class Layout extends Widget
         -- link rel: "stylesheet", href: "/static/css/cozy.css"
         script src: "https://sfxr.me/riffwave.js"
         script src: "https://sfxr.me/sfxr.js"
-        script src: "/static/js/misc.js", defer: true
-        script src: "/static/js/script.js", defer: true
+        script src: "/static/js/image_hover.js", defer: true
+        script src: "/static/js/starry_night.js", defer: true
         -- link rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css"
         -- script src: "https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"
 
@@ -28,11 +28,11 @@ class Layout extends Widget
       body ->
         header ->
           h1 "abCMS"
-          p file_utils\GetFreeSpace!
-          dbfile = lfs.attributes "abcms.sqlite"
-          if dbfile
-              db_size_kb = dbfile.size
-              p "The database takes up " .. db_size_kb .. " bytes of space."
+          p file_utils.get_free_space!
+          db_file = lfs.attributes "abcms.sqlite"
+          if db_file
+              db_size_bytes = db_file.size
+              p "The database takes up " .. db_size_bytes .. " bytes of space."
           nav ->
             a href: "/", "Homepage"
             a href: "/dashboard", "Dashboard"

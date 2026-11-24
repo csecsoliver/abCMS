@@ -1,12 +1,7 @@
 local lapis = require("lapis")
-local bcrypt = require("bcrypt")
 local Users
 Users = require("models").Users
-local slugify
-slugify = require("lapis.util").slugify
 local os = require("os")
-local respond_to
-respond_to = require("lapis.application").respond_to
 local ProtectedApplication
 do
   local _class_0

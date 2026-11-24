@@ -1,6 +1,6 @@
 local Widget
 Widget = require("lapis.html").Widget
-local Login
+local LoginView
 do
   local _class_0
   local _parent_0 = Widget
@@ -89,7 +89,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = "Login",
+    __name = "LoginView",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -113,6 +113,6 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  Login = _class_0
+  LoginView = _class_0
   return _class_0
 end

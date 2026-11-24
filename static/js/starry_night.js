@@ -3,7 +3,7 @@ async function starryNight() {
     // Create a canvas element and append it to the body
     const canvas = document.createElement('canvas');
     document.body.appendChild(canvas);
-    const ctx = canvas.getContext('2d');
+    const context = canvas.getContext('2d');
 
     // Set the canvas size to the full window size
     canvas.width = window.innerWidth;
@@ -19,31 +19,31 @@ async function starryNight() {
     const stars = [];
 
     // Number of stars to create
-    const numStars = 5000;
+    const starCount = 5000;
 
     // Create the stars
-    for (let i = 0; i < numStars; i++) {
+    for (let i = 0; i < starCount; i++) {
         stars.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
             radius: Math.random() * 1.5,
             alpha: Math.random(),
-            twinkle: Math.random() * 0.04 -0.02 // Twinkle speed
+            twinkle: Math.random() * 0.04 - 0.02 // Twinkle speed
         });
     }
 
     // Function to draw a single star
     async function drawStar(star) {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
-        ctx.fill();
+        context.beginPath();
+        context.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        context.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+        context.fill();
     }
 
     // Function to update and redraw the stars
-    async function update() {
+    async function updateStars() {
         // Clear the canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        context.clearRect(0, 0, canvas.width, canvas.height);
 
         // Update and draw each star
         stars.forEach(star => {
@@ -56,11 +56,11 @@ async function starryNight() {
         });
 
         // Request the next animation frame
-        requestAnimationFrame(update);
+        requestAnimationFrame(updateStars);
     }
 
     // Start the animation
-    update();
+    updateStars();
 
     // Handle window resize
     window.addEventListener('resize', () => {

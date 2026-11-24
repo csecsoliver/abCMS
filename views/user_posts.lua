@@ -1,4 +1,3 @@
-local lapis = require("lapis")
 local Widget
 Widget = require("lapis.html").Widget
 local Posts, Users
@@ -6,9 +5,8 @@ do
   local _obj_0 = require("models")
   Posts, Users = _obj_0.Posts, _obj_0.Users
 end
-local PostForm = require("views/postform")
 local markdown = require("markdown")
-local UserPosts
+local UserPostsView
 do
   local _class_0
   local _parent_0 = Widget
@@ -34,7 +32,7 @@ do
               if post.has_image == 1 and post.thumbnail_path ~= "" then
                 img({
                   src = post.thumbnail_path,
-                  ["data-fullsrc"] = post.path,
+                  ["data-full-src"] = post.path,
                   alt = "Post Image",
                   style = "width: 100%;"
                 })
@@ -50,13 +48,13 @@ do
               if string.len(post.content) <= 200 and post.has_image == 0 then
                 raw(markdown(post.content))
               elseif string.len(post.content) > 200 and post.has_image == 0 then
-                local content = string.sub(post.content, 1, 200)
-                raw(markdown(content .. "..."))
+                local preview_content = string.sub(post.content, 1, 200)
+                raw(markdown(preview_content .. "..."))
               elseif string.len(post.content) <= 50 and post.has_image == 1 then
                 raw(markdown(post.content))
               elseif string.len(post.content) > 50 and post.has_image == 1 then
-                local content = string.sub(post.content, 1, 50)
-                raw(markdown(content .. "..."))
+                local preview_content = string.sub(post.content, 1, 50)
+                raw(markdown(preview_content .. "..."))
               end
               br()
               a({
@@ -79,7 +77,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = "UserPosts",
+    __name = "UserPostsView",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -103,6 +101,6 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  UserPosts = _class_0
+  UserPostsView = _class_0
   return _class_0
 end

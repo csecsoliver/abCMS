@@ -1,10 +1,7 @@
-lapis = require "lapis"
-
 import Widget from require "lapis.html"
-import Posts from require "models"
-PostForm = require "views/postform"
-UserPosts = require "views/userposts"
-class Dashboard extends Widget
+PostFormView = require "views.post_form"
+UserPostsView = require "views.user_posts"
+class DashboardView extends Widget
     content: =>
         nav class: "dashboard-nav", ->
             a href: "/dashboard", "Dashboard Home"
@@ -18,11 +15,11 @@ class Dashboard extends Widget
                 when "posts/add"
                     h2 "Add New Post"
                     div ->
-                        widget PostForm
+                        widget PostFormView
                 when "posts"
                     h2 "My Posts"
                     div ->
-                        widget UserPosts
+                        widget UserPostsView
                 else
                     h2 "Welcome to your Dashboard"
                     p "Use the navigation above to manage your posts."

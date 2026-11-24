@@ -14,6 +14,7 @@ do
   local _obj_0 = require("models")
   Posts, Users = _obj_0.Posts, _obj_0.Users
 end
+local MainApplication
 do
   local _class_0
   local _parent_0 = lapis.Application
@@ -27,7 +28,7 @@ do
         })
       end
       return {
-        render = "404"
+        render = "not_found"
       }
     end,
     handle_error = function(self, err, trace)
@@ -126,9 +127,9 @@ do
         end
       end
     }),
-    ["/posts/:postid"] = function(self)
+    ["/posts/:post_id"] = function(self)
       self.post = Posts:find({
-        id = self.params.postid
+        id = self.params.post_id
       })
       if self.post then
         self.page_title = self.post.title
@@ -149,7 +150,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = nil,
+    __name = "MainApplication",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -176,5 +177,6 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  return _class_0
+  MainApplication = _class_0
+  return MainApplication
 end

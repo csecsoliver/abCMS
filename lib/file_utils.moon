@@ -1,32 +1,30 @@
-lfs = require 'lfs'
 uuid = require "lua-uuid"
 magick = require "magick"
-import escape from require "lapis.util"
 curl = require "cURL"
 lume = require "lume"
-UploadImage = =>
+upload_image = =>
 
     image = magick.load_image_from_blob @params.image.content
     format = image and image\get_format!
-    allowed = {"JPEG", "JPG", "PNG", "GIF", "WEBP", "BMP", "TIFF", "TIF", "ICO", "CUR", "SVG", "SVGZ", "APNG", "AVIF", "JXL", "HEIC", "HEIF"}
-    unless format and lume.find(allowed, string.upper format)
+    allowed_formats = {"JPEG", "JPG", "PNG", "GIF", "WEBP", "BMP", "TIFF", "TIF", "ICO", "CUR", "SVG", "SVGZ", "APNG", "AVIF", "JXL", "HEIC", "HEIF"}
+    unless format and lume.find(allowed_formats, string.upper format)
         @write status: 418
         return
     filename = ""
-    fullsize_content = nil
+    full_size_content = nil
     -- Convert HEIC/HEIF to JPEG for full-size image
     if format == "HEIC" or format == "HEIF"
         image\set_format "JPEG"
-        fullsize_content = image\get_blob!
+        full_size_content = image\get_blob!
         filename = tostring(uuid.new!) .. @params.image.filename .. ".jpg"
     else
-        fullsize_content = @params.image.content
+        full_size_content = @params.image.content
         filename = tostring(uuid.new!) .. @params.image.filename
     
-    file = assert(io.open('static/uploads/' .. filename, 'wb'))
-    file\write(fullsize_content)
+    output_file = assert(io.open('static/uploads/' .. filename, 'wb'))
+    output_file\write(full_size_content)
     print("Uploaded image to static/uploads/" .. filename)
-    file\close()
+    output_file\close()
     
     -- Reset image for thumbnail if we converted HEIC/HEIF
     if format == "HEIC" or format == "HEIF"
@@ -35,44 +33,44 @@ UploadImage = =>
     image\set_format "JPEG"
     image\thumb "1000x1000"
 
-    thumbfile = assert(io.open('static/uploads/thumb-' .. filename.. ".jpg", 'wb'))
-    thumbfile\write(image\get_blob!)
+    thumbnail_file = assert(io.open('static/uploads/thumb-' .. filename.. ".jpg", 'wb'))
+    thumbnail_file\write(image\get_blob!)
     print("Uploaded thumbnail to static/uploads/thumb-" .. filename.. ".jpg")
-    thumbfile\close!
+    thumbnail_file\close!
     
     image\destroy!
     return "/static/uploads/" .. filename, "/static/uploads/thumb-" .. filename.. ".jpg"
 
-GetFreeSpace = ->
-    pieces = {}
-    r = curl.easy
+get_free_space = ->
+    response_chunks = {}
+    request = curl.easy
       url: "http://localhost:25511/img?pw=changeme&ls=t"--..os.getenv("COPYPARTY_PASS") currently hardcoded, so don't expose the 25511 port publicly
     --   httpheader:
     --     "X-Test-Header1: Header-Data1"
     --     "X-Test-Header2: Header-Data2"
       writefunction: (chunk) ->
-        table.insert pieces, chunk
+        table.insert response_chunks, chunk
         chunk
-    r\perform!
-    r\close!
-    response = table.concat pieces
+    request\perform!
+    request\close!
+    response = table.concat response_chunks
     response = lume.split(response, "//")[2]
     response = lume.split(response, "2025")[1]
     response
 
-GenThumb = (path) ->
-    imgf = assert io.open("." .. path, "rb")
-    imgdata = imgf\read "*all"
-    imgf\close!
-    imgimg = magick.load_image_from_blob imgdata
+generate_thumbnail = (path) ->
+    image_file = assert io.open("." .. path, "rb")
+    image_data = image_file\read "*all"
+    image_file\close!
+    image = magick.load_image_from_blob image_data
 
-    imgimg\set_format "JPEG"
-    imgimg\thumb "1000x1000"
-    newfilename = tostring uuid.new!
-    thumbfile = assert(io.open('static/uploads/thumb-' .. newfilename.. ".jpg", 'wb'))
-    thumbfile\write(imgimg\get_blob!)
-    print("Uploaded thumbnail to static/uploads/thumb-" .. newfilename.. ".jpg")
-    thumbfile\close!
-    return "/static/uploads/thumb-" .. newfilename .. ".jpg"
+    image\set_format "JPEG"
+    image\thumb "1000x1000"
+    thumbnail_id = tostring uuid.new!
+    thumbnail_file = assert(io.open('static/uploads/thumb-' .. thumbnail_id.. ".jpg", 'wb'))
+    thumbnail_file\write(image\get_blob!)
+    print("Uploaded thumbnail to static/uploads/thumb-" .. thumbnail_id.. ".jpg")
+    thumbnail_file\close!
+    return "/static/uploads/thumb-" .. thumbnail_id .. ".jpg"
 
-{ :UploadImage, :GetFreeSpace, :GenThumb }
+{ :upload_image, :get_free_space, :generate_thumbnail }

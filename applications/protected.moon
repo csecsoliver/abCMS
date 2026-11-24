@@ -1,10 +1,6 @@
 lapis = require "lapis"
-bcrypt = require "bcrypt"
 import Users from require "models"
-import slugify from require "lapis.util"
 os = require "os"
-
-import respond_to from require "lapis.application"
 
 
 class ProtectedApplication extends lapis.Application

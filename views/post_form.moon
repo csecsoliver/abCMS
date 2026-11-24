@@ -1,9 +1,6 @@
-lapis = require "lapis"
-
 import Widget from require "lapis.html"
-import Posts from require "models"
 
-class PostForm extends Widget
+class PostFormView extends Widget
     content: =>
         post = @options.post or {}
         form_method = "POST" -- todo: make proper mod handling

@@ -26,8 +26,8 @@
 ## views/dashboard.moon
 - is rendered directly inside views/layout.moon
 - renders a second navbar, that points to child routes like
-  - views/postform.moon with no arguments
-## views/postform.moon
+  - views/post_form.moon with no arguments
+## views/post_form.moon
 - is rendered wherever necessary
 - accepts one optional argument
   - a post to modify

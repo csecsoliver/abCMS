@@ -1,11 +1,8 @@
-local lapis = require("lapis")
 local Widget
 Widget = require("lapis.html").Widget
-local Posts
-Posts = require("models").Posts
-local PostForm = require("views/postform")
-local UserPosts = require("views/userposts")
-local Dashboard
+local PostFormView = require("views.post_form")
+local UserPostsView = require("views.user_posts")
+local DashboardView
 do
   local _class_0
   local _parent_0 = Widget
@@ -34,12 +31,12 @@ do
         if "posts/add" == _exp_0 then
           h2("Add New Post")
           return div(function()
-            return widget(PostForm)
+            return widget(PostFormView)
           end)
         elseif "posts" == _exp_0 then
           h2("My Posts")
           return div(function()
-            return widget(UserPosts)
+            return widget(UserPostsView)
           end)
         else
           h2("Welcome to your Dashboard")
@@ -55,7 +52,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = "Dashboard",
+    __name = "DashboardView",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -79,6 +76,6 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  Dashboard = _class_0
+  DashboardView = _class_0
   return _class_0
 end

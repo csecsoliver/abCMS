@@ -1,11 +1,7 @@
-lapis = require "lapis"
-
 import Widget from require "lapis.html"
-import Posts from require "models"
 markdown = require "markdown"
-string = require "string"
 lfs = require "lfs"
-class PostPage extends Widget
+class PostView extends Widget
     content: =>
         div class: "post-container", ->
             div class: "grid-item post-big", ->
@@ -16,11 +12,11 @@ class PostPage extends Widget
                     img src: @post.path, alt: "Post Image", style: "width: 100%;"
                 div ->
                     raw markdown(@post.content)
-                imagefile = lfs.attributes "."..@post.path
-                thumbfile = lfs.attributes "."..@post.thumbnail_path
-                if imagefile.size > 4100
-                    size_kb = imagefile.size 
-                    p "The original image takes up " .. size_kb .. " bytes of space."
-                if thumbfile.size > 4100
-                    thumb_size_kb = thumbfile.size
-                    p "The thumbnail image takes up " .. thumb_size_kb .. " bytes of space."
+                image_file = lfs.attributes "."..@post.path
+                thumbnail_file = lfs.attributes "."..@post.thumbnail_path
+                if image_file.size > 4100
+                    image_size_bytes = image_file.size 
+                    p "The original image takes up " .. image_size_bytes .. " bytes of space."
+                if thumbnail_file.size > 4100
+                    thumbnail_size_bytes = thumbnail_file.size
+                    p "The thumbnail image takes up " .. thumbnail_size_bytes .. " bytes of space."

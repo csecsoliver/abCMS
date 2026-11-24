@@ -1,6 +1,6 @@
 import Widget from require "lapis.html"
 
-class Login extends Widget
+class LoginView extends Widget
   content: =>
     div class: "login-container", ->
       h2 "Login"

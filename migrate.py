@@ -3,16 +3,15 @@ import pathlib
 import os
 import json
 
-db = sqlite3.connect('abcms.sqlite')
-cursor = db.cursor()
+db_conn = sqlite3.connect('abcms.sqlite')
+cursor = db_conn.cursor()
 
 # os.system('sh setup.sh')
-usersdir = pathlib.Path('users')
-users = usersdir.iterdir()
-for username in users:
-    with open(username, 'r') as f:
+users_dir = pathlib.Path('users')
+for user_file in users_dir.iterdir():
+    with open(user_file, 'r') as f:
         data = f.read()
-    username = username.stem
+    username = user_file.stem
     user = json.loads(data)
     social = user.get('social', "")
     upload_token = user.get('upload_token', 'None')
@@ -22,31 +21,29 @@ for username in users:
         continue
     cursor.execute("INSERT INTO users (username, passhash, xp, coins, social, upload_token) VALUES (?, ?, ?, ?, ?, ?)",
                    (username, user['password'], user.get('xp', user['coins']), user['coins'], social, upload_token))
-    db.commit()
+    db_conn.commit()
 
 
 
 os.system("cp -r cozy static/uploads/")
-cozyposts = open('static/uploads/cozy/posts.json', 'r')
-
-cozyposts_data = json.loads(cozyposts.read())
+with open('static/uploads/cozy/posts.json', 'r') as cozy_posts_file:
+    cozy_posts_data = json.loads(cozy_posts_file.read())
 counter = 0
-for post in cozyposts_data['posts']:
+for post in cozy_posts_data['posts']:
     cursor.execute("INSERT INTO posts (title, user_id, created_at, path, has_image) VALUES (?, (SELECT id FROM users WHERE username = ?), ?, ?, 1)",
                    (post['title'], post['path'].split('/')[1], counter, "/static/uploads/"+post['path']))
     counter += 1
-    db.commit()
+    db_conn.commit()
 
 
-mddir = pathlib.Path('md_blog_content')
-posts = mddir.iterdir()
-for postidmd in posts:
-    if not postidmd.suffix == '.md':
+markdown_dir = pathlib.Path('md_blog_content')
+for post_file in markdown_dir.iterdir():
+    if not post_file.suffix == '.md':
         continue
-    with open(postidmd, 'r') as f:
+    with open(post_file, 'r') as f:
         content = f.readlines()
-    postidmd = postidmd.stem
-    with open(f"md_blog_content/{postidmd}.json", 'r') as f:
+    post_id = post_file.stem
+    with open(f"md_blog_content/{post_id}.json", 'r') as f:
         try:
             json_data = json.loads(f.read())
             color = json_data.get('color', '')
@@ -56,8 +53,8 @@ for postidmd in posts:
     author: str = content[2].strip()
     content_md: str = "\n".join(content[4:])
     cursor.execute("INSERT INTO posts (title, content, user_id, created_at, color) VALUES (?, ?, (SELECT id FROM users WHERE username = ?), ?, ?)",
-                   (title, content_md, author, counter + int(postidmd), color))
-    db.commit()
+                   (title, content_md, author, counter + int(post_id), color))
+    db_conn.commit()
 
 
-db.close()
+db_conn.close()

@@ -1,6 +1,6 @@
 lapis = require "lapis"
 import escape from require "lapis.html"
-import UploadImage from require "lib.file_utils"
+import upload_image from require "lib.file_utils"
 import Posts, Users from require "models"
 class BlogApplication extends lapis.Application
     "/formapi/posts/add": =>
@@ -13,7 +13,7 @@ class BlogApplication extends lapis.Application
         if @params.image and @params.image.filename != ""
             
             has_image = 1
-            path, thumbnail_path = UploadImage self
+            path, thumbnail_path = upload_image self
 
         if title == "" and content == "" and @params.image and @params.image.filename == ""
             @write redirect_to: "/dashboard/posts/add?error_message=At least one of title, content, or image must be provided."
@@ -30,8 +30,8 @@ class BlogApplication extends lapis.Application
 
         @write redirect_to: "/dashboard/posts"
 
-    "/formapi/posts/delete/:postid": =>
-        post = Posts\find id: @params.postid
+    "/formapi/posts/delete/:post_id": =>
+        post = Posts\find id: @params.post_id
         unless post
             @write redirect_to: "/dashboard/posts?error_message=Post not found."
             return

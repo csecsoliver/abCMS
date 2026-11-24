@@ -1,8 +1,8 @@
 local lapis = require("lapis")
 local escape
 escape = require("lapis.html").escape
-local UploadImage
-UploadImage = require("lib.file_utils").UploadImage
+local upload_image
+upload_image = require("lib.file_utils").upload_image
 local Posts, Users
 do
   local _obj_0 = require("models")
@@ -24,7 +24,7 @@ do
       local thumbnail_path = ""
       if self.params.image and self.params.image.filename ~= "" then
         has_image = 1
-        path, thumbnail_path = UploadImage(self)
+        path, thumbnail_path = upload_image(self)
       end
       if title == "" and content == "" and self.params.image and self.params.image.filename == "" then
         self:write({
@@ -45,9 +45,9 @@ do
         redirect_to = "/dashboard/posts"
       })
     end,
-    ["/formapi/posts/delete/:postid"] = function(self)
+    ["/formapi/posts/delete/:post_id"] = function(self)
       local post = Posts:find({
-        id = self.params.postid
+        id = self.params.post_id
       })
       if not (post) then
         self:write({

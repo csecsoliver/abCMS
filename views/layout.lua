@@ -1,8 +1,8 @@
 local Widget
 Widget = require("lapis.html").Widget
-local file_utils = require("lib/file_utils")
+local file_utils = require("lib.file_utils")
 local lfs = require("lfs")
-local Layout
+local LayoutView
 do
   local _class_0
   local _parent_0 = Widget
@@ -44,22 +44,22 @@ do
             src = "https://sfxr.me/sfxr.js"
           })
           script({
-            src = "/static/js/misc.js",
+            src = "/static/js/image_hover.js",
             defer = true
           })
           return script({
-            src = "/static/js/script.js",
+            src = "/static/js/starry_night.js",
             defer = true
           })
         end)
         return body(function()
           header(function()
             h1("abCMS")
-            p(file_utils:GetFreeSpace())
-            local dbfile = lfs.attributes("abcms.sqlite")
-            if dbfile then
-              local db_size_kb = dbfile.size
-              p("The database takes up " .. db_size_kb .. " bytes of space.")
+            p(file_utils.get_free_space())
+            local db_file = lfs.attributes("abcms.sqlite")
+            if db_file then
+              local db_size_bytes = db_file.size
+              p("The database takes up " .. db_size_bytes .. " bytes of space.")
             end
             return nav(function()
               a({
@@ -84,7 +84,7 @@ do
       return _class_0.__parent.__init(self, ...)
     end,
     __base = _base_0,
-    __name = "Layout",
+    __name = "LayoutView",
     __parent = _parent_0
   }, {
     __index = function(cls, name)
@@ -108,6 +108,6 @@ do
   if _parent_0.__inherited then
     _parent_0.__inherited(_parent_0, _class_0)
   end
-  Layout = _class_0
+  LayoutView = _class_0
   return _class_0
 end
