@@ -1,0 +1,26 @@
+package view
+
+templ NotFoundContent(meta PageMeta) {
+	<div class="error-container">
+		<h1 class="error-code">404</h1>
+		<h2 class="error-message">Page Not Found</h2>
+		<p class="error-description">The page you're looking for doesn't exist or has been moved.</p>
+		<div class="error-actions">
+			<a href="/" class="btn">Go Home</a>
+			if meta.CurrentUser != "" {
+				<a href="/dashboard" class="btn">Dashboard</a>
+			} else {
+				<a href="/login" class="btn">Login</a>
+			}
+		</div>
+		<p class="error-footer">
+			Need help? <a href="/">View all posts</a> or contact the site administrator.
+		</p>
+	</div>
+}
+
+templ NotFoundPage(meta PageMeta) {
+	@Layout(meta) {
+		@NotFoundContent(meta)
+	}
+}

@@ -43,8 +43,10 @@ main {
 /* Header */
 header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: 0.5rem 1.5rem;
     padding: 1rem;
     /* background-color: var(--1); */
     border: 1px solid var(--2);
@@ -57,7 +59,13 @@ header h1 {
 
 nav {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: 1rem;
+}
+
+nav a {
+    white-space: nowrap;
 }
 
 .card, .postcard, .imgcard {
@@ -264,4 +272,33 @@ input[type="radio"]:checked + .radio-label {
 
 .error-footer a:hover {
     text-decoration: none;
+}
+
+/* Minimal functional helpers for HTMX partial swaps, indicators, and reduced motion */
+#header-stats {
+    display: contents;
+}
+
+#htmx-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--2);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#htmx-progress-bar.htmx-request {
+    opacity: 1;
+}
+
+.inline-indicator {
+    display: none;
+}
+
+.inline-indicator.htmx-request {
+    display: inline;
 }

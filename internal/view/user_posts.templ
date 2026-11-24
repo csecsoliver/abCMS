@@ -1,0 +1,80 @@
+package view
+
+templ UserPosts(posts []PostCard, query string) {
+	<h2>My Posts</h2>
+	<form
+		method="GET"
+		action="/dashboard/posts"
+		hx-get="/dashboard/posts"
+		hx-target:inherited="#user-posts-list"
+		hx-swap:inherited="outerHTML"
+		hx-replace-url:inherited="true"
+		hx-sync:inherited="closest form:replace"
+	>
+		<input
+			type="search"
+			name="q"
+			value={ query }
+			placeholder="Filter my posts..."
+			aria-label="Filter my posts"
+			hx-get="/dashboard/posts"
+			hx-include="closest form"
+			hx-trigger="input changed delay:250ms, search"
+			hx-indicator="#user-posts-search-indicator"
+		/>
+		<span id="user-posts-search-indicator" class="htmx-indicator inline-indicator">filtering...</span>
+	</form>
+	@UserPostsList(posts, query)
+}
+
+templ UserPostsList(posts []PostCard, query string) {
+	<div id="user-posts-list">
+		if len(posts) == 0 {
+			if query != "" {
+				<p>No posts match "{ query }".</p>
+			} else {
+				<p>You have no posts yet.</p>
+			}
+		} else {
+			<div class="grid-container">
+				for _, post := range posts {
+					<div id={ PostCardID(post.ID) } class="grid-item">
+						<h3>{ post.Title }</h3>
+						<p>Author: { post.AuthorUsername } on { FormatTimestamp(post.CreatedAt) }</p>
+						if post.HasImage && post.DisplayImageURL() != "" {
+							<img
+								src={ post.DisplayImageURL() }
+								data-full-src={ post.Path }
+								alt="Post Image"
+								style="width: 100%;"
+							/>
+						}
+						<div>
+							@templ.Raw(post.PreviewHTML)
+						</div>
+						<br/>
+						<a href={ templ.SafeURL(PostURL(post.ID)) }>Open post</a>
+						<br/>
+						<a
+							href={ templ.SafeURL(PostEditURL(post.ID)) }
+							hx-get={ PostEditURL(post.ID) }
+							hx-preload?={ true }
+							hx-target="#dashboard-content"
+							hx-swap="innerHTML show:top showTarget:window"
+							hx-push-url="true"
+						>Edit Post</a>
+						<br/>
+						<a
+							href="#"
+							hx-post={ PostDeleteURL(post.ID) }
+							hx-vals="from:list"
+							hx-confirm="Delete this post? This cannot be undone."
+							hx-target={ "#" + PostCardID(post.ID) }
+							hx-swap="outerHTML swap:200ms swapEmpty:true"
+						>Delete Post</a>
+					</div>
+				}
+			</div>
+		}
+	</div>
+}

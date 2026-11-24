@@ -1,0 +1,32 @@
+package view
+
+templ DashboardNav(activeTab string) {
+	<nav
+		id="dashboard-nav"
+		class="dashboard-nav"
+		hx-target:inherited="#dashboard-content"
+		hx-swap:inherited="innerHTML show:top showTarget:window"
+		hx-push-url:inherited="true"
+	>
+		<a href="/dashboard" hx-get="/dashboard" hx-preload?={ true }>Dashboard Home</a>
+		<a href="/dashboard/posts" hx-get="/dashboard/posts" hx-preload?={ true }>My Posts</a>
+		<a href="/dashboard/posts/add" hx-get="/dashboard/posts/add" hx-preload?={ true }>Add New Post</a>
+	</nav>
+}
+
+templ DashboardShell(activeTab string, errorMessage string, inner templ.Component) {
+	<div id="dashboard-shell">
+		@DashboardNav(activeTab)
+		<div id="dashboard-content">
+			if errorMessage != "" {
+				<p class="error-message">{ errorMessage }</p>
+			}
+			@inner
+		</div>
+	</div>
+}
+
+templ DashboardHomeSection() {
+	<h2>Welcome to your Dashboard</h2>
+	<p>Use the navigation above to manage your posts.</p>
+}

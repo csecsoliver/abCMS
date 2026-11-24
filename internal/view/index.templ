@@ -1,0 +1,89 @@
+package view
+
+templ IndexContent(posts []PostCard, filter FeedFilter) {
+	<p>
+		<a href="/dashboard/posts/add">Add post</a>
+	</p>
+	<form
+		method="GET"
+		action="/"
+		hx-get="/"
+		hx-target:inherited="#post-grid-region"
+		hx-swap:inherited="outerHTML"
+		hx-push-url="true"
+		hx-sync:inherited="closest form:replace"
+	>
+		if filter.Author != "" {
+			<input type="hidden" name="author" value={ filter.Author }/>
+		}
+		<input
+			type="search"
+			name="q"
+			value={ filter.Query }
+			placeholder="Search posts..."
+			aria-label="Search posts"
+			hx-get="/"
+			hx-replace-url="true"
+			hx-include="closest form"
+			hx-trigger="input changed delay:250ms, search"
+			hx-indicator="#feed-search-indicator"
+		/>
+		<span id="feed-search-indicator" class="htmx-indicator inline-indicator">searching...</span>
+		if filter.Author != "" {
+			<span id="author-filter">
+				Author: <b>{ filter.Author }</b>
+				(<a href={ templ.SafeURL(FeedURL(filter.Query, "")) }>clear</a>)
+			</span>
+		}
+	</form>
+	@PostGridRegion(posts, filter)
+}
+
+templ PostGridRegion(posts []PostCard, filter FeedFilter) {
+	<div
+		id="post-grid-region"
+		hx-get={ FeedURL(filter.Query, filter.Author) }
+		hx-trigger="posts-changed from:body"
+		hx-target="#post-grid-region"
+		hx-swap="outerHTML"
+	>
+		if len(posts) == 0 {
+			if filter.HasActive() {
+				<p>
+					No posts match your filter. <a href="/">Clear filters</a>
+				</p>
+			} else {
+				<p>No posts yet.</p>
+			}
+		} else {
+			<div class="grid-container">
+				for _, post := range posts {
+					<div class="grid-item">
+						<h3>{ post.Title }</h3>
+						<p>
+							Author: <a href={ templ.SafeURL(AuthorURL(post.AuthorUsername)) }>{ post.AuthorUsername }</a> on { FormatTimestamp(post.CreatedAt) }
+						</p>
+						if post.HasImage && post.DisplayImageURL() != "" {
+							<img
+								src={ post.DisplayImageURL() }
+								data-full-src={ post.Path }
+								alt="Post Image"
+								style="width: 100%;"
+							/>
+						}
+						<div>
+							@templ.Raw(post.PreviewHTML)
+						</div>
+						<a href={ templ.SafeURL(PostURL(post.ID)) }>Open post</a>
+					</div>
+				}
+			</div>
+		}
+	</div>
+}
+
+templ IndexPage(meta PageMeta, posts []PostCard, filter FeedFilter) {
+	@Layout(meta) {
+		@IndexContent(posts, filter)
+	}
+}

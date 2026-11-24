@@ -20,3 +20,5 @@ logs
 static/uploads/*
 filestore/config
 *.tar.*
+/abcms
+*_templ.go

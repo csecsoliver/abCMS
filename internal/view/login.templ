@@ -1,0 +1,60 @@
+package view
+
+templ LoginContent(returnTo string, errorMessage string) {
+	<div class="login-container">
+		<h2>Login</h2>
+		<div id="login-error">
+			@FormErrorBanner(errorMessage)
+		</div>
+		<form
+			method="POST"
+			action="/login"
+			hx-post="/login"
+			hx-target="#app-main"
+			hx-swap="innerHTML show:top showTarget:window"
+			hx-status:4xx="target:#login-error swap:innerHTML"
+			hx-status:5xx="target:#login-error swap:innerHTML"
+			hx-disable="find button[type='submit']"
+			hx-indicator="#login-spinner"
+		>
+			<input type="hidden" name="return_to" value={ returnTo }/>
+			<div>
+				<label for="username">Username:</label>
+				<input type="text" id="username" name="username" required?={ true }/>
+			</div>
+			<div>
+				<label for="password">Password:</label>
+				<input type="password" id="password" name="password" required?={ true }/>
+			</div>
+			<div class="radio-group">
+				<input
+					id="option-login"
+					type="radio"
+					name="option"
+					value="login"
+					checked?={ true }
+					style="position: absolute; opacity: 0; width: 0; height: 0;"
+				/>
+				<label for="option-login" class="radio-label">Login</label>
+				<input
+					id="option-signup"
+					type="radio"
+					name="option"
+					value="signup"
+					style="position: absolute; opacity: 0; width: 0; height: 0;"
+				/>
+				<label for="option-signup" class="radio-label">Sign Up</label>
+			</div>
+			<div>
+				<button type="submit">Go</button>
+				<span id="login-spinner" class="htmx-indicator inline-indicator">authenticating...</span>
+			</div>
+		</form>
+	</div>
+}
+
+templ LoginPage(meta PageMeta, returnTo string, errorMessage string) {
+	@Layout(meta) {
+		@LoginContent(returnTo, errorMessage)
+	}
+}

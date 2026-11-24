@@ -1,0 +1,89 @@
+package view
+
+import "fmt"
+
+templ PageTitle(title string) {
+	<title>{ title }</title>
+}
+
+templ HeaderStatsInner(meta PageMeta) {
+	<p>{ meta.FreeSpaceText }</p>
+	if meta.HasDBSize {
+		<p>{ fmt.Sprintf("The database takes up %d bytes of space.", meta.DBSizeBytes) }</p>
+	}
+}
+
+templ HeaderStatsPartial(meta PageMeta) {
+	<template hx?={ true } type="partial" hx-target="#header-stats" hx-swap="innerHTML">
+		@HeaderStatsInner(meta)
+	</template>
+}
+
+templ SiteNav(meta PageMeta) {
+	<nav id="site-nav">
+		<a href="/">Homepage</a>
+		<a href="/dashboard">Dashboard</a>
+		if meta.CurrentUser != "" {
+			<a
+				href="/logout"
+				hx-post="/logout"
+				hx-target="#app-main"
+				hx-swap="innerHTML show:top showTarget:window"
+			>Logout ({ meta.CurrentUser })</a>
+		} else {
+			<a href="/login">Login</a>
+		}
+		<a
+			href="#"
+			id="reduced-motion-toggle"
+			role="switch"
+			aria-checked="true"
+			aria-label="Starry background motion"
+			title="Toggle reduced motion for the starry background"
+			hx-ignore?={ true }
+		>Motion: ON</a>
+	</nav>
+}
+
+templ SiteNavPartial(meta PageMeta) {
+	<template hx?={ true } type="partial" hx-target="#site-nav" hx-swap="outerHTML">
+		@SiteNav(meta)
+	</template>
+}
+
+templ DashboardNavPartial(activeTab string) {
+	<template hx?={ true } type="partial" hx-target="#dashboard-nav" hx-swap="outerHTML">
+		@DashboardNav(activeTab)
+	</template>
+}
+
+templ FormErrorBanner(message string) {
+	if message != "" {
+		<div class="error" role="alert">{ message }</div>
+	}
+}
+
+templ HTMXPageFragment(meta PageMeta, content templ.Component) {
+	@PageTitle(meta.Title)
+	@SiteNavPartial(meta)
+	@HeaderStatsPartial(meta)
+	@content
+}
+
+templ HTMXDashboardFragment(meta PageMeta, activeTab string, errorMessage string, content templ.Component) {
+	@PageTitle(meta.Title)
+	@SiteNavPartial(meta)
+	@HeaderStatsPartial(meta)
+	@DashboardNavPartial(activeTab)
+	if errorMessage != "" {
+		<p class="error-message">{ errorMessage }</p>
+	}
+	@content
+}
+
+templ HTMXDeleteCardResponse(meta PageMeta, emptyFallback bool, query string) {
+	@HeaderStatsPartial(meta)
+	if emptyFallback {
+		@UserPostsList(nil, query)
+	}
+}

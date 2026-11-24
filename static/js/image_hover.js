@@ -1,12 +1,25 @@
-function initImageHover() {
-    const images = document.querySelectorAll('img[data-full-src]');
+function initImageHover(root) {
+    const scope = root && root.querySelectorAll ? root : document;
+    const images = scope.querySelectorAll('img[data-full-src]');
     images.forEach(img => {
-        console.log("added event listener");
-        img.addEventListener('mouseover', function (event) {
-            this.src = this.dataset.fullSrc;
-            console.log("changed src");
+        if (img.dataset.hoverBound === 'true') {
+            return;
+        }
+        img.dataset.hoverBound = 'true';
+        img.addEventListener('mouseover', function () {
+            if (this.dataset.fullSrc && this.src !== this.dataset.fullSrc) {
+                this.src = this.dataset.fullSrc;
+            }
         });
     });
 }
 
-document.addEventListener('DOMContentLoaded', initImageHover);
+if (typeof htmx !== 'undefined' && typeof htmx.onLoad === 'function') {
+    htmx.onLoad(function (content) {
+        initImageHover(content);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    initImageHover(document);
+});

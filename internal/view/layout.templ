@@ -1,0 +1,45 @@
+package view
+
+templ Layout(meta PageMeta) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ meta.Title }</title>
+			<script src="/static/js/htmx.min.js"></script>
+			<script src="/static/js/hx-sse.min.js"></script>
+			<script src="/static/js/hx-preload.min.js"></script>
+			<link rel="stylesheet" href="/static/css/union.css"/>
+			<script src="https://sfxr.me/riffwave.js"></script>
+			<script src="https://sfxr.me/sfxr.js"></script>
+			<script src="/static/js/image_hover.js" defer></script>
+			<script src="/static/js/starry_night.js" defer></script>
+		</head>
+		<body
+			hx-boost:inherited="true"
+			hx-target:inherited="#app-main"
+			hx-swap:inherited="innerHTML show:top showTarget:window"
+			hx-indicator:inherited="#htmx-progress-bar"
+		>
+			<div id="sse-bridge" hx-sse:connect="/events" hx-swap="none" hidden?={ true }></div>
+			<div id="htmx-progress-bar" class="htmx-indicator" role="progressbar" aria-label="Loading"></div>
+			<header>
+				<h1>abCMS</h1>
+				<div id="header-stats">
+					@HeaderStatsInner(meta)
+				</div>
+				@SiteNav(meta)
+			</header>
+			<main id="app-main" hx-history-elt?={ true }>
+				{ children... }
+			</main>
+		</body>
+	</html>
+}
+
+templ FullPage(meta PageMeta, content templ.Component) {
+	@Layout(meta) {
+		@content
+	}
+}

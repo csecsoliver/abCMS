@@ -1,0 +1,46 @@
+package view
+
+import "fmt"
+
+templ PostContent(post PostDetail) {
+	<div class="post-container">
+		<div class="grid-item post-big">
+			<h2>{ post.Title }</h2>
+			<p>
+				Author: <a href={ templ.SafeURL(AuthorURL(post.AuthorUsername)) }>{ post.AuthorUsername }</a> on { FormatTimestamp(post.CreatedAt) }
+			</p>
+			if post.HasImage && post.Path != "" {
+				<img src={ post.Path } alt="Post Image" style="width: 100%;"/>
+			}
+			<div>
+				@templ.Raw(post.ContentHTML)
+			</div>
+			if post.HasImageSize && post.ImageSizeBytes > 4100 {
+				<p>{ fmt.Sprintf("The original image takes up %d bytes of space.", post.ImageSizeBytes) }</p>
+			}
+			if post.HasThumbnailSize && post.ThumbnailSizeBytes > 4100 {
+				<p>{ fmt.Sprintf("The thumbnail image takes up %d bytes of space.", post.ThumbnailSizeBytes) }</p>
+			}
+			if post.IsOwner {
+				<div style="margin-top: 1rem;">
+					<a href={ templ.SafeURL(PostEditURL(post.ID)) }>Edit Post</a>
+					<a
+						href="#"
+						hx-post={ PostDeleteURL(post.ID) }
+						hx-vals="from:post"
+						hx-confirm="Delete this post? This cannot be undone."
+						hx-target="#app-main"
+						hx-swap="innerHTML show:top showTarget:window"
+						style="margin-left: 1rem;"
+					>Delete Post</a>
+				</div>
+			}
+		</div>
+	</div>
+}
+
+templ PostPage(meta PageMeta, post PostDetail) {
+	@Layout(meta) {
+		@PostContent(post)
+	}
+}

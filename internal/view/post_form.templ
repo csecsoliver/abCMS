@@ -1,0 +1,61 @@
+package view
+
+templ PostForm(post FormPost, errorMessage string) {
+	if post.ID > 0 {
+		<h2>Edit Post</h2>
+	} else {
+		<h2>Add New Post</h2>
+	}
+	<div>
+		<div id="post-form-error">
+			@FormErrorBanner(errorMessage)
+		</div>
+		<form
+			action={ templ.SafeURL(PostFormAction(post.ID)) }
+			method="POST"
+			class="post-form"
+			enctype="multipart/form-data"
+			hx-post={ PostFormAction(post.ID) }
+			hx-encoding="multipart/form-data"
+			hx-target="#dashboard-content"
+			hx-swap="innerHTML show:top showTarget:window"
+			hx-status:4xx="target:#post-form-error swap:innerHTML"
+			hx-status:5xx="target:#post-form-error swap:innerHTML"
+			hx-disable="find button[type='submit']"
+			hx-indicator="#post-form-indicator"
+		>
+			<div>
+				<p>
+					<b>Note: Images are not sanitized of metadata. This is an intentional design choice. In case you don't want your data on here, deal with it yourself.</b>
+				</p>
+			</div>
+			<div>
+				<label for="title">Title:</label>
+				<br/>
+				<input type="text" name="title" id="title" value={ post.Title }/>
+			</div>
+			<div>
+				<label for="content">Content:</label>
+				<br/>
+				<textarea name="content" id="content">{ post.Content }</textarea>
+			</div>
+			<div>
+				if post.ID > 0 && post.HasImage {
+					<label for="image">Replace image (optional):</label>
+				} else {
+					<label for="image">Upload image:</label>
+				}
+				<br/>
+				<input type="file" name="image" id="image"/>
+			</div>
+			<button type="submit">
+				if post.ID > 0 {
+					Save Changes
+				} else {
+					Post
+				}
+			</button>
+			<span id="post-form-indicator" class="htmx-indicator inline-indicator">saving...</span>
+		</form>
+	</div>
+}
